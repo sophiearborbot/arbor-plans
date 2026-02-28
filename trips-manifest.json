@@ -5,9 +5,9 @@
     {
       "id": "spring-break-2026",
       "title": "Spring Break Backpacking",
-      "subtitle": "Arbor Family \u00b7 Apr 9\u201312, 2026",
-      "emoji": "\ud83c\udfd5\ufe0f",
-      "dates": "Apr 9\u201312, 2026",
+      "subtitle": "Arbor Family · Apr 9–12, 2026",
+      "emoji": "🏕️",
+      "dates": "Apr 9–12, 2026",
       "startDate": "2026-04-09",
       "who": [
         "Sage",
@@ -19,14 +19,24 @@
       "data": "./scrapbook/spring-break-2026.json",
       "color": "#4caf50",
       "planPage": "./spring_break_camping.html",
-      "endDate": "2026-04-12"
+      "endDate": "2026-04-12",
+      "category": "Family · Backpacking",
+      "accentColor2": "#2d5016",
+      "desc": "3-night dark-sky loop. #1 pick: Linville Gorge (best skies East Coast) — verify Helene trail conditions first. 4 ranked backup options.",
+      "cardLink": "View plan →",
+      "whoTags": [
+        "family"
+      ],
+      "extraStatus": [],
+      "dateLabel": "Apr 9–12, 2026",
+      "statusLabel": "Planning"
     },
     {
       "id": "japan-2026",
-      "title": "Japan \u2014 Sage & Tafline",
-      "subtitle": "Couples Trip \u00b7 May 9\u201316, 2026",
-      "emoji": "\ud83c\uddef\ud83c\uddf5",
-      "dates": "May 9\u201316, 2026",
+      "title": "Japan — Sage & Tafline",
+      "subtitle": "Couples Trip · May 9–16, 2026",
+      "emoji": "🇯🇵",
+      "dates": "May 9–16, 2026",
       "startDate": "2026-05-09",
       "who": [
         "Sage",
@@ -36,14 +46,25 @@
       "data": "./scrapbook/japan-2026.json",
       "color": "#673ab7",
       "planPage": "./japan_may_2026.html",
-      "endDate": "2026-05-16"
+      "endDate": "2026-05-16",
+      "category": "Couples · International",
+      "accentColor2": "#673ab7",
+      "desc": "Tokyo → Hakone → Kyoto. $4,500–$7,000 for two. Price tracker active — alert set at $900/person. teamLab, ryokan, kaiseki, Fushimi Inari at dawn.",
+      "cardLink": "View plan →",
+      "whoTags": [
+        "sage",
+        "tafline"
+      ],
+      "extraStatus": [],
+      "dateLabel": "May 9–16, 2026",
+      "statusLabel": "Planning"
     },
     {
       "id": "europe-2026",
       "title": "Europe 2026",
-      "subtitle": "Arbor Family \u00b7 Jun 12\u201328, 2026",
-      "emoji": "\ud83c\udf0d",
-      "dates": "Jun 12\u201328, 2026",
+      "subtitle": "Arbor Family · Jun 12–28, 2026",
+      "emoji": "🌍",
+      "dates": "Jun 12–28, 2026",
       "startDate": "2026-06-12",
       "who": [
         "Sage",
@@ -55,7 +76,20 @@
       "data": "./scrapbook/europe-2026.json",
       "color": "#9c27b0",
       "planPage": "https://sophiearborbot.github.io/europe-2026/",
-      "endDate": "2026-06-28"
+      "endDate": "2026-06-28",
+      "category": "Family · International",
+      "accentColor2": "#c0392b",
+      "desc": "AMS → Belgium → Paris (Jun 12–19 with Oma). Jun 20–27 family route TBD — 4 options: 🔴 Alpine Arc · 🔵 Rhine Valley · 🟣 Alps & Prague · 🟡 Iberian Arc & Morocco",
+      "cardLink": "View map ↗",
+      "whoTags": [
+        "family"
+      ],
+      "extraStatus": [
+        "✈️ Flights Confirmed",
+        "🗺️ Route: Planning"
+      ],
+      "dateLabel": "Jun 12–28, 2026 · Conf. LXTIOD",
+      "statusLabel": "Planning"
     }
   ]
 }

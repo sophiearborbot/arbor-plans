@@ -251,87 +251,10 @@
     <span>📅 Upcoming</span>
     <span class="section-count" id="upcoming-count"></span>
   </div>
-
-  <div class="cards" id="upcoming-cards">
-
-    <!-- Spring Break Backpacking -->
-    <div class="plan-card" data-href="./spring_break_camping.html" data-who="family asher verity sage tafline"
-         onclick="location.href='./spring_break_camping.html'">
-      <div class="card-accent" style="background: linear-gradient(90deg, #4caf50, #2d5016);"></div>
-      <div class="card-inner">
-        <div class="card-top">
-          <div class="card-emoji">🏕️</div>
-          <div class="card-status status-planning">Planning</div>
-        </div>
-        <div class="card-category">Family · Backpacking</div>
-        <div class="card-title">Spring Break Backpacking</div>
-        <div class="card-date">📅 Apr 9–12, 2026</div>
-        <div class="card-desc">3-night dark-sky loop. #1 pick: Linville Gorge (best skies East Coast) — verify Helene trail conditions first. 4 ranked backup options.</div>
-      </div>
-      <div class="card-footer">
-        <div class="who-tags">
-          <span class="who-tag who-family">Family</span>
-        </div>
-        <span class="card-link">View plan →</span>
-      </div>
-    </div>
-
-    <!-- Japan Couples Trip -->
-    <div class="plan-card" data-href="./japan_may_2026.html" data-who="sage tafline"
-         onclick="location.href='./japan_may_2026.html'">
-      <div class="card-accent" style="background: linear-gradient(90deg, #9c27b0, #673ab7);"></div>
-      <div class="card-inner">
-        <div class="card-top">
-          <div class="card-emoji">🇯🇵</div>
-          <div class="card-status status-planning">Planning</div>
-        </div>
-        <div class="card-category">Couples · International</div>
-        <div class="card-title">Japan — Sage &amp; Tafline</div>
-        <div class="card-date">📅 May 9–16, 2026</div>
-        <div class="card-desc">Tokyo → Hakone → Kyoto. $4,500–$7,000 for two. Price tracker active — alert set at $900/person. teamLab, ryokan, kaiseki, Fushimi Inari at dawn.</div>
-      </div>
-      <div class="card-footer">
-        <div class="who-tags">
-          <span class="who-tag who-sage">Sage</span>
-          <span class="who-tag who-tafline">Tafline</span>
-        </div>
-        <span class="card-link">View plan →</span>
-      </div>
-    </div>
-
-    <!-- Europe 2026 -->
-    <div class="plan-card" data-href="https://sophiearborbot.github.io/europe-2026/" data-who="family sage tafline asher verity"
-         onclick="location.href='https://sophiearborbot.github.io/europe-2026/'">
-      <div class="card-accent" style="background: linear-gradient(90deg, #e74c3c, #c0392b);"></div>
-      <div class="card-inner">
-        <div class="card-top">
-          <div class="card-emoji">🌍</div>
-          <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end;">
-            <div class="card-status status-confirmed">✈️ Flights Confirmed</div>
-            <div class="card-status status-planning">🗺️ Route: Planning</div>
-          </div>
-        </div>
-        <div class="card-category">Family · International</div>
-        <div class="card-title">Europe 2026</div>
-        <div class="card-date">📅 Jun 12–28, 2026 · Conf. LXTIOD</div>
-        <div class="card-desc">AMS → Belgium → Paris (Jun 12–19 with family). Jun 20–27 family route — choose one:<br>
-          <span style="display:block;margin-top:5px;font-size:0.75rem;line-height:1.8;">
-            🔴 1. Alpine Arc &nbsp; 🔵 2. Rhine Valley<br>
-            🟣 3. Alps &amp; Prague &nbsp; 🟡 4. Iberian Arc &amp; Morocco
-          </span>
-        </div>
-      </div>
-      <div class="card-footer">
-        <div class="who-tags">
-          <span class="who-tag who-family">Family</span>
-        </div>
-        <span class="card-link">View map ↗</span>
-      </div>
-    </div>
-
-  </div>
+  <div class="cards" id="upcoming-cards"></div>
 
   <!-- ARCHIVE ACCORDION -->
+
   <div style="margin-top: 36px;">
     <div class="archive-toggle" onclick="toggleArchive()">
       <div class="section-header" style="flex:1;margin-bottom:0;border-bottom:none;padding-bottom:0;">
@@ -340,12 +263,7 @@
       </div>
       <span class="archive-chevron" id="archive-chevron">▶</span>
     </div>
-    <div class="archive-cards" id="archive-cards" style="margin-top:16px;">
-      <!-- Past events will appear here as trips are completed -->
-      <div style="grid-column:1/-1;padding:24px;text-align:center;color:#3a4a5a;font-size:0.82rem;background:#13151f;border-radius:10px;border:1px dashed #2e3a50;">
-        Nothing here yet — completed trips will be archived for the scrapbook 📸
-      </div>
-    </div>
+    <div class="archive-cards" id="archive-cards" style="margin-top:16px;"></div>
   </div>
 
 </div>
@@ -355,6 +273,109 @@
 </footer>
 
 <script>
+
+// ─── LOAD & RENDER CARDS FROM MANIFEST ──────────
+(async function() {
+  try {
+    var res = await fetch('./trips-manifest.json?t=' + Date.now());
+    var manifest = await res.json();
+    renderCards(manifest.trips || []);
+  } catch(e) { console.warn('Cards: failed to load manifest', e); }
+})();
+
+function renderCards(trips) {
+  var now = new Date(); now.setHours(0,0,0,0);
+
+  // Sort by startDate
+  trips.sort(function(a, b) {
+    return new Date(a.startDate) - new Date(b.startDate);
+  });
+
+  var upcoming = trips.filter(function(t) {
+    return !t.endDate || new Date(t.endDate + 'T00:00:00') >= now;
+  });
+  var past = trips.filter(function(t) {
+    return t.endDate && new Date(t.endDate + 'T00:00:00') < now;
+  });
+
+  var upEl  = document.getElementById('upcoming-cards');
+  var arcEl = document.getElementById('archive-cards');
+
+  if (upcoming.length) {
+    upcoming.forEach(function(t, idx) { upEl.appendChild(buildCard(t, idx === 0)); });
+  } else {
+    upEl.innerHTML = '<div style="grid-column:1/-1;padding:24px;text-align:center;color:#3a4a5a;font-size:0.82rem;">No upcoming trips planned yet.</div>';
+  }
+
+  if (past.length) {
+    past.forEach(function(t) { arcEl.appendChild(buildCard(t, false, true)); });
+  } else {
+    arcEl.innerHTML = '<div style="grid-column:1/-1;padding:24px;text-align:center;color:#3a4a5a;font-size:0.82rem;background:#13151f;border-radius:10px;border:1px dashed #2e3a50;">Nothing here yet — completed trips will be archived for the scrapbook \uD83D\uDCF8</div>';
+  }
+
+  updateCounts();
+  document.getElementById('archive-count').textContent = past.length;
+}
+
+function buildCard(t, isNext, isArchived) {
+  var WHO_CLASS = { sage:'who-sage', tafline:'who-tafline', asher:'who-asher', verity:'who-verity', family:'who-family' };
+  var STATUS_CLASS = { planning:'status-planning', confirmed:'status-confirmed', completed:'status-completed' };
+
+  var whoTags  = (t.whoTags || t.who || []);
+  var dataWho  = whoTags.map(function(w){ return w.toLowerCase(); }).join(' ');
+  var whoHtml  = whoTags.map(function(w) {
+    var cls = WHO_CLASS[w.toLowerCase()] || '';
+    return '<span class="who-tag ' + cls + '">' + w + '</span>';
+  }).join('');
+
+  // Status badges
+  var extraBadges = (t.extraStatus || []).map(function(s) {
+    return '<div class="card-status status-planning">' + s + '</div>';
+  }).join('');
+  var mainBadge = '<div class="card-status ' + (STATUS_CLASS[t.status] || 'status-planning') + '">' +
+    (t.statusLabel || t.status) + '</div>';
+  var badgeHtml = extraBadges
+    ? '<div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end;">' + extraBadges + '</div>'
+    : mainBadge;
+
+  var accentBg = 'linear-gradient(90deg, ' + (t.color || '#9c27b0') + ', ' + (t.accentColor2 || t.color || '#673ab7') + ')';
+  var href = t.planPage || '#';
+
+  var div = document.createElement('div');
+  div.className = 'plan-card' + (isArchived ? ' completed' : '');
+  div.dataset.href = href;
+  div.dataset.who  = dataWho;
+  if (isArchived) div.dataset.who += ' archived';
+  div.setAttribute('onclick', 'location.href="' + href + '"');
+
+  div.innerHTML =
+    '<div class="card-accent" style="background:' + accentBg + '"></div>' +
+    '<div class="card-inner">' +
+      '<div class="card-top">' +
+        '<div class="card-emoji">' + t.emoji + '</div>' +
+        badgeHtml +
+      '</div>' +
+      '<div class="card-category">' + (t.category || '') + '</div>' +
+      '<div class="card-title">'   + t.title + '</div>' +
+      '<div class="card-date">\uD83D\uDCC5 ' + (t.dateLabel || t.dates) + '</div>' +
+      '<div class="card-desc">'   + (t.desc || '') + '</div>' +
+    '</div>' +
+    '<div class="card-footer">' +
+      '<div class="who-tags">' + whoHtml + '</div>' +
+      '<span class="card-link">' + (t.cardLink || 'View →') + '</span>' +
+    '</div>';
+
+  if (isNext) {
+    var pin = document.createElement('div');
+    pin.style.cssText = 'position:absolute;top:12px;right:12px;background:rgba(255,255,255,0.08);color:#ce93d8;font-size:0.65rem;font-weight:700;padding:2px 8px;border-radius:8px;letter-spacing:0.5px;';
+    pin.textContent = 'NEXT UP';
+    div.appendChild(pin);
+    div.style.borderColor = '#4a5a7a';
+  }
+
+  return div;
+}
+
 // Filter logic
 function setFilter(f) {
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -415,10 +436,6 @@ if (cards.length) {
   cards[0].appendChild(pin);
 }
 
-// Init
-updateCounts();
-const archived = document.querySelectorAll('#archive-cards .plan-card').length;
-document.getElementById('archive-count').textContent = archived;
 
 // ─── YEAR RIBBON ─────────────────────────────────
 (async function() {
