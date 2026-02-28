@@ -139,6 +139,51 @@
     header { padding: 20px 16px; }
   }
 
+  
+  /* ── YEAR RIBBON ── */
+  .year-ribbon {
+    background: #13151f; border-bottom: 1px solid #1e2433;
+    padding: 8px 32px 6px; position: relative; overflow: hidden;
+  }
+  .ribbon-track { position: relative; height: 48px; }
+  .ribbon-bars  { position: absolute; top: 0; left: 0; right: 0; height: 24px; }
+  .ribbon-months { position: absolute; bottom: 0; left: 0; right: 0; height: 18px; display: flex; }
+  .ribbon-bar {
+    position: absolute; height: 20px; top: 2px;
+    border-radius: 4px; padding: 0 5px;
+    display: flex; align-items: center;
+    font-size: 0.6rem; font-weight: 700; color: rgba(255,255,255,0.92);
+    overflow: hidden; white-space: nowrap; cursor: pointer;
+    transition: filter 0.15s, transform 0.12s;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+  }
+  .ribbon-bar:hover { filter: brightness(1.2); transform: scaleY(1.15); z-index: 5; }
+  .ribbon-bar.past { opacity: 0.35; }
+  .ribbon-month {
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.58rem; font-weight: 600; color: #2e3a50;
+    border-left: 1px solid #1e2433; flex-shrink: 0; overflow: hidden;
+  }
+  .ribbon-month:first-child { border-left: none; }
+  .ribbon-month.is-current { color: #546e7a; font-weight: 800; }
+  .ribbon-today {
+    position: absolute; top: 0; bottom: 0; width: 1px;
+    background: rgba(255, 80, 80, 0.55); z-index: 10; pointer-events: none;
+  }
+  .ribbon-today::before {
+    content: "\25BC"; position: absolute; top: -1px; left: -4px;
+    font-size: 7px; color: rgba(255, 80, 80, 0.7); line-height: 1;
+  }
+  .ribbon-tip {
+    position: fixed; background: #1a1f2e; border: 1px solid #2e3a50;
+    border-radius: 8px; padding: 7px 12px; font-size: 0.72rem; color: #e8eaf0;
+    pointer-events: none; z-index: 999; display: none; white-space: nowrap;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+  }
+  .ribbon-tip strong { color: #ce93d8; }
+  @media (max-width: 600px) { .year-ribbon { padding: 6px 16px 4px; } }
+  @media print { .year-ribbon { display: none; } }
+
   @media print {
     .filter-bar, .print-btn, .archive-toggle .archive-chevron { display: none; }
     .archive-cards { display: grid !important; }
@@ -182,6 +227,16 @@
   <button class="filter-btn" data-filter="asher" onclick="setFilter('asher')">🟡 Asher</button>
   <button class="filter-btn" data-filter="verity" onclick="setFilter('verity')">🩷 Verity</button>
 </div>
+
+
+<div class="year-ribbon" id="year-ribbon">
+  <div class="ribbon-track" id="ribbon-track">
+    <div class="ribbon-bars" id="ribbon-bars"></div>
+    <div class="ribbon-months" id="ribbon-months"></div>
+    <div class="ribbon-today" id="ribbon-today"></div>
+  </div>
+</div>
+<div class="ribbon-tip" id="ribbon-tip"></div>
 
 <div class="timeline-section">
 
@@ -358,6 +413,89 @@ if (cards.length) {
 updateCounts();
 const archived = document.querySelectorAll('#archive-cards .plan-card').length;
 document.getElementById('archive-count').textContent = archived;
+
+// ─── YEAR RIBBON ─────────────────────────────────
+(async function() {
+  try {
+    const res = await fetch('./trips-manifest.json?t=' + Date.now());
+    const manifest = await res.json();
+    renderRibbon(manifest.trips || []);
+  } catch(e) { console.warn('Ribbon: failed to load manifest', e); }
+})();
+
+function renderRibbon(trips) {
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const windowStart = new Date(today.getFullYear(), today.getMonth(), 1);
+  const windowEnd   = new Date(windowStart.getFullYear() + 1, windowStart.getMonth(), windowStart.getDate());
+  const totalMs = windowEnd - windowStart;
+
+  function pct(date) { return Math.max(0, Math.min(100, (date - windowStart) / totalMs * 100)); }
+
+  // Today marker
+  document.getElementById('ribbon-today').style.left = pct(today) + '%';
+
+  // Month labels
+  const monthsEl = document.getElementById('ribbon-months');
+  const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  for (let i = 0; i < 12; i++) {
+    const mo = new Date(windowStart.getFullYear(), windowStart.getMonth() + i, 1);
+    const moEnd = new Date(mo.getFullYear(), mo.getMonth() + 1, 1);
+    const w = (Math.min(moEnd, windowEnd) - mo) / totalMs * 100;
+    const div = document.createElement('div');
+    div.className = 'ribbon-month' + (mo.getMonth() === today.getMonth() && mo.getFullYear() === today.getFullYear() ? ' is-current' : '');
+    div.style.width = w + '%';
+    div.textContent = MONTHS[mo.getMonth()];
+    monthsEl.appendChild(div);
+  }
+
+  // Trip bars
+  const barsEl = document.getElementById('ribbon-bars');
+  const tip = document.getElementById('ribbon-tip');
+
+  trips.forEach(trip => {
+    if (!trip.startDate || !trip.endDate) return;
+    const start = new Date(trip.startDate + 'T00:00:00');
+    const end   = new Date(trip.endDate   + 'T00:00:00');
+    if (end < windowStart || start > windowEnd) return;
+
+    const left  = pct(start);
+    const right = pct(end);
+    const width = Math.max(right - left, 0.5);
+    const isPast = end < today;
+    const daysAway = Math.ceil((start - today) / 86400000);
+    const tripDays = Math.round((end - start) / 86400000);
+
+    const bar = document.createElement('div');
+    bar.className = 'ribbon-bar' + (isPast ? ' past' : '');
+    bar.style.left  = left + '%';
+    bar.style.width = width + '%';
+    bar.style.background = trip.color || '#9c27b0';
+    // Label: emoji if narrow, emoji+name if room
+    bar.textContent = width > 8 ? trip.emoji + ' ' + trip.title : trip.emoji;
+
+    bar.addEventListener('mouseenter', e => {
+      tip.style.display = 'block';
+      const label = daysAway > 0 ? `in ${daysAway}d` : isPast ? 'past' : 'now';
+      tip.innerHTML = `<strong>${trip.emoji} ${trip.title}</strong><br>${trip.dates} · ${tripDays}d · <span style="color:#81c784">${label}</span>`;
+    });
+    bar.addEventListener('mousemove', e => {
+      tip.style.left = (e.clientX + 12) + 'px';
+      tip.style.top  = (e.clientY - 36) + 'px';
+    });
+    bar.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
+    bar.addEventListener('click', () => {
+      // Scroll to matching card or open plan page
+      const card = document.querySelector(`.plan-card[data-href*="${trip.id}"]`) ||
+                   document.querySelector(`.plan-card[data-href="${trip.planPage}"]`);
+      if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      else if (trip.planPage) location.href = trip.planPage;
+    });
+
+    barsEl.appendChild(bar);
+  });
+}
+
 </script>
 </body>
 </html>

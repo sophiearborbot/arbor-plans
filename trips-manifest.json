@@ -5,41 +5,57 @@
     {
       "id": "spring-break-2026",
       "title": "Spring Break Backpacking",
-      "subtitle": "Arbor Family · Apr 9–12, 2026",
-      "emoji": "🏕️",
-      "dates": "Apr 9–12, 2026",
+      "subtitle": "Arbor Family \u00b7 Apr 9\u201312, 2026",
+      "emoji": "\ud83c\udfd5\ufe0f",
+      "dates": "Apr 9\u201312, 2026",
       "startDate": "2026-04-09",
-      "who": ["Sage", "Tafline", "Asher", "Verity"],
+      "who": [
+        "Sage",
+        "Tafline",
+        "Asher",
+        "Verity"
+      ],
       "status": "planning",
       "data": "./scrapbook/spring-break-2026.json",
       "color": "#4caf50",
-      "planPage": "./spring_break_camping.html"
+      "planPage": "./spring_break_camping.html",
+      "endDate": "2026-04-12"
     },
     {
       "id": "japan-2026",
-      "title": "Japan — Sage & Tafline",
-      "subtitle": "Couples Trip · May 9–16, 2026",
-      "emoji": "🇯🇵",
-      "dates": "May 9–16, 2026",
+      "title": "Japan \u2014 Sage & Tafline",
+      "subtitle": "Couples Trip \u00b7 May 9\u201316, 2026",
+      "emoji": "\ud83c\uddef\ud83c\uddf5",
+      "dates": "May 9\u201316, 2026",
       "startDate": "2026-05-09",
-      "who": ["Sage", "Tafline"],
+      "who": [
+        "Sage",
+        "Tafline"
+      ],
       "status": "planning",
       "data": "./scrapbook/japan-2026.json",
       "color": "#673ab7",
-      "planPage": "./japan_may_2026.html"
+      "planPage": "./japan_may_2026.html",
+      "endDate": "2026-05-16"
     },
     {
       "id": "europe-2026",
       "title": "Europe 2026",
-      "subtitle": "Arbor Family · Jun 12–28, 2026",
-      "emoji": "🌍",
-      "dates": "Jun 12–28, 2026",
+      "subtitle": "Arbor Family \u00b7 Jun 12\u201328, 2026",
+      "emoji": "\ud83c\udf0d",
+      "dates": "Jun 12\u201328, 2026",
       "startDate": "2026-06-12",
-      "who": ["Sage", "Tafline", "Asher", "Verity"],
+      "who": [
+        "Sage",
+        "Tafline",
+        "Asher",
+        "Verity"
+      ],
       "status": "planning",
       "data": "./scrapbook/europe-2026.json",
       "color": "#9c27b0",
-      "planPage": "https://sophiearborbot.github.io/europe-2026/"
+      "planPage": "https://sophiearborbot.github.io/europe-2026/",
+      "endDate": "2026-06-28"
     }
   ]
 }
