@@ -300,6 +300,40 @@ function toggleArchive() {
   chevron.textContent = open ? '▼' : '▶';
 }
 
+// Countdown timers
+const countdowns = {
+  'Apr 9–12, 2026':   new Date('2026-04-09'),
+  'May 9–16, 2026':   new Date('2026-05-09'),
+  'Jun 12–28, 2026':  new Date('2026-06-12'),
+};
+
+document.querySelectorAll('.card-date').forEach(el => {
+  const text = el.textContent;
+  for (const [label, date] of Object.entries(countdowns)) {
+    if (text.includes(label.replace('📅 ',''))) {
+      const days = Math.ceil((date - new Date()) / 86400000);
+      if (days > 0) {
+        const chip = document.createElement('span');
+        chip.style.cssText = 'margin-left:8px;font-size:0.65rem;background:rgba(255,255,255,0.07);color:#7a8a9a;padding:2px 7px;border-radius:8px;font-weight:600;';
+        chip.textContent = `${days}d away`;
+        if (days < 30) { chip.style.background = 'rgba(255,193,7,0.15)'; chip.style.color = '#ffd54f'; }
+        if (days < 14) { chip.style.background = 'rgba(76,175,80,0.15)';  chip.style.color = '#81c784'; }
+        el.appendChild(chip);
+      }
+    }
+  }
+});
+
+// Highlight next upcoming card
+const cards = [...document.querySelectorAll('#upcoming-cards .plan-card')];
+if (cards.length) {
+  cards[0].style.borderColor = '#4a5a7a';
+  const pin = document.createElement('div');
+  pin.style.cssText = 'position:absolute;top:12px;right:12px;background:rgba(255,255,255,0.08);color:#ce93d8;font-size:0.65rem;font-weight:700;padding:2px 8px;border-radius:8px;letter-spacing:0.5px;';
+  pin.textContent = 'NEXT UP';
+  cards[0].appendChild(pin);
+}
+
 // Init
 updateCounts();
 const archived = document.querySelectorAll('#archive-cards .plan-card').length;
