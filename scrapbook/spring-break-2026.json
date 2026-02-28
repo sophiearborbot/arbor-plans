@@ -1,0 +1,52 @@
+{
+  "trip": {
+    "title": "Spring Break Backpacking",
+    "subtitle": "Arbor Family · Apr 9–12, 2026",
+    "tagline": "3 nights, dark skies, the whole crew",
+    "who": ["Sage", "Tafline", "Asher", "Verity"],
+    "dates": "Apr 9–12, 2026",
+    "status": "planning"
+  },
+  "planning": {
+    "context": "3-night backpacking loop during spring break. Target: last-quarter moon (Apr 10) for best dark skies. #1 pick is Linville Gorge — best stargazing east of the Rockies — pending trail condition verification after Hurricane Helene damage.",
+    "considered": [
+      "🏔️ #1 — Linville Gorge, NC (best stargazing, technical, Helene trail damage — verify conditions)",
+      "⛰️ #2 — Grayson Highlands, VA (wild ponies, open balds, high elevation)",
+      "🌿 #3 — Shining Rock, NC (gorgeous ridge, no permit needed)",
+      "🌲 #4 — Uwharrie, NC (closest, easiest, flat sandy trails)"
+    ],
+    "decided": "Linville Gorge (pending trail check)",
+    "decision_notes": "West rim CLOSED post-Helene. Route: Wolf Pit Rd → Shortoff summit (night 1) → east rim → Spence Ridge WET CROSS → gorge floor (nights 2–3) → back up Spence Ridge → out.",
+    "open_questions": [
+      "Call Grandfather Ranger District (828) 652-2144 to verify east rim / Spence Ridge conditions",
+      "Confirm Apr 4 soccer game doesn't conflict with April 9 departure",
+      "Gear check — need to confirm Asher's pack weight is reasonable"
+    ]
+  },
+  "route": {
+    "cities": [
+      { "name": "Charlotte (Home)", "lat": 35.227, "lng": -80.843, "dates": "Apr 9", "nights": 0, "note": "Drive to trailhead ~2 hrs", "type": "home" },
+      { "name": "Linville Gorge — Shortoff Mt", "lat": 35.874, "lng": -81.892, "dates": "Apr 9", "nights": 1, "note": "Night 1: summit camp, stargazing", "type": "stop" },
+      { "name": "Linville Gorge Floor", "lat": 35.900, "lng": -81.900, "dates": "Apr 10–11", "nights": 2, "note": "Nights 2–3: gorge floor, river, dark sky peak Apr 10", "type": "stop" },
+      { "name": "Charlotte (Home)", "lat": 35.227, "lng": -80.843, "dates": "Apr 12", "nights": 0, "note": "Return via Spence Ridge", "type": "home" }
+    ]
+  },
+  "chapters": [
+    { "title": "The Drive Up", "dates": "Apr 9 (morning)", "who": ["Family"], "description": null, "highlights": [], "photos": [], "mood": null },
+    { "title": "Shortoff Summit — Night 1", "dates": "Apr 9 (evening)", "who": ["Family"], "description": null, "highlights": [], "photos": [], "mood": null },
+    { "title": "Into the Gorge", "dates": "Apr 10", "who": ["Family"], "description": null, "highlights": [], "photos": [], "mood": null },
+    { "title": "Dark Sky Night — Night 2", "dates": "Apr 10 (evening)", "who": ["Family"], "description": null, "highlights": [], "photos": [], "mood": null },
+    { "title": "Gorge Floor — Night 3", "dates": "Apr 11", "who": ["Family"], "description": null, "highlights": [], "photos": [], "mood": null },
+    { "title": "The Climb Out", "dates": "Apr 12", "who": ["Family"], "description": null, "highlights": [], "photos": [], "mood": null }
+  ],
+  "quotes": [],
+  "memories": [],
+  "stats": {
+    "miles_hiked": null,
+    "elevation_gain": null,
+    "stars_seen": null,
+    "best_meal": null,
+    "funniest_moment": null,
+    "hardest_moment": null
+  }
+}

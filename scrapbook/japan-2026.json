@@ -1,0 +1,54 @@
+{
+  "trip": {
+    "title": "Japan 2026",
+    "subtitle": "Sage & Tafline · May 9–16, 2026",
+    "tagline": "First time in Japan — Tokyo, Hakone, Kyoto",
+    "who": ["Sage", "Tafline"],
+    "dates": "May 9–16, 2026",
+    "status": "planning"
+  },
+  "planning": {
+    "context": "Couples trip post-Golden Week. Flight shopping active — target <$900/person CLT→NRT, open-jaw out KIX. Budget $4,500–$7,000 all-in for two.",
+    "considered": [
+      "🛫 CLT→NRT (open-jaw return KIX→CLT saves ~$200 on Shinkansen)",
+      "🗼 Tokyo (3 nights): teamLab Borderless, Shinjuku/Shibuya, Tsukiji market",
+      "🌋 Hakone (1 night): ryokan, Mt. Fuji views, onsen",
+      "🏯 Kyoto (3 nights): Fushimi Inari at dawn, bamboo forest, kaiseki dinner"
+    ],
+    "decided": null,
+    "decision_notes": "Flights not booked. Watching prices via alert at $900/person.",
+    "open_questions": [
+      "Which airline/routing for CLT→NRT — AA vs UA vs NH codeshare?",
+      "Book teamLab Borderless in advance (sells out months ahead)",
+      "Ryokan in Hakone — Fuji-view room likely needs 3-4 months advance booking",
+      "JR Pass — 7-day pass worth it for this itinerary?"
+    ]
+  },
+  "route": {
+    "cities": [
+      { "name": "Charlotte (Home)", "lat": 35.227, "lng": -80.843, "dates": "May 9", "nights": 0, "note": "Depart CLT", "type": "home" },
+      { "name": "Tokyo", "lat": 35.682, "lng": 139.759, "dates": "May 10–12", "nights": 3, "note": "teamLab, Shinjuku, Tsukiji, Akihabara", "type": "stop" },
+      { "name": "Hakone", "lat": 35.232, "lng": 139.107, "dates": "May 13", "nights": 1, "note": "Ryokan, onsen, Mt. Fuji views", "type": "stop" },
+      { "name": "Kyoto", "lat": 35.012, "lng": 135.768, "dates": "May 14–16", "nights": 2, "note": "Fushimi Inari, Arashiyama, kaiseki", "type": "stop" },
+      { "name": "Charlotte (Home)", "lat": 35.227, "lng": -80.843, "dates": "May 16", "nights": 0, "note": "Depart KIX or NRT", "type": "home" }
+    ]
+  },
+  "chapters": [
+    { "title": "Arrival in Tokyo", "dates": "May 10", "who": ["Sage", "Tafline"], "description": null, "highlights": [], "photos": [], "mood": null },
+    { "title": "Tokyo Days", "dates": "May 10–12", "who": ["Sage", "Tafline"], "description": null, "highlights": [], "photos": [], "mood": null },
+    { "title": "Hakone & the Mountain", "dates": "May 13", "who": ["Sage", "Tafline"], "description": null, "highlights": [], "photos": [], "mood": null },
+    { "title": "Kyoto", "dates": "May 14–16", "who": ["Sage", "Tafline"], "description": null, "highlights": [], "photos": [], "mood": null },
+    { "title": "Coming Home", "dates": "May 16", "who": ["Sage", "Tafline"], "description": null, "highlights": [], "photos": [], "mood": null }
+  ],
+  "quotes": [],
+  "memories": [],
+  "stats": {
+    "countries": null,
+    "cities": null,
+    "train_hours": null,
+    "km_traveled": null,
+    "best_meal": null,
+    "funniest_moment": null,
+    "hardest_moment": null
+  }
+}
