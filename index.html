@@ -145,7 +145,7 @@
     background: #13151f; border-bottom: 1px solid #1e2433;
     padding: 8px 32px 6px; position: relative; overflow: hidden;
   }
-  .ribbon-track { position: relative; height: 48px; }
+  .ribbon-track { position: relative; height: 48px; overflow: visible; }
   .ribbon-bars  { position: absolute; top: 0; left: 0; right: 0; height: 24px; }
   .ribbon-months { position: absolute; bottom: 0; left: 0; right: 0; height: 18px; display: flex; }
   .ribbon-bar {
@@ -175,7 +175,7 @@
     font-size: 7px; color: rgba(255, 80, 80, 0.7); line-height: 1;
   }
   .ribbon-tip {
-    position: fixed; background: #1a1f2e; border: 1px solid #2e3a50;
+    position: absolute; background: #1a1f2e; border: 1px solid #2e3a50;
     border-radius: 8px; padding: 7px 12px; font-size: 0.72rem; color: #e8eaf0;
     pointer-events: none; z-index: 999; display: none; white-space: nowrap;
     box-shadow: 0 4px 16px rgba(0,0,0,0.5);
@@ -435,9 +435,10 @@ function renderRibbon(trips) {
   const windowStart = new Date(today.getFullYear(), today.getMonth(), 1);
   const windowEnd   = new Date(windowStart.getFullYear() + 1, windowStart.getMonth(), windowStart.getDate());
   const totalMs = windowEnd - windowStart;
-  const isMobile = window.innerWidth < 600;
+  const isMobile = () => window.innerWidth < 700;
 
   function pct(date) { return Math.max(0, Math.min(100, (date - windowStart) / totalMs * 100)); }
+  function dateAtPct(p) { return new Date(windowStart.getTime() + p * totalMs); }
 
   // Today marker
   document.getElementById('ribbon-today').style.left = pct(today) + '%';
@@ -453,92 +454,140 @@ function renderRibbon(trips) {
     const div = document.createElement('div');
     div.className = 'ribbon-month' + (mo.getMonth() === today.getMonth() && mo.getFullYear() === today.getFullYear() ? ' is-current' : '');
     div.style.width = w + '%';
-    div.textContent = isMobile ? MONTHS_SHORT[mo.getMonth()] : MONTHS_LONG[mo.getMonth()];
+    div.textContent = isMobile() ? MONTHS_SHORT[mo.getMonth()] : MONTHS_LONG[mo.getMonth()];
     monthsEl.appendChild(div);
   }
 
-  // Tooltip setup
-  const tip = document.getElementById('ribbon-tip');
-  let activeTip = null;
-
-  function showTip(bar, trip, daysAway, tripDays, isPast) {
-    const label = daysAway > 0 ? `in ${daysAway}d` : isPast ? 'past' : 'now';
-    tip.innerHTML = `<strong>${trip.emoji} ${trip.title}</strong><br>${trip.dates} &nbsp;·&nbsp; ${tripDays}d &nbsp;·&nbsp; <span style="color:#81c784">${label}</span>`;
-    const rect = bar.getBoundingClientRect();
-    // Position tip above the bar, centered
-    tip.style.display = 'block';
-    const tipW = tip.offsetWidth;
-    let left = rect.left + rect.width / 2 - tipW / 2;
-    left = Math.max(8, Math.min(left, window.innerWidth - tipW - 8));
-    tip.style.left = left + 'px';
-    tip.style.top  = (rect.top + window.scrollY - tip.offsetHeight - 8) + 'px';
-    tip.style.position = 'absolute';
-    activeTip = bar;
-  }
-
-  function hideTip() {
-    tip.style.display = 'none';
-    activeTip = null;
-  }
-
-  // Dismiss tip on tap outside
-  document.addEventListener('click', e => {
-    if (activeTip && !activeTip.contains(e.target) && !tip.contains(e.target)) hideTip();
-  }, { capture: true });
-
-  // Trip bars
-  const barsEl = document.getElementById('ribbon-bars');
-
+  // Build trip bar data
+  const tripData = [];
   trips.forEach(trip => {
     if (!trip.startDate || !trip.endDate) return;
     const start = new Date(trip.startDate + 'T00:00:00');
     const end   = new Date(trip.endDate   + 'T00:00:00');
     if (end < windowStart || start > windowEnd) return;
+    tripData.push({ trip, start, end,
+      leftPct:  pct(start),
+      rightPct: pct(end),
+      isPast: end < today,
+      daysAway: Math.ceil((start - today) / 86400000),
+      tripDays: Math.round((end - start) / 86400000)
+    });
+  });
 
-    const left  = pct(start);
-    const right = pct(end);
-    const width = Math.max(right - left, 1.2);
-    const isPast = end < today;
-    const daysAway = Math.ceil((start - today) / 86400000);
-    const tripDays = Math.round((end - start) / 86400000);
+  // Render bars
+  const barsEl = document.getElementById('ribbon-bars');
+  const track  = document.getElementById('ribbon-track');
+  const tip    = document.getElementById('ribbon-tip');
 
+  tripData.forEach(td => {
+    const width = Math.max(td.rightPct - td.leftPct, 1.2);
     const bar = document.createElement('div');
-    bar.className = 'ribbon-bar' + (isPast ? ' past' : '');
-    bar.style.left  = left + '%';
-    bar.style.width = width + '%';
-    bar.style.background = trip.color || '#9c27b0';
-    bar.textContent = width > 8 ? trip.emoji + ' ' + trip.title : trip.emoji;
+    bar.className = 'ribbon-bar' + (td.isPast ? ' past' : '');
+    bar.style.left       = td.leftPct + '%';
+    bar.style.width      = width + '%';
+    bar.style.background = td.trip.color || '#9c27b0';
+    bar.textContent      = width > 8 ? td.trip.emoji + ' ' + td.trip.title : td.trip.emoji;
+    bar.dataset.tripId   = td.trip.id;
+    barsEl.appendChild(bar);
+  });
 
-    // Desktop: hover
-    bar.addEventListener('mouseenter', e => {
-      if (!isMobile) showTip(bar, trip, daysAway, tripDays, isPast);
-    });
-    bar.addEventListener('mouseleave', e => {
-      if (!isMobile) hideTip();
-    });
+  // ── SCRUB / DRAG ──────────────────────────────────
+  const MONTHS_FMT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  let scrubbing = false;
+  let tapTimer  = null;
+  let lastHighlightId = null;
 
-    // Mobile + desktop: tap/click
-    bar.addEventListener('click', e => {
-      e.stopPropagation();
-      if (activeTip === bar) {
-        // Second tap → navigate
-        hideTip();
-        navigateToTrip(trip);
-      } else {
-        // First tap → show tip
-        showTip(bar, trip, daysAway, tripDays, isPast);
+  tip.style.position = 'absolute';
+
+  function tripAtPct(p) {
+    return tripData.find(td => p >= td.leftPct && p <= td.rightPct) || null;
+  }
+
+  function formatDate(d) {
+    return MONTHS_FMT[d.getMonth()] + ' ' + d.getDate();
+  }
+
+  function showScrubTip(clientX, clientY, p) {
+    const date = dateAtPct(p / 100);
+    const hit  = tripAtPct(p);
+
+    if (hit) {
+      const label = hit.daysAway > 0 ? `in ${hit.daysAway}d` : hit.isPast ? 'past' : 'now';
+      tip.innerHTML = `<strong>${hit.trip.emoji} ${hit.trip.title}</strong><br>${hit.trip.dates} &nbsp;·&nbsp; ${hit.tripDays}d &nbsp;·&nbsp; <span style="color:#81c784">${label}</span>`;
+      // Highlight active bar
+      if (lastHighlightId !== hit.trip.id) {
+        barsEl.querySelectorAll('.ribbon-bar').forEach(b => b.style.filter = '');
+        barsEl.querySelector(\`[data-trip-id="\${hit.trip.id}"]\`).style.filter = 'brightness(1.35)';
+        lastHighlightId = hit.trip.id;
       }
-    });
-
-    // Desktop single click navigates directly (hover already showed tip)
-    if (!isMobile) {
-      bar.addEventListener('click', e => {
-        e.stopPropagation();
-        navigateToTrip(trip);
-      });
+    } else {
+      tip.innerHTML = `<span style="color:#7a8a9a">${formatDate(date)}</span>`;
+      if (lastHighlightId) {
+        barsEl.querySelectorAll('.ribbon-bar').forEach(b => b.style.filter = '');
+        lastHighlightId = null;
+      }
     }
 
-    barsEl.appendChild(bar);
+    tip.style.display = 'block';
+    const tipW = tip.offsetWidth;
+    const trackRect = track.getBoundingClientRect();
+    let left = clientX - trackRect.left - tipW / 2;
+    left = Math.max(0, Math.min(left, trackRect.width - tipW));
+    tip.style.left = left + 'px';
+    tip.style.top  = '-44px';
+  }
+
+  function hideScrubTip() {
+    tip.style.display = 'none';
+    barsEl.querySelectorAll('.ribbon-bar').forEach(b => b.style.filter = '');
+    lastHighlightId = null;
+  }
+
+  function clientXtoPct(clientX) {
+    const rect = track.getBoundingClientRect();
+    return Math.max(0, Math.min(100, (clientX - rect.left) / rect.width * 100));
+  }
+
+  // Touch events (mobile scrub)
+  track.addEventListener('touchstart', e => {
+    scrubbing = true;
+    const t = e.touches[0];
+    showScrubTip(t.clientX, t.clientY, clientXtoPct(t.clientX));
+    e.preventDefault();
+  }, { passive: false });
+
+  track.addEventListener('touchmove', e => {
+    if (!scrubbing) return;
+    const t = e.touches[0];
+    showScrubTip(t.clientX, t.clientY, clientXtoPct(t.clientX));
+    e.preventDefault();
+  }, { passive: false });
+
+  track.addEventListener('touchend', e => {
+    scrubbing = false;
+    const t = e.changedTouches[0];
+    const p = clientXtoPct(t.clientX);
+    const hit = tripAtPct(p);
+    // Short tap on a trip = navigate; otherwise just dismiss after delay
+    if (hit) {
+      setTimeout(() => navigateToTrip(hit.trip), 180);
+    } else {
+      setTimeout(hideScrubTip, 800);
+    }
+  });
+
+  // Mouse events (desktop scrub / hover)
+  track.addEventListener('mouseenter', e => {
+    showScrubTip(e.clientX, e.clientY, clientXtoPct(e.clientX));
+  });
+  track.addEventListener('mousemove', e => {
+    showScrubTip(e.clientX, e.clientY, clientXtoPct(e.clientX));
+  });
+  track.addEventListener('mouseleave', hideScrubTip);
+  track.addEventListener('click', e => {
+    const p = clientXtoPct(e.clientX);
+    const hit = tripAtPct(p);
+    if (hit) navigateToTrip(hit.trip);
   });
 }
 
