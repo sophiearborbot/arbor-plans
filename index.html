@@ -150,10 +150,8 @@
   .ribbon-months { position: absolute; bottom: 0; left: 0; right: 0; height: 18px; }
   .ribbon-bar {
     position: absolute; height: 20px; top: 2px;
-    border-radius: 4px; padding: 0 5px;
-    display: flex; align-items: center;
-    font-size: 0.6rem; font-weight: 700; color: rgba(255,255,255,0.92);
-    overflow: hidden; white-space: nowrap; cursor: pointer;
+    border-radius: 4px;
+    cursor: pointer;
     transition: filter 0.15s, transform 0.12s;
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
   }
@@ -501,23 +499,19 @@ function renderRibbon(trips) {
     return (date - viewStart) / viewMs * 100;
   }
 
-  function bestLabel(bar, td, wPx) {
-    // Try labels from longest to shortest; pick first that fits
+  function getLabelText(td, availPx) {
     var title     = td.trip.emoji + ' ' + td.trip.title;
-    var firstWord = td.trip.emoji + ' ' + td.trip.title.split(/[\s\u2014\u2013]/)[0];
+    var firstWord = td.trip.emoji + ' ' + td.trip.title.split(' ')[0];
     var emojiOnly = td.trip.emoji;
-
-    // Estimate text width using canvas
-    var ctx = bestLabel._ctx;
+    var ctx = getLabelText._ctx;
     if (!ctx) {
       var c = document.createElement('canvas');
-      ctx = bestLabel._ctx = c.getContext('2d');
-      ctx.font = '600 9px Inter, sans-serif';
+      ctx = getLabelText._ctx = c.getContext('2d');
+      ctx.font = '700 9.6px Inter,system-ui,sans-serif';
     }
-
-    if (wPx >= ctx.measureText(title).width + 12)     return title;
-    if (wPx >= ctx.measureText(firstWord).width + 12)  return firstWord;
-    if (wPx >= ctx.measureText(emojiOnly).width + 8)   return emojiOnly;
+    if (availPx >= ctx.measureText(title).width + 10)     return title;
+    if (availPx >= ctx.measureText(firstWord).width + 10)  return firstWord;
+    if (availPx >= ctx.measureText(emojiOnly).width + 6)   return emojiOnly;
     return '';
   }
 
@@ -555,24 +549,53 @@ function renderRibbon(trips) {
       mo = moEnd;
     }
 
-    // Bars
+    // Bars — compute positions first, then render with overflow labels
+    var visibleBars = [];
     tripData.forEach(function(td) {
       var l = viewPct(td.start);
       var r = viewPct(td.end);
       if (r < 0 || l > 100) return;
-      l = Math.max(0, l);
-      r = Math.min(100, r);
+      visibleBars.push({ td: td, l: Math.max(0, l), r: Math.min(100, r) });
+    });
+    // Sort left-to-right so we can compute gap to next bar
+    visibleBars.sort(function(a, b) { return a.l - b.l; });
+
+    visibleBars.forEach(function(vb, idx) {
+      var l   = vb.l;
+      var r   = vb.r;
       var w   = Math.max(r - l, 0.8);
       var wPx = w / 100 * trackW;
 
+      // Available space = gap from this bar's left to the next bar's left (or end of track)
+      var nextLeft    = idx + 1 < visibleBars.length ? visibleBars[idx + 1].l : 100;
+      var availPx     = (nextLeft - l) / 100 * trackW - 4; // 4px gap before next bar
+
+      // Bar (color only, no text, overflow visible)
       var bar = document.createElement('div');
-      bar.className = 'ribbon-bar' + (td.isPast ? ' past' : '');
+      bar.className = 'ribbon-bar' + (vb.td.isPast ? ' past' : '');
       bar.style.left       = l + '%';
       bar.style.width      = w + '%';
-      bar.style.background = td.trip.color || '#9c27b0';
-      bar.dataset.tripId   = td.trip.id;
-      bar.textContent      = bestLabel(bar, td, wPx);
+      bar.style.background = vb.td.trip.color || '#9c27b0';
+      bar.style.overflow   = 'visible';
+      bar.dataset.tripId   = vb.td.trip.id;
       barsEl.appendChild(bar);
+
+      // Label: separate absolutely-positioned div, can overflow bar into available space
+      var label = getLabelText(vb.td, availPx);
+      if (label) {
+        var lbl = document.createElement('div');
+        lbl.style.cssText = 'position:absolute;left:' + l + '%;' +
+          'top:2px;height:20px;' +
+          'max-width:' + Math.round(availPx) + 'px;' +
+          'padding:0 5px;' +
+          'display:flex;align-items:center;' +
+          'font-size:0.6rem;font-weight:700;' +
+          'color:rgba(255,255,255,0.92);' +
+          'white-space:nowrap;overflow:hidden;' +
+          'pointer-events:none;';
+        lbl.textContent = label;
+        barsEl.appendChild(lbl);
+      }
     });
 
     // Scrollbar thumb
