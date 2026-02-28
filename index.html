@@ -181,7 +181,13 @@
     box-shadow: 0 4px 16px rgba(0,0,0,0.5);
   }
   .ribbon-tip strong { color: #ce93d8; }
-  @media (max-width: 600px) { .year-ribbon { padding: 6px 16px 4px; } }
+  @media (max-width: 600px) {
+    .year-ribbon { padding: 6px 16px 4px; }
+    .ribbon-bar { height: 26px; top: 1px; font-size: 0.62rem; }
+    .ribbon-track { height: 52px; }
+    .ribbon-bars { height: 30px; }
+    .ribbon-months { height: 18px; }
+  }
   @media print { .year-ribbon { display: none; } }
 
   @media print {
@@ -429,6 +435,7 @@ function renderRibbon(trips) {
   const windowStart = new Date(today.getFullYear(), today.getMonth(), 1);
   const windowEnd   = new Date(windowStart.getFullYear() + 1, windowStart.getMonth(), windowStart.getDate());
   const totalMs = windowEnd - windowStart;
+  const isMobile = window.innerWidth < 600;
 
   function pct(date) { return Math.max(0, Math.min(100, (date - windowStart) / totalMs * 100)); }
 
@@ -437,7 +444,8 @@ function renderRibbon(trips) {
 
   // Month labels
   const monthsEl = document.getElementById('ribbon-months');
-  const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const MONTHS_LONG  = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const MONTHS_SHORT = ['J','F','M','A','M','J','J','A','S','O','N','D'];
   for (let i = 0; i < 12; i++) {
     const mo = new Date(windowStart.getFullYear(), windowStart.getMonth() + i, 1);
     const moEnd = new Date(mo.getFullYear(), mo.getMonth() + 1, 1);
@@ -445,13 +453,41 @@ function renderRibbon(trips) {
     const div = document.createElement('div');
     div.className = 'ribbon-month' + (mo.getMonth() === today.getMonth() && mo.getFullYear() === today.getFullYear() ? ' is-current' : '');
     div.style.width = w + '%';
-    div.textContent = MONTHS[mo.getMonth()];
+    div.textContent = isMobile ? MONTHS_SHORT[mo.getMonth()] : MONTHS_LONG[mo.getMonth()];
     monthsEl.appendChild(div);
   }
 
+  // Tooltip setup
+  const tip = document.getElementById('ribbon-tip');
+  let activeTip = null;
+
+  function showTip(bar, trip, daysAway, tripDays, isPast) {
+    const label = daysAway > 0 ? `in ${daysAway}d` : isPast ? 'past' : 'now';
+    tip.innerHTML = `<strong>${trip.emoji} ${trip.title}</strong><br>${trip.dates} &nbsp;·&nbsp; ${tripDays}d &nbsp;·&nbsp; <span style="color:#81c784">${label}</span>`;
+    const rect = bar.getBoundingClientRect();
+    // Position tip above the bar, centered
+    tip.style.display = 'block';
+    const tipW = tip.offsetWidth;
+    let left = rect.left + rect.width / 2 - tipW / 2;
+    left = Math.max(8, Math.min(left, window.innerWidth - tipW - 8));
+    tip.style.left = left + 'px';
+    tip.style.top  = (rect.top + window.scrollY - tip.offsetHeight - 8) + 'px';
+    tip.style.position = 'absolute';
+    activeTip = bar;
+  }
+
+  function hideTip() {
+    tip.style.display = 'none';
+    activeTip = null;
+  }
+
+  // Dismiss tip on tap outside
+  document.addEventListener('click', e => {
+    if (activeTip && !activeTip.contains(e.target) && !tip.contains(e.target)) hideTip();
+  }, { capture: true });
+
   // Trip bars
   const barsEl = document.getElementById('ribbon-bars');
-  const tip = document.getElementById('ribbon-tip');
 
   trips.forEach(trip => {
     if (!trip.startDate || !trip.endDate) return;
@@ -461,7 +497,7 @@ function renderRibbon(trips) {
 
     const left  = pct(start);
     const right = pct(end);
-    const width = Math.max(right - left, 0.5);
+    const width = Math.max(right - left, 1.2);
     const isPast = end < today;
     const daysAway = Math.ceil((start - today) / 86400000);
     const tripDays = Math.round((end - start) / 86400000);
@@ -471,29 +507,46 @@ function renderRibbon(trips) {
     bar.style.left  = left + '%';
     bar.style.width = width + '%';
     bar.style.background = trip.color || '#9c27b0';
-    // Label: emoji if narrow, emoji+name if room
     bar.textContent = width > 8 ? trip.emoji + ' ' + trip.title : trip.emoji;
 
+    // Desktop: hover
     bar.addEventListener('mouseenter', e => {
-      tip.style.display = 'block';
-      const label = daysAway > 0 ? `in ${daysAway}d` : isPast ? 'past' : 'now';
-      tip.innerHTML = `<strong>${trip.emoji} ${trip.title}</strong><br>${trip.dates} · ${tripDays}d · <span style="color:#81c784">${label}</span>`;
+      if (!isMobile) showTip(bar, trip, daysAway, tripDays, isPast);
     });
-    bar.addEventListener('mousemove', e => {
-      tip.style.left = (e.clientX + 12) + 'px';
-      tip.style.top  = (e.clientY - 36) + 'px';
+    bar.addEventListener('mouseleave', e => {
+      if (!isMobile) hideTip();
     });
-    bar.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
-    bar.addEventListener('click', () => {
-      // Scroll to matching card or open plan page
-      const card = document.querySelector(`.plan-card[data-href*="${trip.id}"]`) ||
-                   document.querySelector(`.plan-card[data-href="${trip.planPage}"]`);
-      if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      else if (trip.planPage) location.href = trip.planPage;
+
+    // Mobile + desktop: tap/click
+    bar.addEventListener('click', e => {
+      e.stopPropagation();
+      if (activeTip === bar) {
+        // Second tap → navigate
+        hideTip();
+        navigateToTrip(trip);
+      } else {
+        // First tap → show tip
+        showTip(bar, trip, daysAway, tripDays, isPast);
+      }
     });
+
+    // Desktop single click navigates directly (hover already showed tip)
+    if (!isMobile) {
+      bar.addEventListener('click', e => {
+        e.stopPropagation();
+        navigateToTrip(trip);
+      });
+    }
 
     barsEl.appendChild(bar);
   });
+}
+
+function navigateToTrip(trip) {
+  const card = document.querySelector(\`.plan-card[data-href*="\${trip.id}"]\`) ||
+               document.querySelector(\`.plan-card[data-href="\${trip.planPage}"]\`);
+  if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  else if (trip.planPage) location.href = trip.planPage;
 }
 
 </script>
