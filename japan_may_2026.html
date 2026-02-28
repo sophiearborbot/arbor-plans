@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sage & Tafline — Japan May 2026</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0f1117; color: #e8eaf0; }
+
+  header {
+    background: linear-gradient(135deg, #1a0a2e 0%, #2d0a3a 50%, #1a0a1a 100%);
+    padding: 18px 28px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 2px solid #9c27b0;
+  }
+  header h1 { font-size: 1.4rem; font-weight: 700; color: #e1bee7; }
+  header p { font-size: 0.82rem; color: #ce93d8; margin-top: 3px; }
+  .header-right { text-align: right; }
+  .price-badge {
+    background: linear-gradient(135deg, #9c27b0, #673ab7);
+    color: #fff; font-weight: 700;
+    padding: 7px 16px; border-radius: 20px; font-size: 0.85rem;
+  }
+  .price-badge small { font-size: 0.68rem; font-weight: 400; display: block; opacity: 0.85; }
+
+  .layout { display: flex; height: calc(100vh - 70px); }
+
+  #map { flex: 1; }
+
+  .sidebar {
+    width: 400px; overflow-y: auto; background: #13151f;
+    border-left: 1px solid #2a1f3a;
+  }
+
+  .tab-bar {
+    display: flex; border-bottom: 1px solid #2a1f3a; position: sticky; top: 0;
+    background: #13151f; z-index: 10;
+  }
+  .tab {
+    flex: 1; padding: 12px 4px; text-align: center;
+    font-size: 0.75rem; font-weight: 600; color: #546e7a;
+    cursor: pointer; border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .tab.active { color: #ce93d8; border-bottom-color: #9c27b0; }
+  .tab:hover { color: #e1bee7; }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* OVERVIEW TAB */
+  .summary-box {
+    margin: 14px; background: linear-gradient(135deg, #1a0a2e, #2a1040);
+    border: 1px solid #4a1f6a; border-radius: 10px; padding: 14px;
+  }
+  .summary-box h3 { color: #ce93d8; font-size: 0.85rem; margin-bottom: 10px; font-weight: 700; }
+  .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .why-item { background: rgba(255,255,255,0.04); border-radius: 6px; padding: 8px; }
+  .why-item .emoji { font-size: 1.3rem; }
+  .why-item .wlabel { font-size: 0.68rem; color: #7a6a8a; text-transform: uppercase; margin-top: 3px; }
+  .why-item .wval { font-size: 0.82rem; font-weight: 600; color: #e1bee7; }
+
+  .cost-section { margin: 0 14px 14px; }
+  .cost-section h3 { font-size: 0.8rem; font-weight: 700; color: #9e9e9e; text-transform: uppercase;
+    letter-spacing: 1px; margin-bottom: 10px; }
+
+  .tier-cards { display: flex; flex-direction: column; gap: 8px; }
+  .tier {
+    border-radius: 8px; padding: 12px 14px;
+    border: 1px solid transparent; cursor: pointer; transition: border-color 0.2s;
+  }
+  .tier:hover { border-color: #9c27b0; }
+  .tier.budget { background: rgba(33,150,243,0.08); }
+  .tier.midrange { background: rgba(156,39,176,0.1); }
+  .tier.splurge { background: rgba(255,193,7,0.08); }
+  .tier-top { display: flex; justify-content: space-between; align-items: center; }
+  .tier-name { font-size: 0.85rem; font-weight: 700; }
+  .tier.budget .tier-name { color: #64b5f6; }
+  .tier.midrange .tier-name { color: #ce93d8; }
+  .tier.splurge .tier-name { color: #ffd54f; }
+  .tier-price { font-size: 1.1rem; font-weight: 800; }
+  .tier.budget .tier-price { color: #64b5f6; }
+  .tier.midrange .tier-price { color: #ce93d8; }
+  .tier.splurge .tier-price { color: #ffd54f; }
+  .tier-desc { font-size: 0.72rem; color: #7a8a9a; margin-top: 4px; line-height: 1.5; }
+  .tier-items { margin-top: 8px; display: none; }
+  .tier.expanded .tier-items { display: block; }
+  .tier-row { display: flex; justify-content: space-between; font-size: 0.75rem;
+    padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .tier-row:last-child { border-bottom: none; }
+  .tier-row .tcat { color: #7a8a9a; }
+  .tier-row .tamt { color: #e1bee7; font-weight: 600; }
+
+  .pro-tip {
+    margin: 0 14px 14px; background: rgba(76,175,80,0.08);
+    border: 1px solid rgba(76,175,80,0.3); border-radius: 8px; padding: 12px;
+  }
+  .pro-tip h4 { color: #81c784; font-size: 0.78rem; font-weight: 700; margin-bottom: 8px; }
+  .pro-tip ul { padding-left: 16px; }
+  .pro-tip li { font-size: 0.75rem; color: #9caf88; margin-bottom: 5px; line-height: 1.5; }
+  .pro-tip li strong { color: #c8e6c9; }
+
+  /* ITINERARY TAB */
+  .day-card {
+    margin: 10px 14px; border-radius: 10px; overflow: hidden;
+    border: 1px solid #2a1f3a;
+  }
+  .day-header {
+    padding: 10px 14px;
+    display: flex; align-items: center; gap: 12px;
+    cursor: pointer;
+  }
+  .day-num {
+    background: #9c27b0; color: #fff; font-weight: 800;
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem; flex-shrink: 0;
+  }
+  .day-city { font-size: 0.9rem; font-weight: 700; color: #e1bee7; }
+  .day-title { font-size: 0.75rem; color: #7a6a8a; margin-top: 2px; }
+  .day-body { padding: 0 14px 12px; display: none; }
+  .day-card.open .day-body { display: block; }
+  .activity {
+    display: flex; gap: 10px; padding: 7px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 0.78rem;
+  }
+  .activity:last-child { border-bottom: none; }
+  .act-time { color: #7a6a8a; min-width: 55px; }
+  .act-desc { color: #c9b8d8; line-height: 1.5; }
+  .act-desc strong { color: #e1bee7; }
+  .act-tag {
+    display: inline-block; font-size: 0.65rem; padding: 1px 7px;
+    border-radius: 10px; margin-left: 6px; font-weight: 600; vertical-align: middle;
+  }
+  .act-tag.romance { background: rgba(233,30,99,0.2); color: #f48fb1; }
+  .act-tag.food { background: rgba(255,152,0,0.2); color: #ffcc80; }
+  .act-tag.culture { background: rgba(33,150,243,0.2); color: #90caf9; }
+  .act-tag.splurge { background: rgba(255,193,7,0.2); color: #ffd54f; }
+
+  .transit-card {
+    margin: 8px 14px; background: rgba(255,255,255,0.03);
+    border: 1px dashed #3a2a4a; border-radius: 8px; padding: 10px 14px;
+    display: flex; align-items: center; gap: 12px; font-size: 0.78rem; color: #7a6a8a;
+  }
+  .transit-icon { font-size: 1.4rem; }
+  .transit-info strong { color: #ce93d8; }
+
+  /* MAP INFO TAB */
+  .info-section { margin: 14px; }
+  .info-section h3 { font-size: 0.8rem; color: #7a6a8a; text-transform: uppercase;
+    letter-spacing: 1px; font-weight: 700; margin-bottom: 8px; }
+  .info-card { background: rgba(255,255,255,0.04); border-radius: 8px; padding: 12px;
+    margin-bottom: 8px; font-size: 0.78rem; color: #b0a0c0; line-height: 1.6; }
+  .info-card strong { color: #e1bee7; display: block; margin-bottom: 3px; }
+
+  .alert-strip {
+    margin: 14px; background: rgba(255,193,7,0.1); border: 1px solid rgba(255,193,7,0.3);
+    border-radius: 8px; padding: 10px 14px; font-size: 0.78rem; color: #ffd54f;
+  }
+  .alert-strip strong { display: block; margin-bottom: 3px; }
+
+  @media (max-width: 700px) {
+    .layout { flex-direction: column; }
+    #map { height: 40vh; }
+    .sidebar { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>🇯🇵 Sage &amp; Tafline — Japan May 2026</h1>
+    <p>Tokyo → Hakone → Kyoto · 7 nights · No kids · May 9–16</p>
+  </div>
+  <div class="header-right">
+    <div class="price-badge">
+      $4,500–$7,000
+      <small>for two, all-in</small>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <div id="map"></div>
+  <div class="sidebar">
+
+    <div class="tab-bar">
+      <div class="tab active" onclick="showTab('overview')">💰 Cost</div>
+      <div class="tab" onclick="showTab('itinerary')">🗓️ Itinerary</div>
+      <div class="tab" onclick="showTab('tips')">💡 Tips</div>
+    </div>
+
+    <!-- OVERVIEW TAB -->
+    <div class="tab-content active" id="tab-overview">
+
+      <div class="summary-box">
+        <h3>🌸 Why May Is The Sweet Spot</h3>
+        <div class="why-grid">
+          <div class="why-item">
+            <div class="emoji">🌡️</div>
+            <div class="wlabel">Weather</div>
+            <div class="wval">60–72°F, low humidity</div>
+          </div>
+          <div class="why-item">
+            <div class="emoji">👥</div>
+            <div class="wlabel">Crowds</div>
+            <div class="wval">30–40% fewer after Apr</div>
+          </div>
+          <div class="why-item">
+            <div class="emoji">💴</div>
+            <div class="wlabel">Yen Rate</div>
+            <div class="wval">~¥150/$1 (20% discount)</div>
+          </div>
+          <div class="why-item">
+            <div class="emoji">🌧️</div>
+            <div class="wlabel">Rainy Season</div>
+            <div class="wval">Starts mid-June — clear</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cost-section">
+        <h3>Cost Breakdown — 2 People</h3>
+        <div class="tier-cards">
+
+          <div class="tier budget" onclick="toggleTier(this)">
+            <div class="tier-top">
+              <div>
+                <div class="tier-name">Budget Trip</div>
+                <div class="tier-desc">Sale flights, business hotels, eating local</div>
+              </div>
+              <div class="tier-price">$4,500</div>
+            </div>
+            <div class="tier-items">
+              <div class="tier-row"><span class="tcat">✈️ Flights (×2)</span><span class="tamt">$1,600</span></div>
+              <div class="tier-row"><span class="tcat">🏨 Hotels (7 nights)</span><span class="tamt">$700</span></div>
+              <div class="tier-row"><span class="tcat">🚅 Shinkansen (×2)</span><span class="tamt">$400</span></div>
+              <div class="tier-row"><span class="tcat">🍜 Food (×2, 7 days)</span><span class="tamt">$600</span></div>
+              <div class="tier-row"><span class="tcat">🎟️ Activities</span><span class="tamt">$300</span></div>
+              <div class="tier-row"><span class="tcat">🚇 Local transport</span><span class="tamt">$150</span></div>
+              <div class="tier-row"><span class="tcat">🎁 Misc/buffer</span><span class="tamt">$250</span></div>
+            </div>
+          </div>
+
+          <div class="tier midrange" onclick="toggleTier(this)">
+            <div class="tier-top">
+              <div>
+                <div class="tier-name">Sweet Spot ⭐</div>
+                <div class="tier-desc">Nice hotels + 1 ryokan night + 2 special dinners</div>
+              </div>
+              <div class="tier-price">$6,000</div>
+            </div>
+            <div class="tier-items">
+              <div class="tier-row"><span class="tcat">✈️ Flights (×2)</span><span class="tamt">$2,000</span></div>
+              <div class="tier-row"><span class="tcat">🏨 Hotels (6 nights)</span><span class="tamt">$950</span></div>
+              <div class="tier-row"><span class="tcat">🏯 Ryokan 1 night (Hakone)</span><span class="tamt">$400</span></div>
+              <div class="tier-row"><span class="tcat">🚅 Shinkansen (×2, open-jaw saves)</span><span class="tamt">$240</span></div>
+              <div class="tier-row"><span class="tcat">🍣 Food (×2, 7 days)</span><span class="tamt">$850</span></div>
+              <div class="tier-row"><span class="tcat">🍱 2 special dinners (omakase)</span><span class="tamt">$350</span></div>
+              <div class="tier-row"><span class="tcat">🎟️ Activities (teamLab, etc.)</span><span class="tamt">$400</span></div>
+              <div class="tier-row"><span class="tcat">🎁 Misc/souvenirs</span><span class="tamt">$350</span></div>
+            </div>
+          </div>
+
+          <div class="tier splurge" onclick="toggleTier(this)">
+            <div class="tier-top">
+              <div>
+                <div class="tier-name">Full Splurge</div>
+                <div class="tier-desc">Park Hyatt, kaiseki nightly, private experiences</div>
+              </div>
+              <div class="tier-price">$12,000+</div>
+            </div>
+            <div class="tier-items">
+              <div class="tier-row"><span class="tcat">✈️ Biz class flights (×2)</span><span class="tamt">$5,000+</span></div>
+              <div class="tier-row"><span class="tcat">🏨 Luxury hotels (7 nights)</span><span class="tamt">$3,500+</span></div>
+              <div class="tier-row"><span class="tcat">🍱 Kaiseki dining</span><span class="tamt">$1,500+</span></div>
+              <div class="tier-row"><span class="tcat">🎟️ Private tours/experiences</span><span class="tamt">$1,500+</span></div>
+              <div class="tier-row"><span class="tcat">🚅 + misc</span><span class="tamt">$500+</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pro-tip">
+        <h4>💡 Best money-saving moves</h4>
+        <ul>
+          <li><strong>Open-jaw flights</strong> (fly into Tokyo NRT, out of Osaka KIX) — saves round-trip Shinkansen (~$200)</li>
+          <li><strong>7-day JR Pass</strong> (~$330/person) covers all bullet trains + local JR lines</li>
+          <li><strong>Book teamLab Borderless NOW</strong> — sells out months in advance (~$30/person)</li>
+          <li><strong>Fly May 8+</strong> — Golden Week (May 3–5) is chaos; after it ends, prices + crowds drop hard</li>
+          <li><strong>Points play</strong> — JAL/ANA biz class is one of the best point redemptions (Chase Sapphire → JAL)</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- ITINERARY TAB -->
+    <div class="tab-content" id="tab-itinerary">
+
+      <div class="day-card" id="day1" onclick="toggleDay('day1')">
+        <div class="day-header" style="background: linear-gradient(135deg, rgba(156,39,176,0.15), transparent);">
+          <div class="day-num">1</div>
+          <div>
+            <div class="day-city">✈️ Arrive Tokyo</div>
+            <div class="day-title">May 9 — Land, recover, Shinjuku at night</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="activity"><div class="act-time">Arrive</div><div class="act-desc"><strong>Narita (NRT) or Haneda (HND)</strong> → hotel check-in, rest</div></div>
+          <div class="activity"><div class="act-time">Evening</div><div class="act-desc"><strong>Shinjuku ramen dinner</strong> <span class="act-tag food">food</span> — decompress, first konbini run at 7-Eleven</div></div>
+          <div class="activity"><div class="act-time">Night</div><div class="act-desc"><strong>Kabukicho or Golden Gai</strong> — sake bar alley, lantern-lit, tiny bars seating 6</div></div>
+        </div>
+      </div>
+
+      <div class="day-card" id="day2" onclick="toggleDay('day2')">
+        <div class="day-header" style="background: linear-gradient(135deg, rgba(156,39,176,0.15), transparent);">
+          <div class="day-num">2</div>
+          <div>
+            <div class="day-city">🏙️ Tokyo — Modern & Art</div>
+            <div class="day-title">May 10 — Meiji Shrine → teamLab → Shibuya</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="activity"><div class="act-time">Morning</div><div class="act-desc"><strong>Meiji Jingu Shrine</strong> <span class="act-tag culture">culture</span> — quiet forested walk, free</div></div>
+          <div class="activity"><div class="act-time">Mid-day</div><div class="act-desc"><strong>Omotesando</strong> — luxury boutiques, great coffee, architecture</div></div>
+          <div class="activity"><div class="act-time">Afternoon</div><div class="act-desc"><strong>teamLab Borderless</strong> <span class="act-tag splurge">book ahead!</span> — immersive digital art, otherworldly, ~$30/person</div></div>
+          <div class="activity"><div class="act-time">Evening</div><div class="act-desc"><strong>Shibuya Crossing</strong> + <strong>Shibuya Sky</strong> <span class="act-tag romance">romance</span> — rooftop sunset over the crossing, $20/person</div></div>
+          <div class="activity"><div class="act-time">Dinner</div><div class="act-desc"><strong>Izakaya in Shibuya</strong> <span class="act-tag food">food</span> — yakitori, sake, your vibe</div></div>
+        </div>
+      </div>
+
+      <div class="day-card" id="day3" onclick="toggleDay('day3')">
+        <div class="day-header" style="background: linear-gradient(135deg, rgba(156,39,176,0.15), transparent);">
+          <div class="day-num">3</div>
+          <div>
+            <div class="day-city">🏮 Tokyo — Old City</div>
+            <div class="day-title">May 11 — Asakusa + Akihabara</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="activity"><div class="act-time">Morning</div><div class="act-desc"><strong>Senso-ji Temple, Asakusa</strong> <span class="act-tag culture">culture</span> — best early morning, rickshaw ride through old streets</div></div>
+          <div class="activity"><div class="act-time">Lunch</div><div class="act-desc"><strong>Nakamise market street food</strong> <span class="act-tag food">food</span> — ningyo-yaki, melon bread</div></div>
+          <div class="activity"><div class="act-time">Afternoon</div><div class="act-desc"><strong>Akihabara or Imperial Palace Gardens</strong> — your choice</div></div>
+          <div class="activity"><div class="act-time">Evening</div><div class="act-desc"><strong>Omakase dinner</strong> <span class="act-tag splurge">splurge</span> <span class="act-tag romance">romance</span> — 12-course chef's counter. Reserve 60 days ahead. ~$120/person</div></div>
+        </div>
+      </div>
+
+      <div class="transit-card">
+        <div class="transit-icon">🚅</div>
+        <div class="transit-info">
+          <strong>Tokyo → Hakone</strong> — ~90 min by Romancecar (scenic train). Check in to ryokan in the afternoon.
+        </div>
+      </div>
+
+      <div class="day-card" id="day4" onclick="toggleDay('day4')">
+        <div class="day-header" style="background: linear-gradient(135deg, rgba(233,30,99,0.15), transparent);">
+          <div class="day-num">4</div>
+          <div>
+            <div class="day-city">🗻 Hakone — Optional But Magical</div>
+            <div class="day-title">May 12 — Ryokan, onsen, Mt Fuji views</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="activity"><div class="act-time">Morning</div><div class="act-desc"><strong>Private onsen bath at ryokan</strong> <span class="act-tag romance">romance</span> — most couples say this is the best night of Japan</div></div>
+          <div class="activity"><div class="act-time">Day</div><div class="act-desc"><strong>Hakone Open Air Museum</strong> or lake cruise with Mt Fuji views (if clear)</div></div>
+          <div class="activity"><div class="act-time">Evening</div><div class="act-desc"><strong>Kaiseki dinner at ryokan</strong> <span class="act-tag food">food</span> <span class="act-tag splurge">included</span> — multi-course, presented like art</div></div>
+          <div class="act-desc" style="padding: 8px 0; font-size: 0.73rem; color: #7a6a8a;">💰 Mid-range ryokan: $200–$400/night for 2 (meals often included). Book 3+ months ahead.</div>
+        </div>
+      </div>
+
+      <div class="transit-card">
+        <div class="transit-icon">🚅</div>
+        <div class="transit-info">
+          <strong>Hakone → Kyoto</strong> — ~2.5h by Shinkansen from Odawara. The bullet train is an experience in itself.
+        </div>
+      </div>
+
+      <div class="day-card" id="day5" onclick="toggleDay('day5')">
+        <div class="day-header" style="background: linear-gradient(135deg, rgba(255,152,0,0.12), transparent);">
+          <div class="day-num">5</div>
+          <div>
+            <div class="day-city">⛩️ Kyoto — Gion + Pontocho</div>
+            <div class="day-title">May 13 — Arrive Kyoto, most romantic evening in Japan</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="activity"><div class="act-time">Arrive</div><div class="act-desc">Check in to Kyoto hotel. Grab lunch near station.</div></div>
+          <div class="activity"><div class="act-time">Afternoon</div><div class="act-desc"><strong>Gion district walk</strong> <span class="act-tag culture">culture</span> — traditional wooden machiya, possible maiko sighting</div></div>
+          <div class="activity"><div class="act-time">Evening</div><div class="act-desc"><strong>Pontocho Alley dinner</strong> <span class="act-tag romance">romance</span> <span class="act-tag food">food</span> — narrow lantern-lit alley, terraces over the Kamo River. Most romantic street in Japan.</div></div>
+        </div>
+      </div>
+
+      <div class="day-card" id="day6" onclick="toggleDay('day6')">
+        <div class="day-header" style="background: linear-gradient(135deg, rgba(255,152,0,0.12), transparent);">
+          <div class="day-num">6</div>
+          <div>
+            <div class="day-city">🌲 Kyoto — Fushimi + Arashiyama</div>
+            <div class="day-title">May 14 — Gates at dawn, bamboo, tea ceremony</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="activity"><div class="act-time">6:30 AM</div><div class="act-desc"><strong>Fushimi Inari at dawn</strong> <span class="act-tag romance">romance</span> — thousands of torii gates, nearly empty. Go early. The hike up is ~2h for the full loop.</div></div>
+          <div class="activity"><div class="act-time">Late AM</div><div class="act-desc"><strong>Nishiki Market</strong> <span class="act-tag food">food</span> — Kyoto's kitchen, street food, pickles, sweets</div></div>
+          <div class="activity"><div class="act-time">Afternoon</div><div class="act-desc"><strong>Arashiyama Bamboo Grove</strong> + <strong>Tenryu-ji temple garden</strong> — rickshaw optional</div></div>
+          <div class="activity"><div class="act-time">Late PM</div><div class="act-desc"><strong>Private tea ceremony</strong> <span class="act-tag culture">culture</span> <span class="act-tag romance">romance</span> — ~$50/person, intimate, beautiful</div></div>
+          <div class="activity"><div class="act-time">Dinner</div><div class="act-desc"><strong>Kaiseki dinner</strong> <span class="act-tag splurge">splurge</span> — your big Kyoto dinner. Reserve well ahead.</div></div>
+        </div>
+      </div>
+
+      <div class="day-card" id="day7" onclick="toggleDay('day7')">
+        <div class="day-header" style="background: linear-gradient(135deg, rgba(255,152,0,0.12), transparent);">
+          <div class="day-num">7</div>
+          <div>
+            <div class="day-city">🕌 Kyoto — Kinkaku-ji + Departure Prep</div>
+            <div class="day-title">May 15 — Golden Pavilion, last wander</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="activity"><div class="act-time">Morning</div><div class="act-desc"><strong>Kinkaku-ji (Golden Pavilion)</strong> <span class="act-tag culture">culture</span> — go early, genuinely stunning</div></div>
+          <div class="activity"><div class="act-time">Afternoon</div><div class="act-desc"><strong>Philosopher's Path</strong> <span class="act-tag romance">romance</span> — canal walk lined with cherry trees (may still be blooming early May)</div></div>
+          <div class="activity"><div class="act-time">Evening</div><div class="act-desc">Last dinner in Kyoto. Pack. Enjoy.</div></div>
+        </div>
+      </div>
+
+      <div class="transit-card">
+        <div class="transit-icon">✈️</div>
+        <div class="transit-info">
+          <strong>May 16 — Fly home from Osaka (KIX)</strong> — 75 min train from Kyoto. Open-jaw saves $200+ vs flying back to Tokyo.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TIPS TAB -->
+    <div class="tab-content" id="tab-tips">
+
+      <div class="alert-strip">
+        <strong>⚠️ Book These ASAP — All Sell Out:</strong>
+        teamLab Borderless (Azabudai Hills) · Hakone ryokan · Kaiseki dinner reservations · Popular tea ceremony slots
+      </div>
+
+      <div class="info-section">
+        <h3>📱 Logistics</h3>
+        <div class="info-card"><strong>Getting Around</strong>IC Card (Suica/Pasmo) — load ¥5,000, tap on/off every subway and bus. The only app you need is Google Maps (offline download Tokyo + Kyoto).</div>
+        <div class="info-card"><strong>7-Day JR Pass</strong>~$330/person. Covers all Shinkansen + local JR lines. Do the math for your exact route — if doing open-jaw (one-way Tokyo→Kyoto) it may not break even.</div>
+        <div class="info-card"><strong>Data / SIM</strong>Buy a pocket WiFi at the airport or get an eSIM before you leave. Do not rely on hotel WiFi.</div>
+        <div class="info-card"><strong>Cash</strong>Japan is still mostly cash for small places. 7-Eleven ATMs accept foreign cards. Keep ¥20,000–30,000 on hand at all times.</div>
+      </div>
+
+      <div class="info-section">
+        <h3>🍜 Food Strategy</h3>
+        <div class="info-card"><strong>Daily eats (cheap + amazing)</strong>Convenience stores (7-Eleven, Lawson, FamilyMart) — seriously. Onigiri, hot sandwiches, great coffee, cold noodles. Not a compromise. Ramen shops: $10. Conveyor sushi: $15–20.</div>
+        <div class="info-card"><strong>Splurge budget: 2 dinners</strong>One omakase in Tokyo (~$120/person), one kaiseki in Kyoto (~$120–150/person). These are genuinely life-changing meals. Reserve 60 days ahead via Tableall, Ikyu, or Omakase app.</div>
+      </div>
+
+      <div class="info-section">
+        <h3>🌸 May-Specific Notes</h3>
+        <div class="info-card"><strong>Golden Week (May 3–5)</strong>Biggest domestic travel week in Japan. Avoid. Flying May 8+ = crowds gone, prices drop.</div>
+        <div class="info-card"><strong>Weather</strong>Perfect walking weather. Tokyo 60–72°F, Kyoto 58–70°F. Pack layers for evenings. Rain jacket useful — brief afternoon showers possible.</div>
+        <div class="info-card"><strong>Price alert set</strong>Sophie is monitoring CLT→NRT/HND fares. Target: under $900/person. Will flag when fares drop.</div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+// Map
+const map = L.map('map', { zoomControl: true }).setView([35.5, 136.5], 6);
+
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  attribution: '© OpenStreetMap © CARTO', maxZoom: 18
+}).addTo(map);
+
+const cities = [
+  { name: 'Tokyo', lat: 35.6762, lng: 139.6503, color: '#ce93d8', emoji: '🏙️',
+    desc: '<b>Tokyo</b><br>Days 1–3<br>Shinjuku · Asakusa · teamLab · Shibuya' },
+  { name: 'Hakone', lat: 35.2327, lng: 139.1069, color: '#f48fb1', emoji: '🗻',
+    desc: '<b>Hakone</b><br>Day 4 (optional)<br>Ryokan · Onsen · Mt. Fuji views' },
+  { name: 'Kyoto', lat: 35.0116, lng: 135.7681, color: '#ffcc80', emoji: '⛩️',
+    desc: '<b>Kyoto</b><br>Days 5–7<br>Fushimi Inari · Arashiyama · Gion · Pontocho' },
+  { name: 'Osaka (KIX — fly out)', lat: 34.4374, lng: 135.2440, color: '#80cbc4', emoji: '✈️',
+    desc: '<b>Osaka / KIX</b><br>Day 8<br>Fly home from Kansai Airport — open-jaw saves ~$200' },
+];
+
+// Route polyline
+const routeCoords = cities.map(c => [c.lat, c.lng]);
+L.polyline(routeCoords, {
+  color: '#9c27b0', weight: 3, opacity: 0.7,
+  dashArray: '8, 5'
+}).addTo(map);
+
+cities.forEach((c, i) => {
+  const marker = L.circleMarker([c.lat, c.lng], {
+    radius: i === 1 ? 10 : 13,
+    fillColor: c.color, color: '#fff', weight: 2.5, fillOpacity: 0.9
+  }).addTo(map);
+
+  marker.bindPopup(`${c.desc}`, { maxWidth: 180 });
+
+  // Label
+  L.marker([c.lat, c.lng], {
+    icon: L.divIcon({
+      className: '',
+      html: `<div style="background:rgba(15,17,23,0.85);color:${c.color};padding:2px 7px;border-radius:4px;font-size:11px;font-weight:700;white-space:nowrap;border:1px solid ${c.color}33;margin-left:16px;margin-top:-8px;">${c.emoji} ${c.name}</div>`,
+      iconAnchor: [0, 0]
+    })
+  }).addTo(map);
+});
+
+// Tabs
+function showTab(id) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// Day cards
+function toggleDay(id) {
+  const card = document.getElementById(id);
+  card.classList.toggle('open');
+}
+
+// Cost tiers
+function toggleTier(el) {
+  el.classList.toggle('expanded');
+}
+
+// Open day 1 by default
+document.getElementById('day1').classList.add('open');
+</script>
+</body>
+</html>

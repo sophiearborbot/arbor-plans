@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arbor Family Spring Break 2026 — Backpacking</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #1a1f2e; color: #e8eaf0; }
+
+  header {
+    background: linear-gradient(135deg, #2d5016 0%, #1a3a0a 100%);
+    padding: 20px 28px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 2px solid #4a7c2f;
+  }
+  header h1 { font-size: 1.4rem; font-weight: 700; color: #c8e6a0; }
+  header p { font-size: 0.82rem; color: #8bc34a; margin-top: 3px; }
+  .badge {
+    background: #ff9800; color: #000; font-weight: 700;
+    padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; white-space: nowrap;
+  }
+
+  .layout { display: flex; height: calc(100vh - 72px); }
+
+  #map { flex: 1; }
+
+  .sidebar {
+    width: 380px; overflow-y: auto; background: #1e2433;
+    border-left: 1px solid #2e3a50;
+  }
+
+  .alert-box {
+    background: linear-gradient(135deg, #1a3a0a, #2d5016);
+    border: 1px solid #4a7c2f; border-radius: 10px;
+    margin: 14px; padding: 14px;
+  }
+  .alert-box h3 { color: #c8e6a0; font-size: 0.9rem; margin-bottom: 8px; }
+  .alert-box .dates { font-size: 1.1rem; font-weight: 700; color: #8bc34a; }
+  .alert-box .sub { font-size: 0.78rem; color: #9caf88; margin-top: 6px; line-height: 1.5; }
+  .moon-row { display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
+  .moon-chip {
+    background: rgba(255,255,255,0.06); border-radius: 6px;
+    padding: 4px 10px; font-size: 0.75rem; color: #c8e6a0;
+  }
+  .moon-chip.best { background: rgba(139,195,74,0.2); border: 1px solid #4a7c2f; }
+
+  .section-label {
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; color: #546e7a;
+    padding: 12px 16px 6px; border-top: 1px solid #2e3a50;
+  }
+
+  .card {
+    margin: 8px 14px; border-radius: 10px; overflow: hidden;
+    border: 1px solid #2e3a50; cursor: pointer;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .card:hover { border-color: #4a7c2f; transform: translateY(-1px); }
+  .card.active { border-color: #8bc34a; }
+
+  .card-header {
+    padding: 12px 14px 10px;
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .card-icon { font-size: 1.8rem; line-height: 1; flex-shrink: 0; }
+  .card-title { font-size: 0.95rem; font-weight: 700; }
+  .card-sub { font-size: 0.75rem; color: #7a8a9a; margin-top: 2px; }
+
+  .card-body { padding: 0 14px 12px; }
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 8px; }
+  .stat { background: rgba(255,255,255,0.04); border-radius: 6px; padding: 7px 10px; }
+  .stat-label { font-size: 0.65rem; color: #546e7a; text-transform: uppercase; letter-spacing: 0.8px; }
+  .stat-value { font-size: 0.85rem; font-weight: 600; margin-top: 2px; }
+
+  .pill-row { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+  .pill {
+    font-size: 0.7rem; padding: 3px 9px; border-radius: 12px; font-weight: 600;
+  }
+  .pill.green { background: rgba(139,195,74,0.15); color: #8bc34a; border: 1px solid rgba(139,195,74,0.3); }
+  .pill.yellow { background: rgba(255,193,7,0.15); color: #ffc107; border: 1px solid rgba(255,193,7,0.3); }
+  .pill.red { background: rgba(244,67,54,0.15); color: #f44336; border: 1px solid rgba(244,67,54,0.3); }
+  .pill.blue { background: rgba(33,150,243,0.15); color: #2196f3; border: 1px solid rgba(33,150,243,0.3); }
+  .pill.purple { background: rgba(156,39,176,0.15); color: #ce93d8; border: 1px solid rgba(156,39,176,0.3); }
+  .pill.orange { background: rgba(255,152,0,0.15); color: #ff9800; border: 1px solid rgba(255,152,0,0.3); }
+
+  .highlight { background: rgba(139,195,74,0.07); border-radius: 6px; padding: 8px 10px; margin-top: 8px; font-size: 0.78rem; color: #9caf88; line-height: 1.5; }
+  .highlight strong { color: #c8e6a0; }
+
+  .rec-badge {
+    background: linear-gradient(90deg, #2d5016, #1a3a0a);
+    border: 1px solid #4a7c2f; border-radius: 6px;
+    padding: 5px 10px; margin-top: 8px;
+    font-size: 0.73rem; color: #8bc34a; font-weight: 700;
+  }
+
+  /* Leaflet custom markers */
+  .dest-marker {
+    background: #8bc34a; border: 3px solid #fff;
+    border-radius: 50%; width: 18px; height: 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  }
+  .dest-marker.hard { background: #f44336; }
+  .dest-marker.moderate { background: #ff9800; }
+  .dest-marker.easy { background: #4caf50; }
+  .home-marker {
+    background: #2196f3; border: 3px solid #fff;
+    border-radius: 50%; width: 14px; height: 14px;
+  }
+
+  @media (max-width: 700px) {
+    .layout { flex-direction: column; }
+    #map { height: 40vh; }
+    .sidebar { width: 100%; border-left: none; border-top: 1px solid #2e3a50; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>🏕️ Arbor Family Spring Break 2026 — Backpacking</h1>
+    <p>3 nights · 4 days · Dark sky loops drivable from Charlotte</p>
+  </div>
+  <div class="badge">🌙 Apr 9–12 Best Skies</div>
+</header>
+
+<div class="layout">
+  <div id="map"></div>
+  <div class="sidebar">
+
+    <div class="alert-box">
+      <h3>🗓️ Recommended Window</h3>
+      <div class="dates">April 9–12, 2026</div>
+      <div class="sub">After Asher's soccer game (Apr 4). Hits the darkest nights of spring break.</div>
+      <div class="moon-row">
+        <div class="moon-chip">🌕 Full Moon Apr 2</div>
+        <div class="moon-chip">🌗 Last Quarter Apr 10</div>
+        <div class="moon-chip best">🌘 Crescent Apr 12–13 ★ Darkest</div>
+      </div>
+    </div>
+
+    <div class="section-label">Pick Your Adventure</div>
+
+    <!-- Option 1: Grayson Highlands -->
+    <div class="card" id="card-1" onclick="focusMap(1)">
+      <div class="card-header" style="background: linear-gradient(135deg, rgba(139,195,74,0.12), transparent);">
+        <div class="card-icon">🐴</div>
+        <div>
+          <div class="card-title">Grayson Highlands / Mt. Rogers, VA</div>
+          <div class="card-sub">Jefferson National Forest · ~4h from Charlotte</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="stat-grid">
+          <div class="stat">
+            <div class="stat-label">Distance</div>
+            <div class="stat-value">~21 miles</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Elev. Gain</div>
+            <div class="stat-value">~3,900 ft</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Dark Sky</div>
+            <div class="stat-value">⭐⭐⭐⭐ Bortle 3</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Permit</div>
+            <div class="stat-value">None needed</div>
+          </div>
+        </div>
+        <div class="pill-row">
+          <span class="pill green">Moderate</span>
+          <span class="pill green">Best for Family</span>
+          <span class="pill blue">Well-marked</span>
+          <span class="pill purple">Wild Ponies</span>
+          <span class="pill green">Verity ✓</span>
+        </div>
+        <div class="highlight">
+          <strong>The move:</strong> Massie Gap trailhead → AT north through open balds → Pine Mountain loop.
+          Ponies roam free on the ridgeline. Open meadows = perfect Milky Way views. Best beginner backpacking scenery in the East.
+        </div>
+        <div class="rec-badge">⭐ SOPHIE'S PICK — Best all-around for all 4 of you</div>
+      </div>
+    </div>
+
+    <!-- Option 2: Shining Rock -->
+    <div class="card" id="card-2" onclick="focusMap(2)">
+      <div class="card-header" style="background: linear-gradient(135deg, rgba(255,152,0,0.1), transparent);">
+        <div class="card-icon">🪨</div>
+        <div>
+          <div class="card-title">Shining Rock Wilderness, NC</div>
+          <div class="card-sub">Pisgah National Forest · ~2.5h from Charlotte</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="stat-grid">
+          <div class="stat">
+            <div class="stat-label">Distance</div>
+            <div class="stat-value">9–16 miles</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Elev. Gain</div>
+            <div class="stat-value">1,400–4,400 ft</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Dark Sky</div>
+            <div class="stat-value">⭐⭐⭐⭐ Bortle ~3</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Permit</div>
+            <div class="stat-value">None needed</div>
+          </div>
+        </div>
+        <div class="pill-row">
+          <span class="pill yellow">Mod–Hard</span>
+          <span class="pill yellow">Short loop option</span>
+          <span class="pill orange">Bear canister req.</span>
+          <span class="pill red">No campfires</span>
+        </div>
+        <div class="highlight">
+          <strong>The move:</strong> Black Balsam trailhead → Shining Rock loop (9.4mi, moderate).
+          White quartz summit glows at dawn. Views of Cold Mountain. Closest mountain dark sky option.
+          Pick the shorter loop for Verity; Asher + Sage can branch off on harder segments.
+        </div>
+      </div>
+    </div>
+
+    <!-- Option 3: Uwharrie -->
+    <div class="card" id="card-3" onclick="focusMap(3)">
+      <div class="card-header" style="background: linear-gradient(135deg, rgba(33,150,243,0.1), transparent);">
+        <div class="card-icon">🌲</div>
+        <div>
+          <div class="card-title">Uwharrie National Forest, NC</div>
+          <div class="card-sub">Uwharrie NF · ~1.5h from Charlotte</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="stat-grid">
+          <div class="stat">
+            <div class="stat-label">Distance</div>
+            <div class="stat-value">15–20 miles</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Elev. Gain</div>
+            <div class="stat-value">Minimal</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Dark Sky</div>
+            <div class="stat-value">⭐⭐⭐ IDA Recognized</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Permit</div>
+            <div class="stat-value">None needed</div>
+          </div>
+        </div>
+        <div class="pill-row">
+          <span class="pill green">Easy</span>
+          <span class="pill green">Most family-friendly</span>
+          <span class="pill blue">Dispersed camping</span>
+          <span class="pill green">Closest</span>
+        </div>
+        <div class="highlight">
+          <strong>The move:</strong> Uwharrie Trail + Dutchman's Creek loop (~15mi).
+          Rolling hills, gentle terrain, great intro backpacking trip for Verity.
+          Skies are good — not as dramatic as mountains but solid Milky Way views on a dark night.
+        </div>
+      </div>
+    </div>
+
+    <!-- Option 4: Linville Gorge -->
+    <div class="card" id="card-4" onclick="focusMap(4)">
+      <div class="card-header" style="background: linear-gradient(135deg, rgba(244,67,54,0.1), transparent);">
+        <div class="card-icon">🏔️</div>
+        <div>
+          <div class="card-title">Linville Gorge, NC</div>
+          <div class="card-sub">Pisgah NF · ~1.5h from Charlotte · Adults/Teens</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="stat-grid">
+          <div class="stat">
+            <div class="stat-label">Distance</div>
+            <div class="stat-value">15–35 miles</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Elev. Gain</div>
+            <div class="stat-value">9,000+ ft</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Dark Sky</div>
+            <div class="stat-value">⭐⭐⭐⭐⭐ Best East Coast</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Permit</div>
+            <div class="stat-value">Apr 9–12: None</div>
+          </div>
+        </div>
+        <div class="pill-row">
+          <span class="pill red">Very Hard</span>
+          <span class="pill red">Not with Verity</span>
+          <span class="pill purple">Best Skies East</span>
+          <span class="pill yellow">Unmaintained trails</span>
+        </div>
+        <div class="highlight">
+          <strong>Save for a Sage + Asher trip.</strong> Extremely steep, unmarked, unmaintained.
+          9,000+ ft gain on grand loop. Outstanding dark skies — one of the darkest spots on the East Coast.
+          Not appropriate for a 10-year-old.
+        </div>
+      </div>
+    </div>
+
+    <div style="padding: 16px 14px; font-size: 0.72rem; color: #546e7a; line-height: 1.6; border-top: 1px solid #2e3a50;">
+      🎒 All options: bring bear hang kit or canister, water filter, layers for cold nights (40s–50s in April at elevation). Red headlamp to preserve night vision for stargazing.
+    </div>
+
+  </div>
+</div>
+
+<script>
+const map = L.map('map', { zoomControl: true }).setView([36.2, -81.5], 7);
+
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  attribution: '© OpenStreetMap contributors © CARTO',
+  maxZoom: 18
+}).addTo(map);
+
+const destinations = [
+  {
+    id: 1, name: 'Grayson Highlands / Mt. Rogers', lat: 36.659, lng: -81.545,
+    color: '#8bc34a', difficulty: 'Moderate',
+    desc: '🐴 Wild ponies · Bortle 3 · ~21mi loop<br>Best all-around family pick'
+  },
+  {
+    id: 2, name: 'Shining Rock Wilderness', lat: 35.376, lng: -82.888,
+    color: '#ff9800', difficulty: 'Mod–Hard',
+    desc: '🪨 White quartz summit · Bortle ~3<br>9–16mi loop · No campfires'
+  },
+  {
+    id: 3, name: 'Uwharrie National Forest', lat: 35.386, lng: -80.068,
+    color: '#2196f3', difficulty: 'Easy',
+    desc: '🌲 IDA dark sky · 15–20mi · Easiest<br>Best for first-time family backpacking'
+  },
+  {
+    id: 4, name: 'Linville Gorge', lat: 35.889, lng: -81.924,
+    color: '#f44336', difficulty: 'Very Hard',
+    desc: '🏔️ Best skies East Coast · 9,000 ft gain<br>⚠️ Not with Verity — save for Sage+Asher'
+  }
+];
+
+// Home marker
+L.circleMarker([35.2271, -80.8431], {
+  radius: 8, color: '#fff', fillColor: '#2196f3',
+  fillOpacity: 1, weight: 2
+}).addTo(map).bindPopup('<b>🏠 Charlotte, NC</b><br>Home base');
+
+const markers = {};
+destinations.forEach(d => {
+  const marker = L.circleMarker([d.lat, d.lng], {
+    radius: 14, color: '#fff', fillColor: d.color,
+    fillOpacity: 0.9, weight: 2.5
+  }).addTo(map);
+
+  // Draw line from Charlotte
+  L.polyline([[35.2271, -80.8431], [d.lat, d.lng]], {
+    color: d.color, weight: 1.5, opacity: 0.4, dashArray: '6, 6'
+  }).addTo(map);
+
+  marker.bindPopup(`<b>${d.name}</b><br><small>${d.difficulty}</small><br><br>${d.desc}`, {
+    maxWidth: 220
+  });
+  markers[d.id] = marker;
+});
+
+function focusMap(id) {
+  document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+  document.getElementById('card-' + id).classList.add('active');
+  const d = destinations.find(x => x.id === id);
+  map.flyTo([d.lat, d.lng], 10, { animate: true, duration: 1 });
+  markers[id].openPopup();
+}
+</script>
+</body>
+</html>

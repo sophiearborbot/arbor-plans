@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arbor Family Plans — Sophie's Hub</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #0f1117; color: #e8eaf0;
+    min-height: 100vh;
+  }
+
+  header {
+    background: linear-gradient(135deg, #1a1f2e, #2a1f3a);
+    padding: 36px 32px 28px;
+    text-align: center;
+    border-bottom: 1px solid #2e3a50;
+  }
+  header h1 { font-size: 2rem; font-weight: 800; color: #e8eaf0; }
+  header p { color: #7a8a9a; margin-top: 6px; font-size: 0.9rem; }
+  .sophie-tag {
+    display: inline-block; margin-top: 12px;
+    background: rgba(156,39,176,0.15); border: 1px solid rgba(156,39,176,0.3);
+    color: #ce93d8; padding: 4px 14px; border-radius: 20px; font-size: 0.75rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .card {
+    background: #1a1f2e;
+    border: 1px solid #2e3a50;
+    border-radius: 14px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.15s, border-color 0.2s, box-shadow 0.2s;
+    display: block;
+    cursor: pointer;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+
+  .card-banner {
+    height: 100px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3rem;
+  }
+
+  .card-body { padding: 18px 20px; }
+  .card-tag {
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; margin-bottom: 6px;
+  }
+  .card-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; }
+  .card-desc { font-size: 0.78rem; color: #7a8a9a; line-height: 1.6; }
+  .card-footer {
+    padding: 10px 20px; border-top: 1px solid #2e3a50;
+    font-size: 0.72rem; color: #546e7a;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .card-arrow { font-size: 0.85rem; color: #546e7a; }
+
+  .europe { border-color: #2a3a4a; }
+  .europe:hover { border-color: #e74c3c; }
+  .europe .card-banner { background: linear-gradient(135deg, #1a2a3a, #2a1a1a); }
+  .europe .card-tag { color: #e74c3c; }
+
+  .camping { border-color: #1f2e1f; }
+  .camping:hover { border-color: #4a7c2f; }
+  .camping .card-banner { background: linear-gradient(135deg, #1a2e1a, #0f1f0f); }
+  .camping .card-tag { color: #8bc34a; }
+
+  .japan { border-color: #2a1f3a; }
+  .japan:hover { border-color: #9c27b0; }
+  .japan .card-banner { background: linear-gradient(135deg, #1a0a2e, #2d0a3a); }
+  .japan .card-tag { color: #ce93d8; }
+
+  footer {
+    text-align: center; padding: 28px;
+    font-size: 0.72rem; color: #3a4a5a;
+    border-top: 1px solid #1e2433;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🗺️ Arbor Family Plans</h1>
+  <p>Interactive trip planning, activity guides, and family adventures</p>
+  <div class="sophie-tag">🎭 Maintained by Sophie</div>
+</header>
+
+<div class="grid">
+
+  <a class="card europe" href="https://sophiearborbot.github.io/europe-2026/" target="_blank">
+    <div class="card-banner">🌍</div>
+    <div class="card-body">
+      <div class="card-tag">Family Trip · June 2026</div>
+      <div class="card-title">Europe 2026 — Family Trip</div>
+      <div class="card-desc">4 route options through Europe with Amsterdam, Paris, Alps, Prague, Iberian Arc & Morocco. Interactive map with costs, hotels, and transit stats.</div>
+    </div>
+    <div class="card-footer">
+      <span>Jun 12–28 · 4 people · Flight conf LXTIOD</span>
+      <span class="card-arrow">↗</span>
+    </div>
+  </a>
+
+  <a class="card camping" href="./spring_break_camping.html">
+    <div class="card-banner">🏕️</div>
+    <div class="card-body">
+      <div class="card-tag">Family Backpacking · Spring Break 2026</div>
+      <div class="card-title">Spring Break Backpacking</div>
+      <div class="card-desc">4 dark-sky backpacking loop options drivable from Charlotte. Best window April 9–12 for darkest skies. Grayson Highlands, Shining Rock, Uwharrie, Linville Gorge.</div>
+    </div>
+    <div class="card-footer">
+      <span>Apr 9–12 · 4 people · Dark sky loops</span>
+      <span class="card-arrow">→</span>
+    </div>
+  </a>
+
+  <a class="card japan" href="./japan_may_2026.html">
+    <div class="card-banner">🇯🇵</div>
+    <div class="card-body">
+      <div class="card-tag">Couples Trip · May 2026</div>
+      <div class="card-title">Japan — Sage &amp; Tafline</div>
+      <div class="card-desc">Tokyo → Hakone → Kyoto. 7 nights, couples trip. Tabbed itinerary, 3-tier cost breakdown ($4,500–$7,000 for two), tips, and booking guide.</div>
+    </div>
+    <div class="card-footer">
+      <span>May 9–16 · 2 people · Price alert active</span>
+      <span class="card-arrow">→</span>
+    </div>
+  </a>
+
+</div>
+
+<footer>
+  Updated by Sophie · sophie.arborbot@gmail.com · <a href="https://github.com/sophiearborbot/arbor-plans" style="color:#3a5a7a;">github.com/sophiearborbot/arbor-plans</a>
+</footer>
+
+</body>
+</html>
