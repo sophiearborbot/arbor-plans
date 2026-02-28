@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arbor Family Scrapbook Builder</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── BUILDER UI (screen only) ── */
+.builder-ui {
+  font-family: 'Inter', sans-serif;
+  background: #0f1117; color: #e8eaf0; min-height: 100vh;
+}
+.builder-header {
+  background: linear-gradient(135deg, #1a1f2e, #2a1f3a);
+  padding: 28px 32px; border-bottom: 1px solid #2e3a50;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+}
+.builder-header h1 { font-size: 1.5rem; font-weight: 800; }
+.builder-header p { color: #7a8a9a; font-size: 0.82rem; margin-top: 4px; }
+.back-link {
+  font-size: 0.75rem; color: #7a8a9a; text-decoration: none;
+  padding: 6px 14px; border: 1px solid #2e3a50; border-radius: 20px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.back-link:hover { color: #ce93d8; border-color: #ce93d8; }
+
+.builder-body { padding: 32px; max-width: 900px; margin: 0 auto; }
+.builder-section-label {
+  font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;
+  color: #546e7a; margin-bottom: 16px;
+}
+
+.trip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; margin-bottom: 32px; }
+
+.trip-card {
+  background: #1a1f2e; border: 2px solid #2e3a50; border-radius: 12px;
+  padding: 18px; cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s;
+  user-select: none; position: relative;
+}
+.trip-card:hover { border-color: #4a5a6a; }
+.trip-card.selected { box-shadow: 0 0 0 2px var(--accent, #9c27b0); border-color: var(--accent, #9c27b0); }
+.trip-card .tc-check {
+  position: absolute; top: 12px; right: 12px;
+  width: 20px; height: 20px; border-radius: 50%; border: 2px solid #3a4a5a;
+  display: flex; align-items: center; justify-content: center; font-size: 0.7rem;
+  transition: all 0.15s;
+}
+.trip-card.selected .tc-check {
+  background: var(--accent, #9c27b0); border-color: var(--accent, #9c27b0); color: #fff;
+}
+.tc-emoji { font-size: 1.8rem; margin-bottom: 8px; }
+.tc-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 4px; line-height: 1.3; }
+.tc-sub { font-size: 0.73rem; color: #7a8a9a; margin-bottom: 8px; }
+.tc-who { display: flex; gap: 4px; flex-wrap: wrap; }
+.tc-who span {
+  font-size: 0.6rem; font-weight: 700; padding: 2px 7px; border-radius: 8px;
+  background: rgba(255,255,255,0.06); color: #7a8a9a;
+}
+.tc-status {
+  font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+  padding: 2px 8px; border-radius: 8px; display: inline-block; margin-bottom: 8px;
+}
+.status-planning { background: rgba(255,193,7,0.12); color: #ffd54f; }
+.status-confirmed { background: rgba(76,175,80,0.12); color: #81c784; }
+.status-completed { background: rgba(255,255,255,0.05); color: #546e7a; }
+
+.builder-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.build-btn {
+  background: linear-gradient(135deg, #9c27b0, #673ab7);
+  color: #fff; border: none; padding: 12px 28px; border-radius: 10px;
+  font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: opacity 0.15s;
+}
+.build-btn:hover { opacity: 0.9; }
+.build-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.select-all-btn {
+  background: none; border: 1px solid #2e3a50; color: #7a8a9a;
+  padding: 10px 18px; border-radius: 10px; font-size: 0.8rem; cursor: pointer;
+  transition: all 0.15s;
+}
+.select-all-btn:hover { border-color: #546e7a; color: #e8eaf0; }
+.selection-note { font-size: 0.75rem; color: #546e7a; }
+
+/* ── LOADING / STATUS ── */
+.build-status {
+  margin-top: 24px; padding: 16px 20px; border-radius: 10px;
+  background: rgba(156,39,176,0.1); border: 1px solid rgba(156,39,176,0.25);
+  font-size: 0.82rem; color: #ce93d8; display: none;
+}
+
+/* ── SCRAPBOOK OUTPUT ── */
+.scrapbook-output { display: none; }
+
+/* COLLECTION COVER */
+.collection-cover {
+  min-height: 100vh; display: flex; flex-direction: column;
+  background: linear-gradient(160deg, #0f1117 0%, #1a0a30 60%, #0a0a1a 100%);
+  color: #f5f0e8; position: relative; overflow: hidden;
+  page-break-after: always;
+}
+.collection-cover-content {
+  flex: 1; display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center; padding: 80px 40px;
+}
+.collection-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem; letter-spacing: 5px; text-transform: uppercase;
+  color: #ce93d8; margin-bottom: 24px; opacity: 0.8;
+}
+.collection-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 8vw, 5rem); font-weight: 700; line-height: 1.1;
+  margin-bottom: 16px;
+}
+.collection-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem; color: rgba(245,240,232,0.6); margin-bottom: 40px;
+}
+.collection-trips { display: flex; flex-direction: column; gap: 10px; }
+.collection-trip-item {
+  font-family: 'Inter', sans-serif;
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px; padding: 10px 20px;
+  font-size: 0.85rem; color: rgba(245,240,232,0.8);
+}
+.collection-footer {
+  padding: 24px 40px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem; opacity: 0.35; text-align: center;
+}
+
+/* TRIP CHAPTER — shared styles */
+.scrapbook-chapter { font-family: 'Inter', sans-serif; background: #f5f0e8; color: #2a1f1a; }
+.chapter-cover {
+  min-height: 100vh; display: flex; flex-direction: column;
+  color: #f5f0e8; position: relative; overflow: hidden;
+  page-break-after: always;
+}
+.chapter-cover-inner {
+  flex: 1; display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center; padding: 60px 40px; position: relative; z-index: 1;
+}
+.chapter-eyebrow {
+  font-size: 0.7rem; letter-spacing: 4px; text-transform: uppercase;
+  opacity: 0.65; margin-bottom: 20px;
+}
+.chapter-cover-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 7vw, 4.5rem); font-weight: 700;
+  line-height: 1.1; margin-bottom: 14px;
+}
+.chapter-cover-sub { font-size: 1rem; color: rgba(245,240,232,0.65); margin-bottom: 28px; }
+.chapter-cover-who { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.chapter-cover-who span {
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 20px; padding: 5px 14px; font-size: 0.82rem;
+}
+.chapter-cover-status {
+  margin-top: 36px;
+  background: rgba(255,193,7,0.12); border: 1px solid rgba(255,193,7,0.3);
+  border-radius: 8px; padding: 8px 18px; color: #ffd54f; font-size: 0.75rem;
+  display: inline-block;
+}
+
+.chapter-cover-footer {
+  position: relative; z-index: 1;
+  padding: 20px 40px; display: flex; justify-content: space-between;
+  font-size: 0.68rem; opacity: 0.35;
+}
+
+/* PAGE CONTENT */
+.page { max-width: 860px; margin: 0 auto; padding: 52px 32px; }
+.section-divider {
+  display: flex; align-items: center; gap: 14px;
+  margin: 44px 0 28px;
+}
+.section-divider::before, .section-divider::after {
+  content: ''; flex: 1; height: 1px; background: #d4c9b8;
+}
+.section-label {
+  font-family: 'Playfair Display', serif; font-size: 1.4rem;
+  white-space: nowrap; color: #2a1f1a;
+}
+
+/* PLANNING */
+.planning-context {
+  background: #fff; border-radius: 10px; padding: 20px 22px;
+  margin-bottom: 14px; border: 1px solid #e8e0d0;
+  font-size: 0.84rem; line-height: 1.75; color: #3a2a1a;
+}
+.considered-list { list-style: none; margin-bottom: 12px; }
+.considered-list li {
+  padding: 8px 12px; margin-bottom: 6px; border-radius: 6px;
+  font-size: 0.82rem; line-height: 1.5;
+  background: rgba(0,0,0,0.03); border-left: 3px solid #d4c9b8;
+}
+.open-q {
+  background: #fff8e1; border-left: 3px solid #ffc107;
+  padding: 8px 12px; border-radius: 0 6px 6px 0;
+  font-size: 0.79rem; margin-bottom: 6px; color: #5a4500;
+}
+
+/* MAP (screen only) */
+.route-map-wrap { margin-bottom: 20px; }
+.route-map { height: 340px; border-radius: 10px; overflow: hidden; border: 2px solid #d4c9b8; }
+.map-print-note {
+  display: none; background: #f5f0e8; border: 1px dashed #c8b89a;
+  border-radius: 8px; padding: 14px; text-align: center;
+  font-size: 0.78rem; color: #8a7a6a; font-style: italic;
+}
+
+/* CHAPTERS */
+.trip-chapter { background: #fff; border-radius: 10px; margin-bottom: 16px; overflow: hidden; border: 1px solid #e8e0d0; page-break-inside: avoid; }
+.trip-chapter-header {
+  background: linear-gradient(135deg, #2a1f1a, #3a2a1a);
+  color: #f5f0e8; padding: 14px 18px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.trip-chapter-title { font-family: 'Playfair Display', serif; font-size: 1rem; }
+.trip-chapter-dates { font-size: 0.72rem; opacity: 0.6; }
+.trip-chapter-body { padding: 18px; }
+.blank-field {
+  background: repeating-linear-gradient(45deg, #f5f0e8, #f5f0e8 9px, #ede8df 9px, #ede8df 18px);
+  border: 2px dashed #c8b89a; border-radius: 8px; padding: 18px;
+  text-align: center; color: #8a7a6a; font-size: 0.8rem; font-style: italic; margin-bottom: 10px;
+}
+.photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin-top: 10px; }
+.photo-slot {
+  aspect-ratio: 4/3; border-radius: 6px; overflow: hidden;
+  background: repeating-linear-gradient(45deg, #ede8df, #ede8df 8px, #e4ddd4 8px, #e4ddd4 16px);
+  border: 1px dashed #c8b89a; display: flex; align-items: center;
+  justify-content: center; font-size: 1.2rem; color: #c8b89a;
+}
+.photo-slot img { width: 100%; height: 100%; object-fit: cover; }
+.highlight-chip {
+  display: inline-block; background: #e8f5e9; color: #2e7d32;
+  border: 1px solid #a5d6a7; border-radius: 14px;
+  padding: 3px 10px; font-size: 0.72rem; margin: 0 4px 4px 0;
+}
+
+/* QUOTES */
+.quote-block {
+  background: #fff; border-left: 4px solid #d4c9b8;
+  padding: 16px 20px; border-radius: 0 10px 10px 0;
+  margin-bottom: 12px; font-family: 'Playfair Display', serif;
+  font-style: italic; font-size: 1rem; line-height: 1.6; color: #2a1f1a;
+}
+.quote-attr { font-family: 'Inter', sans-serif; font-size: 0.72rem; color: #8a7a6a; font-style: normal; margin-top: 8px; }
+
+/* STATS */
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+.stat-card { background: #fff; border: 1px solid #e8e0d0; border-radius: 8px; padding: 14px; }
+.stat-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #8a7a6a; margin-bottom: 6px; }
+.stat-value { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #2a1f1a; }
+.stat-value.empty { font-size: 0.75rem; font-style: italic; color: #c8b89a; font-family: 'Inter', sans-serif; }
+
+/* CHAPTER SEPARATOR (between trips in multi-trip print) */
+.chapter-separator { page-break-after: always; }
+
+/* PRINT OVERRIDES */
+@media print {
+  .builder-ui { display: none !important; }
+  .scrapbook-output { display: block !important; }
+  .route-map { display: none !important; }
+  .map-print-note { display: block !important; }
+  body { background: white; }
+}
+
+/* SCREEN PREVIEW */
+@media screen {
+  .scrapbook-output.preview-mode { display: block; }
+  .preview-banner {
+    background: #1a1f2e; border-bottom: 2px solid #9c27b0;
+    padding: 14px 28px; display: flex; align-items: center; gap: 16px;
+    position: sticky; top: 0; z-index: 200;
+    font-family: 'Inter', sans-serif;
+  }
+  .preview-banner p { font-size: 0.8rem; color: #7a8a9a; }
+  .preview-banner strong { color: #ce93d8; }
+  .print-btn-preview {
+    background: linear-gradient(135deg, #9c27b0, #673ab7);
+    color: #fff; border: none; padding: 9px 22px; border-radius: 8px;
+    font-size: 0.82rem; font-weight: 700; cursor: pointer;
+  }
+  .back-to-builder-btn {
+    background: none; border: 1px solid #2e3a50; color: #7a8a9a;
+    padding: 8px 16px; border-radius: 8px; font-size: 0.78rem; cursor: pointer;
+    margin-left: auto;
+  }
+  .back-to-builder-btn:hover { border-color: #546e7a; color: #e8eaf0; }
+  .scrapbook-chapter { margin-bottom: 48px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.25); }
+}
+
+@media (max-width: 600px) {
+  .builder-body { padding: 20px 16px; }
+  .builder-header { padding: 20px 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     BUILDER UI  (shown on screen, hidden when printing)
+     ═══════════════════════════════════════════════ -->
+<div class="builder-ui" id="builder-ui">
+  <div class="builder-header">
+    <div>
+      <h1>📖 Scrapbook Builder</h1>
+      <p>Select trips to include — print one trip or a full year of adventures</p>
+    </div>
+    <a href="./index.html" class="back-link">← All Plans</a>
+  </div>
+
+  <div class="builder-body">
+    <div class="builder-section-label">Choose your trips</div>
+    <div class="trip-grid" id="trip-grid">
+      <div style="color:#546e7a;font-size:0.82rem;">Loading trips…</div>
+    </div>
+
+    <div class="builder-actions">
+      <button class="build-btn" id="build-btn" onclick="buildScrapbook()" disabled>
+        📖 Build &amp; Preview
+      </button>
+      <button class="select-all-btn" onclick="selectAll()">Select All</button>
+      <span class="selection-note" id="selection-note">0 trips selected</span>
+    </div>
+    <div class="build-status" id="build-status"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SCRAPBOOK OUTPUT (rendered on demand)
+     ═══════════════════════════════════════════════ -->
+<div class="scrapbook-output" id="scrapbook-output"></div>
+
+<script>
+// ─── STATE ───────────────────────────────────────
+const MANIFEST_URL = './trips-manifest.json';
+let manifest = null;
+let selected = new Set();
+let leafletMaps = [];
+
+// ─── BOOT ────────────────────────────────────────
+async function init() {
+  try {
+    const res = await fetch(MANIFEST_URL + '?t=' + Date.now());
+    manifest = await res.json();
+    renderTripGrid();
+  } catch(e) {
+    document.getElementById('trip-grid').innerHTML =
+      '<div style="color:#ef9a9a;font-size:0.82rem;">⚠️ Could not load trips-manifest.json — ' + e.message + '</div>';
+  }
+}
+
+// ─── TRIP GRID ───────────────────────────────────
+function renderTripGrid() {
+  const grid = document.getElementById('trip-grid');
+  grid.innerHTML = '';
+  (manifest.trips || []).forEach(trip => {
+    const card = document.createElement('div');
+    card.className = 'trip-card';
+    card.dataset.id = trip.id;
+    card.style.setProperty('--accent', trip.color || '#9c27b0');
+    card.onclick = () => toggleTrip(trip.id, card);
+    const whoHtml = (trip.who || []).map(w => `<span>${w}</span>`).join('');
+    card.innerHTML = `
+      <div class="tc-check">✓</div>
+      <div class="tc-emoji">${trip.emoji}</div>
+      <div class="tc-status status-${trip.status}">${trip.status}</div>
+      <div class="tc-title">${trip.title}</div>
+      <div class="tc-sub">${trip.subtitle}</div>
+      <div class="tc-who">${whoHtml}</div>
+    `;
+    grid.appendChild(card);
+  });
+  updateSelectionUI();
+}
+
+function toggleTrip(id, card) {
+  if (selected.has(id)) { selected.delete(id); card.classList.remove('selected'); }
+  else { selected.add(id); card.classList.add('selected'); }
+  updateSelectionUI();
+}
+
+function selectAll() {
+  if (!manifest) return;
+  const allSelected = manifest.trips.every(t => selected.has(t.id));
+  if (allSelected) {
+    selected.clear();
+    document.querySelectorAll('.trip-card').forEach(c => c.classList.remove('selected'));
+  } else {
+    manifest.trips.forEach(t => selected.add(t.id));
+    document.querySelectorAll('.trip-card').forEach(c => c.classList.add('selected'));
+  }
+  updateSelectionUI();
+}
+
+function updateSelectionUI() {
+  const n = selected.size;
+  document.getElementById('selection-note').textContent = n === 0
+    ? 'Select at least one trip'
+    : n === 1 ? '1 trip selected' : `${n} trips selected`;
+  document.getElementById('build-btn').disabled = n === 0;
+}
+
+// ─── BUILD ───────────────────────────────────────
+async function buildScrapbook() {
+  if (!selected.size) return;
+
+  const status = document.getElementById('build-status');
+  status.style.display = 'block';
+  status.textContent = '⏳ Loading trip data…';
+
+  // Fetch selected trip data in order
+  const tripsInOrder = (manifest.trips || []).filter(t => selected.has(t.id));
+  const loaded = [];
+  for (const trip of tripsInOrder) {
+    try {
+      status.textContent = `⏳ Loading ${trip.title}…`;
+      const res = await fetch(trip.data + '?t=' + Date.now());
+      const data = await res.json();
+      loaded.push({ meta: trip, data });
+    } catch(e) {
+      status.textContent = `⚠️ Failed to load ${trip.title}: ${e.message}`;
+      return;
+    }
+  }
+
+  status.textContent = '✏️ Rendering scrapbook…';
+  const output = document.getElementById('scrapbook-output');
+  output.innerHTML = '';
+  output.className = 'scrapbook-output preview-mode';
+  leafletMaps = [];
+
+  // Preview banner
+  output.appendChild(buildPreviewBanner(loaded.length));
+
+  // Multi-trip: add collection cover
+  if (loaded.length > 1) {
+    output.appendChild(buildCollectionCover(loaded));
+  }
+
+  // Render each trip chapter
+  loaded.forEach((item, idx) => {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'scrapbook-chapter chapter-separator';
+    wrapper.innerHTML = renderChapter(item.meta, item.data, idx);
+    output.appendChild(wrapper);
+  });
+
+  // Scroll to output, init maps
+  output.scrollIntoView({ behavior: 'smooth' });
+  status.style.display = 'none';
+
+  // Init Leaflet maps (deferred)
+  setTimeout(() => {
+    loaded.forEach((item, idx) => {
+      const mapEl = document.getElementById(`map-${item.meta.id}`);
+      if (mapEl && item.data.route?.cities?.length) {
+        initMap(mapEl, item.data.route.cities, item.meta.color);
+      }
+    });
+  }, 200);
+}
+
+// ─── PREVIEW BANNER ──────────────────────────────
+function buildPreviewBanner(count) {
+  const div = document.createElement('div');
+  div.className = 'preview-banner';
+  div.innerHTML = `
+    <div>
+      <strong>${count} trip${count > 1 ? 's' : ''}</strong>
+      <p>Preview · Maps don't show in print (trip pages linked instead)</p>
+    </div>
+    <button class="print-btn-preview" onclick="window.print()">🖨️ Print Scrapbook</button>
+    <button class="back-to-builder-btn" onclick="backToBuilder()">← Edit Selection</button>
+  `;
+  return div;
+}
+
+function backToBuilder() {
+  const output = document.getElementById('scrapbook-output');
+  output.innerHTML = '';
+  output.className = 'scrapbook-output';
+  document.getElementById('builder-ui').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ─── COLLECTION COVER (multi-trip) ───────────────
+function buildCollectionCover(loaded) {
+  const div = document.createElement('div');
+  const tripListHtml = loaded.map(({ meta }) =>
+    `<div class="collection-trip-item">${meta.emoji} <strong>${meta.title}</strong> <span style="margin-left:auto;opacity:0.55;font-size:0.75rem;">${meta.dates}</span></div>`
+  ).join('');
+
+  const year = new Date().getFullYear();
+  div.innerHTML = `
+    <div class="collection-cover">
+      <div class="collection-cover-content">
+        <div class="collection-eyebrow">Arbor Family · ${year}</div>
+        <div class="collection-title">A Year of Adventures</div>
+        <div class="collection-subtitle">${loaded.length} trips · ${year}</div>
+        <div class="collection-trips">${tripListHtml}</div>
+      </div>
+      <div class="collection-footer">Made with Sophie 🎭 · Arbor Family Scrapbook Builder</div>
+    </div>
+  `;
+  return div;
+}
+
+// ─── CHAPTER RENDERER ────────────────────────────
+function renderChapter(meta, d, idx) {
+  const t = d.trip || {};
+  const p = d.planning || {};
+  const bgColor = meta.color || '#2a1f3a';
+
+  // Darken the cover a bit for readability
+  const coverBg = `linear-gradient(160deg, ${hexDarken(bgColor, 0.6)} 0%, ${hexDarken(bgColor, 0.4)} 50%, #0a0a1a 100%)`;
+
+  let html = '';
+
+  // ── COVER PAGE ──
+  const whoHtml = (t.who || []).map(w => `<span>${w}</span>`).join('');
+  const statusStr = t.status === 'completed' ? '✅ Completed' :
+                    t.status === 'confirmed' ? '✈️ Flights Confirmed' :
+                    '📋 Planning';
+  html += `
+    <div class="chapter-cover" style="background: ${coverBg};">
+      <div class="chapter-cover-inner">
+        <div class="chapter-eyebrow">Arbor Family Scrapbook</div>
+        <div style="font-size:3.5rem;margin-bottom:16px;">${meta.emoji}</div>
+        <div class="chapter-cover-title">${t.title || meta.title}</div>
+        <div class="chapter-cover-sub">${t.subtitle || meta.subtitle}</div>
+        ${t.tagline ? `<p style="font-size:0.85rem;opacity:0.55;margin-bottom:24px;font-style:italic;">"${t.tagline}"</p>` : ''}
+        <div class="chapter-cover-who">${whoHtml}</div>
+        <div class="chapter-cover-status">${statusStr}</div>
+        ${p.decided ? `<div style="margin-top:16px;font-size:0.75rem;opacity:0.55;">Route: ${p.decided}</div>` : ''}
+      </div>
+      <div class="chapter-cover-footer">
+        <span>${t.dates || meta.dates}</span>
+        <span>${t.confirmation ? `Conf. ${t.confirmation}` : 'Arbor Family Plans'}</span>
+      </div>
+    </div>
+  `;
+
+  html += `<div class="page">`;
+
+  // ── FLIGHTS (if present) ──
+  if (t.flights) {
+    html += `<div class="section-divider"><span class="section-label">✈️ Flights</span></div>`;
+    html += `<div class="planning-context">
+      <div style="margin-bottom:8px;">🛫 <strong>Outbound:</strong> ${t.flights.outbound}</div>
+      <div>🛬 <strong>Return:</strong> ${t.flights.return}</div>
+    </div>`;
+  }
+
+  // ── PLANNING ──
+  if (p.context || p.considered?.length || p.open_questions?.length) {
+    html += `<div class="section-divider"><span class="section-label">💭 Planning</span></div>`;
+    if (p.context) {
+      html += `<div class="planning-context">${p.context}</div>`;
+    }
+    if (p.considered?.length) {
+      html += `<ul class="considered-list">`;
+      p.considered.forEach(c => { html += `<li>${c}</li>`; });
+      html += `</ul>`;
+    }
+    if (p.open_questions?.length) {
+      html += `<div style="margin-top:14px;">`;
+      p.open_questions.forEach(q => { html += `<div class="open-q">❓ ${q}</div>`; });
+      html += `</div>`;
+    }
+  }
+
+  // ── ROUTE MAP ──
+  if (d.route?.cities?.length) {
+    html += `<div class="section-divider"><span class="section-label">🗺️ Route</span></div>`;
+    html += `<div class="route-map-wrap">
+      <div class="route-map" id="map-${meta.id}"></div>
+      <div class="map-print-note">
+        🗺️ Interactive map available at: <strong>${meta.planPage || '#'}</strong>
+      </div>
+    </div>`;
+  }
+
+  // ── CHAPTERS ──
+  if (d.chapters?.length) {
+    html += `<div class="section-divider"><span class="section-label">📖 The Trip</span></div>`;
+    d.chapters.forEach(ch => {
+      html += `<div class="trip-chapter">
+        <div class="trip-chapter-header">
+          <div>
+            <div class="trip-chapter-title">${ch.title}</div>
+            <div class="trip-chapter-dates">${ch.dates}</div>
+          </div>
+          <div style="font-size:1.3rem;">${ch.mood || '📍'}</div>
+        </div>
+        <div class="trip-chapter-body">`;
+
+      if (ch.description) {
+        html += `<p style="font-size:0.86rem;line-height:1.75;color:#3a2a1a;margin-bottom:12px;">${ch.description}</p>`;
+      } else {
+        html += `<div class="blank-field">✍️ travel notes from this leg</div>`;
+      }
+
+      if (ch.highlights?.length) {
+        html += `<div style="margin-bottom:10px;">`;
+        ch.highlights.forEach(h => { html += `<span class="highlight-chip">⭐ ${h}</span>`; });
+        html += `</div>`;
+      }
+
+      html += `<div class="photo-grid">`;
+      const photos = ch.photos || [];
+      for (let i = 0; i < 3; i++) {
+        if (i < photos.length) {
+          html += `<div class="photo-slot"><img src="${photos[i].url}" alt="${photos[i].caption || ''}"></div>`;
+        } else {
+          html += `<div class="photo-slot">📷</div>`;
+        }
+      }
+      html += `</div>`;
+      html += `</div></div>`;
+    });
+  }
+
+  // ── QUOTES ──
+  html += `<div class="section-divider"><span class="section-label">💬 Moments &amp; Quotes</span></div>`;
+  if (d.quotes?.length) {
+    d.quotes.forEach(q => {
+      html += `<div class="quote-block">"${q.text}"<div class="quote-attr">— ${q.who}, ${q.when}</div></div>`;
+    });
+  } else {
+    html += `<div class="blank-field">💬 quotes and moments from the trip — things the kids said, memories worth keeping</div>`;
+  }
+
+  // ── STATS ──
+  html += `<div class="section-divider"><span class="section-label">📊 Trip Stats</span></div>`;
+  const stats = d.stats || {};
+  const statDefs = [
+    { key: 'countries',       label: 'Countries',   icon: '🌍' },
+    { key: 'cities',          label: 'Cities',       icon: '🏙️' },
+    { key: 'train_hours',     label: 'Train Hrs',    icon: '🚂' },
+    { key: 'km_traveled',     label: 'KM Traveled',  icon: '📍' },
+    { key: 'miles_hiked',     label: 'Miles Hiked',  icon: '🥾' },
+    { key: 'elevation_gain',  label: 'Elev. Gain',   icon: '⛰️' },
+    { key: 'stars_seen',      label: 'Stars Seen',   icon: '⭐' },
+    { key: 'best_meal',       label: 'Best Meal',    icon: '🍽️' },
+    { key: 'funniest_moment', label: 'Funniest',     icon: '😂' },
+    { key: 'hardest_moment',  label: 'Hardest',      icon: '😅' },
+  ].filter(s => s.key in stats);
+
+  if (statDefs.length) {
+    html += `<div class="stats-grid">`;
+    statDefs.forEach(s => {
+      const v = stats[s.key];
+      html += `<div class="stat-card"><div class="stat-label">${s.icon} ${s.label}</div><div class="stat-value${v ? '' : ' empty'}">${v || 'TBD'}</div></div>`;
+    });
+    html += `</div>`;
+  }
+
+  html += `<div style="text-align:center;margin-top:52px;padding:28px;color:#8a7a6a;font-size:0.75rem;">
+    Made with Sophie 🎭 · Arbor Family Scrapbook Builder ·
+    <a href="./index.html" style="color:#9c7ab0;">← All Plans</a>
+  </div>`;
+
+  html += `</div>`; // .page
+  return html;
+}
+
+// ─── MAP INIT ────────────────────────────────────
+function initMap(el, cities, color) {
+  const valid = cities.filter(c => c.lat);
+  if (!valid.length) return;
+  const map = L.map(el).setView([valid[0].lat, valid[0].lng], 4);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '© OpenStreetMap © CARTO', maxZoom: 18
+  }).addTo(map);
+  const coords = valid.map(c => [c.lat, c.lng]);
+  if (coords.length > 1) {
+    L.polyline(coords, { color: color || '#9c27b0', weight: 2.5, opacity: 0.7, dashArray: '6,4' }).addTo(map);
+  }
+  valid.forEach(c => {
+    const pt = c.type === 'home' ? '#4caf50' : c.flag ? '#ffc107' : c.type === 'tbd' ? '#9e9e9e' : (color || '#9c27b0');
+    L.circleMarker([c.lat, c.lng], { radius: 8, fillColor: pt, color: '#fff', weight: 2, fillOpacity: 0.9 })
+      .addTo(map)
+      .bindPopup(`<b>${c.name}</b><br><small>${c.dates}</small><br>${c.note || ''}`);
+  });
+  map.fitBounds(coords, { padding: [30, 30] });
+  leafletMaps.push(map);
+}
+
+// ─── UTILS ───────────────────────────────────────
+function hexDarken(hex, factor) {
+  const n = parseInt(hex.replace('#', ''), 16);
+  const r = Math.round(((n >> 16) & 255) * factor);
+  const g = Math.round(((n >> 8) & 255) * factor);
+  const b = Math.round((n & 255) * factor);
+  return `rgb(${r},${g},${b})`;
+}
+
+// ─── INIT ────────────────────────────────────────
+init();
+</script>
+</body>
+</html>
