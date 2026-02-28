@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Europe 2026 — Arbor Family Scrapbook</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #f5f0e8; color: #2a1f1a; min-height: 100vh; }
+
+  /* COVER */
+  .cover {
+    min-height: 100vh; display: flex; flex-direction: column;
+    background: linear-gradient(160deg, #1a1f2e 0%, #2d1a10 60%, #1a0a0a 100%);
+    color: #f5f0e8; position: relative; overflow: hidden; page-break-after: always;
+  }
+  .cover-noise {
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.4;
+  }
+  .cover-content { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 60px 40px; }
+  .cover-eyebrow { font-size: 0.8rem; letter-spacing: 4px; text-transform: uppercase; color: #ce93d8; margin-bottom: 20px; opacity: 0.8; }
+  .cover-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 8vw, 5.5rem); font-weight: 700; line-height: 1.1; margin-bottom: 16px; }
+  .cover-subtitle { font-size: 1.1rem; color: rgba(245,240,232,0.7); margin-bottom: 32px; }
+  .cover-who { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .cover-who span { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 6px 16px; font-size: 0.85rem; }
+  .cover-status { margin-top: 40px; background: rgba(255,193,7,0.15); border: 1px solid rgba(255,193,7,0.3); border-radius: 8px; padding: 10px 20px; color: #ffd54f; font-size: 0.8rem; }
+  .cover-footer { position: relative; z-index: 1; padding: 20px 40px; display: flex; justify-content: space-between; font-size: 0.72rem; opacity: 0.4; }
+
+  /* BACK BUTTON */
+  .back-btn {
+    position: fixed; top: 16px; left: 16px; z-index: 1000;
+    background: rgba(42,31,26,0.9); color: #f5f0e8; border: 1px solid rgba(255,255,255,0.15);
+    padding: 8px 14px; border-radius: 20px; font-size: 0.75rem; cursor: pointer;
+    text-decoration: none; backdrop-filter: blur(8px);
+  }
+  .back-btn:hover { background: rgba(42,31,26,1); }
+
+  /* SECTIONS */
+  .page { max-width: 900px; margin: 0 auto; padding: 60px 32px; page-break-inside: avoid; }
+
+  .section-divider {
+    display: flex; align-items: center; gap: 16px; margin: 48px 0 32px;
+  }
+  .section-divider::before, .section-divider::after { content: ''; flex: 1; height: 1px; background: #d4c9b8; }
+  .section-label { font-family: 'Playfair Display', serif; font-size: 1.6rem; white-space: nowrap; color: #2a1f1a; }
+
+  /* MAP */
+  #route-map { height: 380px; border-radius: 12px; overflow: hidden; border: 2px solid #d4c9b8; margin-bottom: 24px; }
+
+  /* PLANNING SECTION */
+  .planning-card { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 16px; border: 1px solid #e8e0d0; }
+  .planning-card h3 { font-family: 'Playfair Display', serif; font-size: 1rem; color: #2a1f1a; margin-bottom: 12px; }
+  .considered-list { list-style: none; }
+  .considered-list li { padding: 8px 12px; margin-bottom: 6px; border-radius: 6px; font-size: 0.85rem; line-height: 1.5; }
+  .open-q { background: #fff8e1; border-left: 3px solid #ffc107; padding: 8px 12px; border-radius: 0 6px 6px 0; font-size: 0.82rem; margin-bottom: 6px; color: #5a4500; }
+
+  /* PLACEHOLDER */
+  .placeholder {
+    background: repeating-linear-gradient(45deg, #f5f0e8, #f5f0e8 10px, #ede8df 10px, #ede8df 20px);
+    border: 2px dashed #c8b89a; border-radius: 10px; padding: 24px;
+    text-align: center; color: #8a7a6a; font-size: 0.85rem;
+  }
+  .placeholder .pl-icon { font-size: 2rem; margin-bottom: 8px; }
+  .placeholder .pl-text { font-style: italic; }
+
+  /* CHAPTERS */
+  .chapter { background: #fff; border-radius: 12px; margin-bottom: 20px; overflow: hidden; border: 1px solid #e8e0d0; }
+  .chapter-header { background: linear-gradient(135deg, #2a1f1a, #3a2a1a); color: #f5f0e8; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; }
+  .chapter-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; }
+  .chapter-dates { font-size: 0.75rem; opacity: 0.65; }
+  .chapter-body { padding: 20px; }
+  .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+  .photo-slot { aspect-ratio: 4/3; border-radius: 6px; overflow: hidden; }
+  .photo-slot img { width: 100%; height: 100%; object-fit: cover; }
+  .photo-slot.empty {
+    background: #f0ebe3; border: 2px dashed #c8b89a;
+    display: flex; align-items: center; justify-content: center;
+    color: #8a7a6a; font-size: 1.5rem;
+  }
+  .highlight-chip { display: inline-block; background: #fff8e1; border: 1px solid #ffc107; border-radius: 20px; padding: 4px 12px; font-size: 0.75rem; margin: 3px; color: #5a4500; }
+  .quote-block { border-left: 3px solid #9c27b0; padding: 12px 16px; background: #faf5ff; border-radius: 0 8px 8px 0; font-style: italic; color: #4a1f5a; margin: 8px 0; font-size: 0.9rem; }
+  .quote-attr { font-size: 0.75rem; font-style: normal; color: #7a6a8a; margin-top: 4px; }
+
+  /* STATS */
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+  .stat-card { background: #fff; border: 1px solid #e8e0d0; border-radius: 10px; padding: 16px; text-align: center; }
+  .stat-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; color: #8a7a6a; margin-bottom: 6px; }
+  .stat-value { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: #2a1f1a; }
+  .stat-value.empty { color: #c8b89a; font-size: 1rem; font-family: 'Inter', sans-serif; font-style: italic; font-weight: 300; }
+
+  @media print {
+    .back-btn, .cover-status { display: none; }
+    .cover { min-height: 100vh; }
+    .chapter, .planning-card { break-inside: avoid; }
+  }
+  @media (max-width: 600px) {
+    .page { padding: 32px 16px; }
+    .photo-grid { grid-template-columns: repeat(2, 1fr); }
+    .cover-title { font-size: 2.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<a class="back-btn" href="../index.html">← Back to Plans</a>
+
+<div id="app"><!-- rendered by JS --></div>
+
+<script>
+fetch('./europe-2026.json?t=' + Date.now())
+  .then(r => r.json())
+  .then(render)
+  .catch(() => render(null));
+
+function blank(label, icon='✏️') {
+  return `<div class="placeholder"><div class="pl-icon">${icon}</div><div class="pl-text">To be filled in — ${label}</div></div>`;
+}
+
+function render(d) {
+  if (!d) { document.getElementById('app').innerHTML = '<div style="padding:40px;text-align:center;color:#8a7a6a;">Could not load scrapbook data.</div>'; return; }
+  const t = d.trip;
+
+  let html = '';
+
+  // COVER
+  html += `<div class="cover">
+    <div class="cover-noise"></div>
+    <div class="cover-content">
+      <div class="cover-eyebrow">Arbor Family · Travel Journal</div>
+      <div class="cover-title">${t.title}</div>
+      <div class="cover-subtitle">${t.subtitle}</div>
+      <div class="cover-who">${t.who.map(w => `<span>${w}</span>`).join('')}</div>
+      ${t.tagline ? `<div style="margin-top:20px;font-style:italic;opacity:0.6;font-size:0.9rem;">"${t.tagline}"</div>` : ''}
+      ${t.status === 'planning' ? `<div class="cover-status">📝 Trip in planning — this scrapbook will fill in as we go</div>` : ''}
+    </div>
+    <div class="cover-footer">
+      <span>✈️ ${t.flights?.outbound || ''}</span>
+      <span>Conf. ${t.confirmation}</span>
+    </div>
+  </div>`;
+
+  html += `<div class="page">`;
+
+  // ROUTE MAP
+  html += `<div class="section-divider"><span class="section-label">🗺️ The Route</span></div>`;
+  html += `<div id="route-map"></div>`;
+
+  // Flights summary
+  html += `<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px;">
+    <div class="planning-card" style="padding:14px;">
+      <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:1px;color:#8a7a6a;margin-bottom:4px;">Outbound</div>
+      <div style="font-size:0.82rem;">${t.flights?.outbound || '—'}</div>
+    </div>
+    <div class="planning-card" style="padding:14px;">
+      <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:1px;color:#8a7a6a;margin-bottom:4px;">Return</div>
+      <div style="font-size:0.82rem;">${t.flights?.return || '—'}</div>
+    </div>
+  </div>`;
+
+  // PLANNING SECTION
+  html += `<div class="section-divider"><span class="section-label">🤔 How We Planned It</span></div>`;
+  if (d.planning?.context) {
+    html += `<div class="planning-card"><p style="font-size:0.88rem;line-height:1.7;color:#3a2a1a;">${d.planning.context}</p></div>`;
+  }
+  if (d.planning?.considered?.length) {
+    html += `<div class="planning-card"><h3>Routes we considered:</h3><ul class="considered-list">`;
+    const colors = ['#ffe8e8','#e8f0ff','#f5e8ff','#fff8e0'];
+    d.planning.considered.forEach((c, i) => {
+      html += `<li style="background:${colors[i%colors.length]};">${c}</li>`;
+    });
+    html += `</ul></div>`;
+  }
+  if (d.planning?.decided) {
+    html += `<div class="planning-card" style="border-left:4px solid #4caf50;"><h3>✅ What we chose:</h3><p style="margin-top:8px;font-size:0.88rem;line-height:1.6;">${d.planning.decided}</p>${d.planning.decision_notes ? `<p style="margin-top:6px;font-size:0.8rem;color:#5a6a5a;">${d.planning.decision_notes}</p>` : ''}</div>`;
+  } else {
+    html += `<div class="planning-card" style="border-left:4px solid #ffc107;"><h3>⏳ Decision pending:</h3>${blank('which route we chose — to be updated once decided', '🗺️')}</div>`;
+  }
+  if (d.planning?.open_questions?.length) {
+    html += `<div class="planning-card"><h3>Open questions at time of planning:</h3><div style="margin-top:10px;">`;
+    d.planning.open_questions.forEach(q => { html += `<div class="open-q">❓ ${q}</div>`; });
+    html += `</div></div>`;
+  }
+
+  // CHAPTERS
+  html += `<div class="section-divider"><span class="section-label">📖 The Trip</span></div>`;
+  (d.chapters || []).forEach(ch => {
+    html += `<div class="chapter">
+      <div class="chapter-header">
+        <div>
+          <div class="chapter-title">${ch.title}</div>
+          <div class="chapter-dates">${ch.dates}</div>
+        </div>
+        <div style="font-size:1.4rem;">${ch.mood || '📍'}</div>
+      </div>
+      <div class="chapter-body">`;
+
+    if (ch.description) {
+      html += `<p style="font-size:0.88rem;line-height:1.7;color:#3a2a1a;margin-bottom:12px;">${ch.description}</p>`;
+    } else {
+      html += `<div style="margin-bottom:12px;">${blank('travel notes from this leg', '✍️')}</div>`;
+    }
+
+    if (ch.highlights?.length) {
+      html += `<div style="margin-bottom:10px;">`;
+      ch.highlights.forEach(h => { html += `<span class="highlight-chip">⭐ ${h}</span>`; });
+      html += `</div>`;
+    }
+
+    // Photos (3 slots per chapter)
+    html += `<div class="photo-grid">`;
+    const photoCount = ch.photos?.length || 0;
+    for (let i = 0; i < 3; i++) {
+      if (i < photoCount) {
+        html += `<div class="photo-slot"><img src="${ch.photos[i].url}" alt="${ch.photos[i].caption||''}"></div>`;
+      } else {
+        html += `<div class="photo-slot empty">📷</div>`;
+      }
+    }
+    html += `</div>`;
+    html += `</div></div>`;
+  });
+
+  // QUOTES
+  html += `<div class="section-divider"><span class="section-label">💬 Moments & Quotes</span></div>`;
+  if (d.quotes?.length) {
+    d.quotes.forEach(q => {
+      html += `<div class="quote-block">"${q.text}"<div class="quote-attr">— ${q.who}, ${q.when}</div></div>`;
+    });
+  } else {
+    html += blank('quotes and moments from the trip — things the kids said, memories worth keeping', '💬');
+  }
+
+  // STATS
+  html += `<div class="section-divider"><span class="section-label">📊 Trip Stats</span></div>`;
+  const stats = d.stats || {};
+  const statDefs = [
+    { key: 'countries',        label: 'Countries', icon: '🌍' },
+    { key: 'cities',           label: 'Cities',    icon: '🏙️' },
+    { key: 'train_hours',      label: 'Train Hrs', icon: '🚂' },
+    { key: 'km_traveled',      label: 'KM Traveled', icon: '📍' },
+    { key: 'best_meal',        label: 'Best Meal', icon: '🍽️' },
+    { key: 'funniest_moment',  label: 'Funniest',  icon: '😂' },
+    { key: 'hardest_moment',   label: 'Hardest',   icon: '😅' },
+  ];
+  html += `<div class="stats-grid">`;
+  statDefs.forEach(s => {
+    const v = stats[s.key];
+    html += `<div class="stat-card"><div class="stat-label">${s.icon} ${s.label}</div><div class="stat-value ${v ? '' : 'empty'}">${v || 'TBD'}</div></div>`;
+  });
+  html += `</div>`;
+
+  html += `<div style="text-align:center;margin-top:60px;padding:32px;color:#8a7a6a;font-size:0.8rem;">
+    Made with Sophie 🎭 · Updated as the trip unfolds · <a href="../index.html" style="color:#9c7ab0;">← Back to all plans</a>
+  </div>`;
+
+  html += `</div>`; // end .page
+  document.getElementById('app').innerHTML = html;
+
+  // RENDER MAP
+  const mapEl = document.getElementById('route-map');
+  if (mapEl && d.route?.cities) {
+    const map = L.map('route-map').setView([48, 8], 4);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '© OpenStreetMap © CARTO', maxZoom: 18
+    }).addTo(map);
+
+    const cities = d.route.cities.filter(c => c.lat);
+    const coords = cities.map(c => [c.lat, c.lng]);
+    if (coords.length > 1) {
+      L.polyline(coords, { color: '#9c27b0', weight: 2.5, opacity: 0.7, dashArray: '6,4' }).addTo(map);
+    }
+    cities.forEach(c => {
+      const color = c.type === 'home' ? '#4caf50' : c.flag ? '#ffc107' : c.type === 'tbd' ? '#9e9e9e' : '#9c27b0';
+      L.circleMarker([c.lat, c.lng], { radius: 8, fillColor: color, color: '#fff', weight: 2, fillOpacity: 0.9 })
+        .addTo(map)
+        .bindPopup(`<b>${c.name}</b><br><small>${c.dates}</small><br>${c.note || ''}`);
+    });
+    if (coords.length) map.fitBounds(coords, { padding: [30, 30] });
+  }
+}
+</script>
+</body>
+</html>

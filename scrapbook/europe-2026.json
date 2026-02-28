@@ -1,0 +1,60 @@
+{
+  "trip": {
+    "title": "Europe 2026",
+    "subtitle": "Arbor Family · June 12–28, 2026",
+    "tagline": "Our first family trip to Europe",
+    "who": ["Sage", "Tafline", "Asher", "Verity"],
+    "dates": "June 12–28, 2026",
+    "status": "planning",
+    "confirmation": "LXTIOD",
+    "flights": {
+      "outbound": "Jun 12 · AA2573 CLT→PHL 1:00pm + AA204 PHL→AMS 6:35pm → arrive Jun 13 8:00am",
+      "return": "Jun 28 · AA203 AMS→PHL 10:55am + AA3152 PHL→CLT 3:35pm → arrive 5:24pm"
+    }
+  },
+  "planning": {
+    "context": "Europe trip started as a conversation about taking Tafline's mother (Oma) on a big trip while she's still able to travel comfortably. First two weeks with Oma, second week Arbor family only.",
+    "considered": [
+      "🔴 Route 1 — Alpine Arc: Paris → Lyon → Geneva → Interlaken → Zürich (~$2,200 lodging)",
+      "🔵 Route 2 — Rhine Valley: Paris → Bruges → Amsterdam → Cologne → Frankfurt (~$2,025 lodging, fastest trains)",
+      "🟣 Route 3 — Alps & Prague: Paris → Interlaken → Prague → Amsterdam (~$1,110 lodging, most affordable)",
+      "🟡 Route 4 — Iberian Arc & Morocco: Paris → Barcelona → Granada → Tangier → Chefchaouen → Amsterdam (~$1,335 lodging, most adventurous)"
+    ],
+    "decided": null,
+    "decision_notes": null,
+    "open_questions": [
+      "Jun 14 location (Tuni? — possible transcription error — Bruges? Ghent? Tournai?)",
+      "Which family route to choose for Jun 20–27",
+      "Hotel Ivis — Belgium Jun 15–17 (city TBD)"
+    ]
+  },
+  "route": {
+    "cities": [
+      { "name": "Charlotte (Home)", "lat": 35.227, "lng": -80.843, "dates": "Jun 12", "nights": 0, "note": "Depart CLT 1pm", "type": "home" },
+      { "name": "Amsterdam", "lat": 52.377, "lng": 4.897, "dates": "Jun 13", "nights": 1, "note": "Arrive 8am. Explore city, recover from flight.", "type": "stop" },
+      { "name": "Belgium (TBD)", "lat": 50.850, "lng": 4.352, "dates": "Jun 14–15", "nights": 2, "note": "Jun 14 location unclear — Bruges? Ghent? Tournai? · Hotel Ivis Jun 15–17", "type": "stop", "flag": "⚠️" },
+      { "name": "Paris", "lat": 48.857, "lng": 2.347, "dates": "Jun 17–19", "nights": 3, "note": "With Oma. Eiffel Tower, Louvre, Versailles?", "type": "stop" },
+      { "name": "Family Route (TBD)", "lat": 47.5, "lng": 8.0, "dates": "Jun 20–27", "nights": 7, "note": "One of 4 routes — decision pending", "type": "tbd" },
+      { "name": "Amsterdam (Fly Home)", "lat": 52.310, "lng": 4.768, "dates": "Jun 28", "nights": 0, "note": "AA203 AMS→PHL 10:55am", "type": "home" }
+    ]
+  },
+  "chapters": [
+    { "title": "Getting There", "dates": "Jun 12–13", "who": ["Family"], "description": null, "highlights": [], "photos": [], "mood": null },
+    { "title": "Amsterdam", "dates": "Jun 13–14", "who": ["Family"], "description": null, "highlights": [], "photos": [], "mood": null },
+    { "title": "Belgium", "dates": "Jun 14–17", "who": ["Family"], "description": null, "highlights": [], "photos": [], "mood": null },
+    { "title": "Paris", "dates": "Jun 17–20", "who": ["Family"], "description": null, "highlights": [], "photos": [], "mood": null },
+    { "title": "Family Adventure (Route TBD)", "dates": "Jun 20–27", "who": ["Family"], "description": null, "highlights": [], "photos": [], "mood": null },
+    { "title": "Coming Home", "dates": "Jun 28", "who": ["Family"], "description": null, "highlights": [], "photos": [], "mood": null }
+  ],
+  "quotes": [],
+  "memories": [],
+  "stats": {
+    "countries": null,
+    "cities": null,
+    "train_hours": null,
+    "km_traveled": null,
+    "best_meal": null,
+    "funniest_moment": null,
+    "hardest_moment": null
+  }
+}

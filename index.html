@@ -157,7 +157,7 @@
       <p>Trips, adventures, and things worth planning</p>
     </div>
     <div style="display:flex;gap:10px;align-items:center;">
-      <button class="print-btn" onclick="window.print()">🖨️ Print / Scrapbook</button>
+      <button class="print-btn" onclick="location.href='./scrapbook/europe-2026.html'">📖 Scrapbook</button>
       <div class="sophie-tag">🎭 Maintained by Sophie</div>
     </div>
   </div>
@@ -245,12 +245,20 @@
       <div class="card-inner">
         <div class="card-top">
           <div class="card-emoji">🌍</div>
-          <div class="card-status status-confirmed">Confirmed</div>
+          <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end;">
+            <div class="card-status status-confirmed">✈️ Flights Confirmed</div>
+            <div class="card-status status-planning">🗺️ Route: Planning</div>
+          </div>
         </div>
         <div class="card-category">Family · International</div>
         <div class="card-title">Europe 2026</div>
         <div class="card-date">📅 Jun 12–28, 2026 · Conf. LXTIOD</div>
-        <div class="card-desc">Amsterdam → Belgium → Paris, then 4 route options for the family leg: Alpine Arc, Rhine Valley, Alps &amp; Prague, or Iberian Arc &amp; Morocco.</div>
+        <div class="card-desc">AMS → Belgium → Paris (Jun 12–19 with family). Jun 20–27 family route — choose one:<br>
+          <span style="display:block;margin-top:5px;font-size:0.75rem;line-height:1.8;">
+            🔴 1. Alpine Arc &nbsp; 🔵 2. Rhine Valley<br>
+            🟣 3. Alps &amp; Prague &nbsp; 🟡 4. Iberian Arc &amp; Morocco
+          </span>
+        </div>
       </div>
       <div class="card-footer">
         <div class="who-tags">
