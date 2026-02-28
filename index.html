@@ -181,6 +181,18 @@
     box-shadow: 0 4px 16px rgba(0,0,0,0.5);
   }
   .ribbon-tip strong { color: #ce93d8; }
+  /* Ribbon scroll bar */
+  .ribbon-scrollbar {
+    height: 6px; margin: 4px 0 0; border-radius: 3px;
+    background: #1e2433; position: relative; cursor: pointer; flex-shrink: 0;
+  }
+  .ribbon-thumb {
+    position: absolute; top: 0; height: 100%; border-radius: 3px;
+    background: #3a4a5a; transition: background 0.1s; cursor: grab;
+    min-width: 16px;
+  }
+  .ribbon-thumb:hover, .ribbon-thumb.dragging { background: #546e7a; cursor: grabbing; }
+
   @media (max-width: 600px) {
     .year-ribbon { padding: 6px 16px 4px; }
     .ribbon-bar { height: 26px; top: 1px; font-size: 0.62rem; }
@@ -242,6 +254,7 @@
     <div class="ribbon-today" id="ribbon-today"></div>
     <div class="ribbon-tip" id="ribbon-tip"></div>
   </div>
+  <div class="ribbon-scrollbar" id="ribbon-scrollbar"><div class="ribbon-thumb" id="ribbon-thumb"></div></div>
 </div>
 
 <div class="timeline-section">
@@ -451,13 +464,11 @@ function renderRibbon(trips) {
   var MSHORT = ['J','F','M','A','M','J','J','A','S','O','N','D'];
 
   var today = new Date(); today.setHours(0,0,0,0);
-
-  // Full extent: current month → +12 months
   var fullStart = new Date(today.getFullYear(), today.getMonth(), 1);
   var fullEnd   = new Date(fullStart.getFullYear() + 1, fullStart.getMonth(), fullStart.getDate());
   var fullMs    = fullEnd - fullStart;
+  var minMs     = 28 * 86400000;
 
-  // View window (what's currently visible)
   var viewStart = new Date(fullStart);
   var viewEnd   = new Date(fullEnd);
 
@@ -466,8 +477,10 @@ function renderRibbon(trips) {
   var todayEl  = document.getElementById('ribbon-today');
   var track    = document.getElementById('ribbon-track');
   var tip      = document.getElementById('ribbon-tip');
+  var scrollbar = document.getElementById('ribbon-scrollbar');
+  var thumb     = document.getElementById('ribbon-thumb');
 
-  // Build trip data (fixed, based on fullStart/fullEnd)
+  // Build trip data
   var tripData = [];
   trips.forEach(function(t) {
     if (!t.startDate || !t.endDate) return;
@@ -483,68 +496,74 @@ function renderRibbon(trips) {
   });
 
   // ── RENDER ──────────────────────────────────────
-  function pct(date) {
+  function viewPct(date) {
     var viewMs = viewEnd - viewStart;
     return (date - viewStart) / viewMs * 100;
   }
 
-  function render() {
-    var viewMs = viewEnd - viewStart;
-    var isMobile = window.innerWidth < 700;
+  function bestLabel(bar, td, wPx) {
+    // Try labels from longest to shortest; pick first that fits
+    var title     = td.trip.emoji + ' ' + td.trip.title;
+    var firstWord = td.trip.emoji + ' ' + td.trip.title.split(/[\s\u2014\u2013]/)[0];
+    var emojiOnly = td.trip.emoji;
 
-    // Clear
+    // Estimate text width using canvas
+    var ctx = bestLabel._ctx;
+    if (!ctx) {
+      var c = document.createElement('canvas');
+      ctx = bestLabel._ctx = c.getContext('2d');
+      ctx.font = '600 9px Inter, sans-serif';
+    }
+
+    if (wPx >= ctx.measureText(title).width + 12)     return title;
+    if (wPx >= ctx.measureText(firstWord).width + 12)  return firstWord;
+    if (wPx >= ctx.measureText(emojiOnly).width + 8)   return emojiOnly;
+    return '';
+  }
+
+  function render() {
+    var viewMs   = viewEnd - viewStart;
+    var trackW   = track.offsetWidth;
+
     barsEl.innerHTML   = '';
     monthsEl.innerHTML = '';
 
-    // Today marker
-    var tp = pct(today);
-    if (tp >= 0 && tp <= 100) {
-      todayEl.style.left    = tp + '%';
-      todayEl.style.display = '';
-    } else {
-      todayEl.style.display = 'none';
-    }
+    // Today
+    var tp = viewPct(today);
+    todayEl.style.left    = tp + '%';
+    todayEl.style.display = (tp >= 0 && tp <= 100) ? '' : 'none';
 
-    // Month labels
-    // Find first month at or before viewStart
+    // Months
     var mo = new Date(viewStart.getFullYear(), viewStart.getMonth(), 1);
     while (mo < viewEnd) {
       var moEnd = new Date(mo.getFullYear(), mo.getMonth() + 1, 1);
-      var left  = Math.max(0,   pct(mo)    );
-      var right = Math.min(100, pct(moEnd) );
-      if (right > left) {
+      var l = Math.max(0,   viewPct(mo));
+      var r = Math.min(100, viewPct(moEnd));
+      if (r > l) {
+        var wPx = (r - l) / 100 * trackW;
         var div = document.createElement('div');
         var isCur = mo.getMonth() === today.getMonth() && mo.getFullYear() === today.getFullYear();
-        div.className   = 'ribbon-month' + (isCur ? ' is-current' : '');
-        div.style.position = 'absolute';
-        div.style.left  = left  + '%';
-        div.style.width = (right - left) + '%';
-        div.style.bottom = '0';
-        div.style.height = '100%';
-        div.style.display = 'flex';
-        div.style.alignItems = 'center';
-        div.style.justifyContent = 'center';
-        div.style.overflow = 'hidden';
-        div.style.fontSize = '0.58rem';
+        div.className = 'ribbon-month' + (isCur ? ' is-current' : '');
+        div.style.cssText = 'position:absolute;left:' + l + '%;width:' + (r-l) + '%;bottom:0;height:100%;' +
+          'display:flex;align-items:center;justify-content:center;overflow:hidden;' +
+          'font-size:0.58rem;border-left:1px solid #1e2433;box-sizing:border-box;';
         div.style.fontWeight = isCur ? '800' : '600';
         div.style.color = isCur ? '#546e7a' : '#2e3a50';
-        div.style.borderLeft = '1px solid #1e2433';
-        // Show label only if there's room
-        var wPx = (right - left) / 100 * track.offsetWidth;
-        div.textContent = wPx > 22 ? (wPx > 40 ? MONTHS[mo.getMonth()] : MSHORT[mo.getMonth()]) : '';
+        div.textContent = wPx > 38 ? MONTHS[mo.getMonth()] : wPx > 16 ? MSHORT[mo.getMonth()] : '';
         monthsEl.appendChild(div);
       }
       mo = moEnd;
     }
 
-    // Trip bars
+    // Bars
     tripData.forEach(function(td) {
-      var l = pct(td.start);
-      var r = pct(td.end);
-      if (r < 0 || l > 100) return; // outside view
+      var l = viewPct(td.start);
+      var r = viewPct(td.end);
+      if (r < 0 || l > 100) return;
       l = Math.max(0, l);
       r = Math.min(100, r);
-      var w = Math.max(r - l, 0.8);
+      var w   = Math.max(r - l, 0.8);
+      var wPx = w / 100 * trackW;
 
       var bar = document.createElement('div');
       bar.className = 'ribbon-bar' + (td.isPast ? ' past' : '');
@@ -552,52 +571,43 @@ function renderRibbon(trips) {
       bar.style.width      = w + '%';
       bar.style.background = td.trip.color || '#9c27b0';
       bar.dataset.tripId   = td.trip.id;
-
-      var wPx = w / 100 * track.offsetWidth;
-      bar.textContent = wPx > 80 ? td.trip.emoji + ' ' + td.trip.title
-                      : wPx > 28 ? td.trip.emoji
-                      : '';
+      bar.textContent      = bestLabel(bar, td, wPx);
       barsEl.appendChild(bar);
     });
+
+    // Scrollbar thumb
+    var thumbLeft  = (viewStart - fullStart) / fullMs * 100;
+    var thumbWidth = viewMs / fullMs * 100;
+    thumb.style.left  = thumbLeft  + '%';
+    thumb.style.width = thumbWidth + '%';
   }
 
-  // ── CLAMP VIEW ──────────────────────────────────
+  // ── CLAMP ───────────────────────────────────────
   function clampView() {
-    var viewMs = viewEnd - viewStart;
-    var minMs  = 28  * 86400000;   // ~1 month min zoom
-    var maxMs  = fullMs;           // 12 months max zoom
-    viewMs = Math.max(minMs, Math.min(maxMs, viewMs));
-
-    // Don't pan before fullStart or after fullEnd
-    if (viewStart < fullStart) {
-      viewStart = new Date(fullStart);
-      viewEnd   = new Date(viewStart.getTime() + viewMs);
-    }
-    if (viewEnd > fullEnd) {
-      viewEnd   = new Date(fullEnd);
-      viewStart = new Date(viewEnd.getTime() - viewMs);
-    }
+    var viewMs = Math.max(minMs, Math.min(fullMs, viewEnd - viewStart));
+    if (viewStart < fullStart) { viewStart = new Date(fullStart); viewEnd = new Date(viewStart.getTime() + viewMs); }
+    if (viewEnd   > fullEnd)   { viewEnd   = new Date(fullEnd);   viewStart = new Date(viewEnd.getTime() - viewMs); }
     if (viewStart < fullStart) viewStart = new Date(fullStart);
   }
 
   // ── SCRUB TIP ───────────────────────────────────
   var lastHitId = null;
 
-  function tripAtPct(p) {
+  function tripAtClientX(clientX) {
+    var rect = track.getBoundingClientRect();
+    var p = (clientX - rect.left) / rect.width * 100;
     for (var i = 0; i < tripData.length; i++) {
-      var l = pct(tripData[i].start);
-      var r = pct(tripData[i].end);
-      if (p >= l && p <= r) return tripData[i];
+      if (p >= viewPct(tripData[i].start) && p <= viewPct(tripData[i].end)) return tripData[i];
     }
     return null;
   }
 
   function showTip(clientX) {
-    var rect = track.getBoundingClientRect();
-    var p    = Math.max(0, Math.min(100, (clientX - rect.left) / rect.width * 100));
-    var hit  = tripAtPct(p);
+    var rect   = track.getBoundingClientRect();
+    var p      = Math.max(0, Math.min(100, (clientX - rect.left) / rect.width * 100));
     var viewMs = viewEnd - viewStart;
-    var date = new Date(viewStart.getTime() + (p / 100) * viewMs);
+    var date   = new Date(viewStart.getTime() + (p / 100) * viewMs);
+    var hit    = tripAtClientX(clientX);
 
     if (hit) {
       var label = hit.daysAway > 0 ? ('in ' + hit.daysAway + 'd') : (hit.isPast ? 'past' : 'now');
@@ -611,17 +621,13 @@ function renderRibbon(trips) {
       }
     } else {
       tip.innerHTML = '<span style="color:#7a8a9a">' + MONTHS[date.getMonth()] + ' ' + date.getDate() + '</span>';
-      if (lastHitId) {
-        barsEl.querySelectorAll('.ribbon-bar').forEach(function(b){ b.style.filter = ''; });
-        lastHitId = null;
-      }
+      if (lastHitId) { barsEl.querySelectorAll('.ribbon-bar').forEach(function(b){ b.style.filter=''; }); lastHitId = null; }
     }
 
     tip.style.display = 'block';
-    var tipW  = tip.offsetWidth;
+    var tipW = tip.offsetWidth;
     var trackW = rect.width;
-    var rawL  = (p / 100) * trackW - tipW / 2;
-    tip.style.left = Math.max(0, Math.min(rawL, trackW - tipW)) + 'px';
+    tip.style.left = Math.max(0, Math.min((p/100)*trackW - tipW/2, trackW - tipW)) + 'px';
     tip.style.top  = '-42px';
   }
 
@@ -631,39 +637,25 @@ function renderRibbon(trips) {
     lastHitId = null;
   }
 
-  function pctFromClientX(clientX) {
-    var rect = track.getBoundingClientRect();
-    return Math.max(0, Math.min(100, (clientX - rect.left) / rect.width * 100));
-  }
+  // ── TOUCH: 1 finger = scrub, 2 finger = pinch zoom ──
+  var touchState = null;
 
-  function navigateAtPct(p) {
-    var hit = tripAtPct(p);
-    if (hit) navigateToTrip(hit.trip);
-  }
-
-  // ── TOUCH HANDLING ──────────────────────────────
-  var touchState = null; // { mode: 'scrub'|'pinch-pan', ... }
-
-  function dist(t1, t2) {
-    var dx = t1.clientX - t2.clientX;
-    var dy = t1.clientY - t2.clientY;
+  function touchDist(t1, t2) {
+    var dx = t1.clientX - t2.clientX, dy = t1.clientY - t2.clientY;
     return Math.sqrt(dx*dx + dy*dy);
   }
-  function midX(t1, t2) { return (t1.clientX + t2.clientX) / 2; }
 
   track.addEventListener('touchstart', function(e) {
     if (e.touches.length === 1) {
-      touchState = { mode: 'scrub', x: e.touches[0].clientX };
+      touchState = { mode: 'scrub' };
       showTip(e.touches[0].clientX);
     } else if (e.touches.length === 2) {
-      var t1 = e.touches[0], t2 = e.touches[1];
       touchState = {
-        mode: 'pinch-pan',
-        initDist: dist(t1, t2),
-        initMidX: midX(t1, t2),
+        mode: 'pinch',
+        initDist: touchDist(e.touches[0], e.touches[1]),
+        initMidX: (e.touches[0].clientX + e.touches[1].clientX) / 2,
         initViewStart: new Date(viewStart),
-        initViewEnd:   new Date(viewEnd),
-        lastMidX: midX(t1, t2)
+        initViewEnd:   new Date(viewEnd)
       };
       hideTip();
     }
@@ -672,96 +664,106 @@ function renderRibbon(trips) {
 
   track.addEventListener('touchmove', function(e) {
     if (!touchState) return;
-
     if (touchState.mode === 'scrub' && e.touches.length === 1) {
       showTip(e.touches[0].clientX);
-
     } else if (e.touches.length === 2) {
-      // Switch to pinch-pan if we started as scrub
-      if (touchState.mode === 'scrub') {
-        var t1 = e.touches[0], t2 = e.touches[1];
-        touchState = {
-          mode: 'pinch-pan',
-          initDist: dist(t1, t2),
-          initMidX: midX(t1, t2),
-          initViewStart: new Date(viewStart),
-          initViewEnd:   new Date(viewEnd),
-          lastMidX: midX(t1, t2)
-        };
-        hideTip();
+      if (touchState.mode !== 'pinch') {
+        touchState = { mode: 'pinch',
+          initDist: touchDist(e.touches[0], e.touches[1]),
+          initMidX: (e.touches[0].clientX + e.touches[1].clientX) / 2,
+          initViewStart: new Date(viewStart), initViewEnd: new Date(viewEnd) };
       }
-
-      var t1 = e.touches[0], t2 = e.touches[1];
-      var curDist = dist(t1, t2);
-      var curMidX = midX(t1, t2);
-      var rect    = track.getBoundingClientRect();
-
-      // Zoom: scale factor relative to initial pinch
-      var scale       = touchState.initDist / curDist; // >1 = pinch in (zoom in)
-      var initDurMs   = touchState.initViewEnd - touchState.initViewStart;
-      var newDurMs    = Math.max(28*86400000, Math.min(fullMs, initDurMs * scale));
-
-      // Anchor: keep the point under the pinch midpoint fixed
-      var midPct      = (touchState.initMidX - rect.left) / rect.width;
-      var anchorMs    = touchState.initViewStart.getTime() + midPct * initDurMs;
-      viewStart       = new Date(anchorMs - midPct * newDurMs);
-      viewEnd         = new Date(viewStart.getTime() + newDurMs);
-
-      // Pan: offset from last midX
-      var panPx       = curMidX - touchState.lastMidX;
-      var panMs       = -(panPx / rect.width) * (viewEnd - viewStart);
-      viewStart       = new Date(viewStart.getTime() + panMs);
-      viewEnd         = new Date(viewEnd.getTime()   + panMs);
-      touchState.lastMidX = curMidX;
-
-      clampView();
-      render();
+      var curDist  = touchDist(e.touches[0], e.touches[1]);
+      var scale    = touchState.initDist / curDist;
+      var initMs   = touchState.initViewEnd - touchState.initViewStart;
+      var newMs    = Math.max(minMs, Math.min(fullMs, initMs * scale));
+      var rect     = track.getBoundingClientRect();
+      var midPct   = (touchState.initMidX - rect.left) / rect.width;
+      var anchor   = touchState.initViewStart.getTime() + midPct * initMs;
+      viewStart    = new Date(anchor - midPct * newMs);
+      viewEnd      = new Date(viewStart.getTime() + newMs);
+      clampView(); render();
     }
     e.preventDefault();
   }, { passive: false });
 
   track.addEventListener('touchend', function(e) {
-    if (!touchState) return;
-    if (touchState.mode === 'scrub') {
-      var p = pctFromClientX(e.changedTouches[0].clientX);
-      var hit = tripAtPct(p);
-      if (hit) { setTimeout(function(){ navigateToTrip(hit.trip); }, 150); }
-      else      { setTimeout(hideTip, 700); }
+    if (touchState && touchState.mode === 'scrub') {
+      var hit = tripAtClientX(e.changedTouches[0].clientX);
+      if (hit) setTimeout(function(){ navigateToTrip(hit.trip); }, 150);
+      else     setTimeout(hideTip, 700);
     }
     if (e.touches.length === 0) touchState = null;
   });
 
-  // ── MOUSE (desktop) ─────────────────────────────
-  track.addEventListener('mousemove',  function(e) { showTip(e.clientX); });
+  // ── MOUSE on track ──────────────────────────────
+  track.addEventListener('mousemove',  function(e){ showTip(e.clientX); });
   track.addEventListener('mouseleave', hideTip);
-  track.addEventListener('click', function(e) { navigateAtPct(pctFromClientX(e.clientX)); });
-
-  // Desktop: scroll wheel = pan; shift+scroll = zoom
+  track.addEventListener('click',      function(e){
+    var hit = tripAtClientX(e.clientX);
+    if (hit) navigateToTrip(hit.trip);
+  });
   track.addEventListener('wheel', function(e) {
     e.preventDefault();
     var rect   = track.getBoundingClientRect();
     var viewMs = viewEnd - viewStart;
-
     if (e.ctrlKey || e.metaKey) {
-      // Pinch-zoom on trackpad (ctrl+scroll)
-      var zoomFactor = 1 + e.deltaY * 0.01;
-      zoomFactor = Math.max(0.5, Math.min(2, zoomFactor));
+      var factor = 1 + e.deltaY * 0.008;
+      factor = Math.max(0.5, Math.min(2, factor));
       var midPct = (e.clientX - rect.left) / rect.width;
       var anchor = viewStart.getTime() + midPct * viewMs;
-      var newMs  = Math.max(28*86400000, Math.min(fullMs, viewMs * zoomFactor));
+      var newMs  = Math.max(minMs, Math.min(fullMs, viewMs * factor));
       viewStart  = new Date(anchor - midPct * newMs);
       viewEnd    = new Date(viewStart.getTime() + newMs);
     } else {
-      // Pan
-      var panMs = (e.deltaX || e.deltaY) / rect.width * viewMs * 80;
+      var panMs = (e.deltaX || e.deltaY) * viewMs / rect.width * 0.5;
       viewStart = new Date(viewStart.getTime() + panMs);
       viewEnd   = new Date(viewEnd.getTime()   + panMs);
     }
-    clampView();
-    render();
+    clampView(); render();
   }, { passive: false });
 
-  // Initial render
+  // ── SCROLLBAR THUMB drag (mouse + touch) ─────────
+  var sbDrag = null;
+
+  function sbStart(clientX) {
+    sbDrag = { startX: clientX, startViewStart: new Date(viewStart), startViewEnd: new Date(viewEnd) };
+    thumb.classList.add('dragging');
+  }
+  function sbMove(clientX) {
+    if (!sbDrag) return;
+    var sbW   = scrollbar.offsetWidth;
+    var dx    = clientX - sbDrag.startX;
+    var panMs = dx / sbW * fullMs;
+    viewStart = new Date(sbDrag.startViewStart.getTime() + panMs);
+    viewEnd   = new Date(sbDrag.startViewEnd.getTime()   + panMs);
+    clampView(); render();
+  }
+  function sbEnd() {
+    sbDrag = null;
+    thumb.classList.remove('dragging');
+  }
+
+  thumb.addEventListener('mousedown',  function(e){ sbStart(e.clientX); e.preventDefault(); });
+  document.addEventListener('mousemove', function(e){ sbMove(e.clientX); });
+  document.addEventListener('mouseup',   sbEnd);
+
+  thumb.addEventListener('touchstart', function(e){ sbStart(e.touches[0].clientX); e.preventDefault(); }, { passive: false });
+  thumb.addEventListener('touchmove',  function(e){ sbMove(e.touches[0].clientX); e.preventDefault(); }, { passive: false });
+  thumb.addEventListener('touchend',   sbEnd);
+
+  // Click on scrollbar bg to jump
+  scrollbar.addEventListener('click', function(e) {
+    if (e.target === thumb) return;
+    var rect     = scrollbar.getBoundingClientRect();
+    var viewMs   = viewEnd - viewStart;
+    var clickPct = (e.clientX - rect.left) / rect.width;
+    var center   = fullStart.getTime() + clickPct * fullMs;
+    viewStart    = new Date(center - viewMs / 2);
+    viewEnd      = new Date(center + viewMs / 2);
+    clampView(); render();
+  });
+
   render();
 }
 
