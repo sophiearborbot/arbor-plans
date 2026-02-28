@@ -3,7 +3,10 @@
     "title": "Japan 2026",
     "subtitle": "Sage & Tafline · May 9–16, 2026",
     "tagline": "First time in Japan — Tokyo, Hakone, Kyoto",
-    "who": ["Sage", "Tafline"],
+    "who": [
+      "Sage",
+      "Tafline"
+    ],
     "dates": "May 9–16, 2026",
     "status": "planning"
   },
@@ -26,19 +29,123 @@
   },
   "route": {
     "cities": [
-      { "name": "Charlotte (Home)", "lat": 35.227, "lng": -80.843, "dates": "May 9", "nights": 0, "note": "Depart CLT", "type": "home" },
-      { "name": "Tokyo", "lat": 35.682, "lng": 139.759, "dates": "May 10–12", "nights": 3, "note": "teamLab, Shinjuku, Tsukiji, Akihabara", "type": "stop" },
-      { "name": "Hakone", "lat": 35.232, "lng": 139.107, "dates": "May 13", "nights": 1, "note": "Ryokan, onsen, Mt. Fuji views", "type": "stop" },
-      { "name": "Kyoto", "lat": 35.012, "lng": 135.768, "dates": "May 14–16", "nights": 2, "note": "Fushimi Inari, Arashiyama, kaiseki", "type": "stop" },
-      { "name": "Charlotte (Home)", "lat": 35.227, "lng": -80.843, "dates": "May 16", "nights": 0, "note": "Depart KIX or NRT", "type": "home" }
+      {
+        "name": "Charlotte (Home)",
+        "lat": 35.227,
+        "lng": -80.843,
+        "dates": "May 9",
+        "nights": 0,
+        "note": "Depart CLT",
+        "type": "home"
+      },
+      {
+        "name": "Los Angeles (LAX)",
+        "lat": 33.943,
+        "lng": -118.408,
+        "dates": "May 9",
+        "nights": 0,
+        "note": "Connection via LAX",
+        "type": "waypoint"
+      },
+      {
+        "name": "Tokyo",
+        "lat": 35.682,
+        "lng": 139.759,
+        "dates": "May 10–12",
+        "nights": 3,
+        "note": "teamLab, Shinjuku, Tsukiji, Akihabara",
+        "type": "stop"
+      },
+      {
+        "name": "Hakone",
+        "lat": 35.232,
+        "lng": 139.107,
+        "dates": "May 13",
+        "nights": 1,
+        "note": "Ryokan, onsen, Mt. Fuji views",
+        "type": "stop"
+      },
+      {
+        "name": "Kyoto",
+        "lat": 35.012,
+        "lng": 135.768,
+        "dates": "May 14–16",
+        "nights": 2,
+        "note": "Fushimi Inari, Arashiyama, kaiseki",
+        "type": "stop"
+      },
+      {
+        "name": "Charlotte (Home)",
+        "lat": 35.227,
+        "lng": -80.843,
+        "dates": "May 16",
+        "nights": 0,
+        "note": "Depart KIX or NRT",
+        "type": "home"
+      }
     ]
   },
   "chapters": [
-    { "title": "Arrival in Tokyo", "dates": "May 10", "who": ["Sage", "Tafline"], "description": null, "highlights": [], "photos": [], "mood": null },
-    { "title": "Tokyo Days", "dates": "May 10–12", "who": ["Sage", "Tafline"], "description": null, "highlights": [], "photos": [], "mood": null },
-    { "title": "Hakone & the Mountain", "dates": "May 13", "who": ["Sage", "Tafline"], "description": null, "highlights": [], "photos": [], "mood": null },
-    { "title": "Kyoto", "dates": "May 14–16", "who": ["Sage", "Tafline"], "description": null, "highlights": [], "photos": [], "mood": null },
-    { "title": "Coming Home", "dates": "May 16", "who": ["Sage", "Tafline"], "description": null, "highlights": [], "photos": [], "mood": null }
+    {
+      "title": "Arrival in Tokyo",
+      "dates": "May 10",
+      "who": [
+        "Sage",
+        "Tafline"
+      ],
+      "description": null,
+      "highlights": [],
+      "photos": [],
+      "mood": null
+    },
+    {
+      "title": "Tokyo Days",
+      "dates": "May 10–12",
+      "who": [
+        "Sage",
+        "Tafline"
+      ],
+      "description": null,
+      "highlights": [],
+      "photos": [],
+      "mood": null
+    },
+    {
+      "title": "Hakone & the Mountain",
+      "dates": "May 13",
+      "who": [
+        "Sage",
+        "Tafline"
+      ],
+      "description": null,
+      "highlights": [],
+      "photos": [],
+      "mood": null
+    },
+    {
+      "title": "Kyoto",
+      "dates": "May 14–16",
+      "who": [
+        "Sage",
+        "Tafline"
+      ],
+      "description": null,
+      "highlights": [],
+      "photos": [],
+      "mood": null
+    },
+    {
+      "title": "Coming Home",
+      "dates": "May 16",
+      "who": [
+        "Sage",
+        "Tafline"
+      ],
+      "description": null,
+      "highlights": [],
+      "photos": [],
+      "mood": null
+    }
   ],
   "quotes": [],
   "memories": [],
