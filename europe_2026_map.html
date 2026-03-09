@@ -447,9 +447,9 @@ TODO_ITEMS.forEach(sec=>{
     cb.addEventListener('change',()=>{
       row.style.opacity=cb.checked?'0.4':'1';
       row.querySelector('div>div:first-child').style.textDecoration=cb.checked?'line-through':'none';
-      localStorage.setItem('arbor_r7_'+btoa(item.label).slice(0,20),cb.checked?'1':'0');
+      localStorage.setItem('arbor_r7_'+item.label.replace(/[^a-z0-9]/gi,'').slice(0,20),cb.checked?'1':'0');
     });
-    const saved=localStorage.getItem('arbor_r7_'+btoa(item.label).slice(0,20));
+    const saved=localStorage.getItem('arbor_r7_'+item.label.replace(/[^a-z0-9]/gi,'').slice(0,20));
     if(saved==='1'){cb.checked=true;row.style.opacity='0.4';row.querySelector('div>div:first-child').style.textDecoration='line-through';}
     sd.appendChild(row);
   });
