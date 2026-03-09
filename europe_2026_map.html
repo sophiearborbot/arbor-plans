@@ -348,32 +348,47 @@ setActiveRoute(0);
   </div>
 </div>
 
-<!-- Car vs Train callout -->
-<div style="background:#1e293b;border:1px solid #334155;border-left:4px solid #f59e0b;border-radius:10px;padding:16px 20px;margin:24px 0;">
-  <div style="font-weight:700;color:#fcd34d;margin-bottom:8px;">🚆 vs 🚗 — Train wins for family of 4</div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:0.85rem;">
-    <div>
-      <div style="color:#4ade80;font-weight:600;margin-bottom:4px;">Train (OUIGO low-cost TGV)</div>
-      <div style="color:#cbd5e1;">Paris → Carcassonne: <strong style="color:#fff;">~€100–160 family of 4</strong></div>
-      <div style="color:#cbd5e1;">All regional legs combined: <strong style="color:#fff;">~€80–120 family</strong></div>
-      <div style="color:#cbd5e1;">Travel time Paris→Carc: <strong style="color:#fff;">5h (vs 7–9h drive)</strong></div>
-      <div style="color:#94a3b8;margin-top:6px;font-size:0.78rem;">Book OUIGO 2–3 months ahead. Kids often €5–8.</div>
-    </div>
-    <div>
-      <div style="color:#f87171;font-weight:600;margin-bottom:4px;">Car Rental (10 days, Paris pickup)</div>
-      <div style="color:#cbd5e1;">Rental: <strong style="color:#fff;">~€400–600</strong></div>
-      <div style="color:#cbd5e1;">Fuel + tolls Paris↔south: <strong style="color:#fff;">~€400–500</strong></div>
-      <div style="color:#cbd5e1;">Insurance + parking: <strong style="color:#fff;">~€150–300</strong></div>
-      <div style="color:#f87171;font-weight:700;margin-top:6px;">Total ~€950–1,400 vs ~€180–280 train</div>
-      <div style="color:#94a3b8;margin-top:4px;font-size:0.78rem;">Cassis &amp; Carcassonne have limited/expensive parking.</div>
+<!-- Car vs Train comparison (corrected) -->
+  <div style="background:#1e293b;border:1px solid #334155;border-left:4px solid #f59e0b;border-radius:10px;padding:18px 20px;margin:24px 0;">
+    <div style="font-weight:700;color:#fcd34d;margin-bottom:14px;font-size:1rem;">🚆 vs 🚗 — Full cost comparison, family of 4</div>
+    <div style="font-weight:600;color:#4ade80;font-size:0.82rem;margin-bottom:8px;">Train legs (OUIGO/SNCF):</div>
+    <table style="width:100%;border-collapse:collapse;font-size:0.78rem;margin-bottom:16px;">
+      <thead><tr style="color:#94a3b8;border-bottom:1px solid #334155;">
+        <th style="text-align:left;padding:4px 6px;">Leg</th>
+        <th style="text-align:center;padding:4px 6px;">🚆</th>
+        <th style="text-align:center;padding:4px 6px;">🚗</th>
+        <th style="text-align:right;padding:4px 6px;">1 ticket</th>
+        <th style="text-align:right;padding:4px 6px;">×4 fam</th>
+      </tr></thead>
+      <tbody style="color:#cbd5e1;">
+        <tr style="border-bottom:1px solid #1e2a3a;"><td style="padding:5px 6px;">Paris → Carcassonne</td><td style="text-align:center;color:#4ade80;">5h</td><td style="text-align:center;color:#f87171;">7.5h</td><td style="text-align:right;">~€30</td><td style="text-align:right;font-weight:700;color:#fff;">~€100</td></tr>
+        <tr style="border-bottom:1px solid #1e2a3a;"><td style="padding:5px 6px;">Carcassonne → Nîmes</td><td style="text-align:center;">1h 30m</td><td style="text-align:center;">1h</td><td style="text-align:right;">~€20</td><td style="text-align:right;font-weight:700;color:#fff;">~€70</td></tr>
+        <tr style="border-bottom:1px solid #1e2a3a;background:#2a1a1a;"><td style="padding:5px 6px;">Nîmes → Pont du Gard</td><td style="text-align:center;color:#f87171;">⚠️ no train</td><td style="text-align:center;color:#4ade80;">25m</td><td style="text-align:right;">€25 taxi</td><td style="text-align:right;font-weight:700;color:#f87171;">€50 RT</td></tr>
+        <tr style="border-bottom:1px solid #1e2a3a;"><td style="padding:5px 6px;">Nîmes → Marseille</td><td style="text-align:center;">1h 15m</td><td style="text-align:center;">1h 15m</td><td style="text-align:right;">~€25</td><td style="text-align:right;font-weight:700;color:#fff;">~€85</td></tr>
+        <tr style="border-bottom:1px solid #1e2a3a;"><td style="padding:5px 6px;">Marseille ↔ Cassis (×2)</td><td style="text-align:center;">35m each</td><td style="text-align:center;">30m</td><td style="text-align:right;">~€8</td><td style="text-align:right;font-weight:700;color:#fff;">~€56</td></tr>
+        <tr style="border-bottom:2px solid #4ade80;"><td style="padding:5px 6px;">Marseille → Paris (return)</td><td style="text-align:center;color:#4ade80;font-weight:700;">3h 15m ✅</td><td style="text-align:center;color:#f87171;">7.5h ❌</td><td style="text-align:right;">~€65</td><td style="text-align:right;font-weight:700;color:#fff;">~€210</td></tr>
+        <tr style="background:#1a2e1a;"><td style="padding:6px;font-weight:800;color:#4ade80;">🚆 TRAIN TOTAL</td><td colspan="3"></td><td style="text-align:right;font-weight:800;font-size:0.95rem;color:#4ade80;padding:6px;">~€571</td></tr>
+      </tbody>
+    </table>
+    <div style="font-weight:600;color:#f87171;font-size:0.82rem;margin-bottom:8px;">Car rental (Paris RT, 9 days, family SUV):</div>
+    <table style="width:100%;border-collapse:collapse;font-size:0.78rem;margin-bottom:14px;">
+      <tbody style="color:#cbd5e1;">
+        <tr style="border-bottom:1px solid #1e2a3a;"><td style="padding:5px 6px;">SUV 9-day rental (June, Paris)</td><td style="text-align:right;font-weight:700;color:#fff;">~€370–550</td></tr>
+        <tr style="border-bottom:1px solid #1e2a3a;"><td style="padding:5px 6px;">Fuel (~1,800km @ €1.75/L)</td><td style="text-align:right;font-weight:700;color:#fff;">~€220</td></tr>
+        <tr style="border-bottom:1px solid #1e2a3a;"><td style="padding:5px 6px;">Tolls Paris↔south RT</td><td style="text-align:right;font-weight:700;color:#fff;">~€170–220</td></tr>
+        <tr style="border-bottom:1px solid #1e2a3a;"><td style="padding:5px 6px;">Insurance CDW (waivable w/ Chase Sapphire)</td><td style="text-align:right;font-weight:700;color:#f87171;">~€100–150</td></tr>
+        <tr style="border-bottom:1px solid #1e2a3a;"><td style="padding:5px 6px;">Parking (Carcassonne/Nîmes/Cassis)</td><td style="text-align:right;font-weight:700;color:#fff;">~€60–100</td></tr>
+        <tr style="background:#2a1a1a;border-bottom:2px solid #f87171;"><td style="padding:6px;font-weight:800;color:#f87171;">🚗 CAR TOTAL</td><td style="text-align:right;font-weight:800;font-size:0.95rem;color:#f87171;padding:6px;">~€920–1,240</td></tr>
+      </tbody>
+    </table>
+    <div style="background:#0f172a;border-radius:8px;padding:12px 14px;font-size:0.8rem;border:1px solid #334155;">
+      <span style="color:#fcd34d;font-weight:700;">💡 Train saves €350–670.</span>
+      <span style="color:#cbd5e1;"> Fastest on every long leg (Marseille→Paris is 3h 15m by train vs 7.5h drive). Only gap: Pont du Gard has no train — €50 RT taxi from Nîmes covers it.
+      <strong style="color:#fff;"> Verdict: trains + one taxi = clear winner.</strong></span>
     </div>
   </div>
-  <div style="color:#94a3b8;font-size:0.78rem;margin-top:12px;border-top:1px solid #334155;padding-top:10px;">
-    💡 <strong style="color:#fcd34d;">Verdict:</strong> Take OUIGO TGV. Optionally rent a car in Nîmes for 1 day (~€50) to drive to Pont du Gard — everything else is train/taxi.
-  </div>
-</div>
 
-<h3 style="font-size:1.1rem;font-weight:700;color:#e2e8f0;margin:28px 0 16px;">✅ Purchase Checklist</h3>
+  <h3 style="font-size:1.1rem;font-weight:700;color:#e2e8f0;margin:28px 0 16px;">✅ Purchase Checklist</h3>
 <div id="todo-list" style="display:flex;flex-direction:column;gap:10px;"></div>
 
 </div>
