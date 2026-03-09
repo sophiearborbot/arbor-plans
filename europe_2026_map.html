@@ -334,3 +334,110 @@ setActiveRoute(0);
 </script>
 </body>
 </html>
+<!-- ═══════════════════════════════════════════════════════════
+     ROUTE 7 — LANGUEDOC & PROVENCE TRIP PLANNER
+     ═══════════════════════════════════════════════════════════ -->
+<section id="trip-planner" style="background:linear-gradient(180deg,#0d1117 0%,#111827 100%);padding:40px 24px 60px;border-top:3px solid #1e9b8a;font-family:'Segoe UI',Helvetica,Arial,sans-serif;color:#e2e8f0;">
+<div style="max-width:860px;margin:0 auto;">
+
+<div style="display:flex;align-items:center;gap:14px;margin-bottom:8px;">
+  <span style="font-size:2rem;">🏰</span>
+  <div>
+    <h2 style="font-size:1.5rem;font-weight:800;color:#fff;margin:0;">Route 7 — Languedoc &amp; Provence To-Do</h2>
+    <p style="color:#94a3b8;font-size:0.9rem;margin:4px 0 0;">Paris → Carcassonne → Nîmes → Cassis → fly Amsterdam &nbsp;|&nbsp; June 2026</p>
+  </div>
+</div>
+
+<!-- Car vs Train callout -->
+<div style="background:#1e293b;border:1px solid #334155;border-left:4px solid #f59e0b;border-radius:10px;padding:16px 20px;margin:24px 0;">
+  <div style="font-weight:700;color:#fcd34d;margin-bottom:8px;">🚆 vs 🚗 — Train wins for family of 4</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:0.85rem;">
+    <div>
+      <div style="color:#4ade80;font-weight:600;margin-bottom:4px;">Train (OUIGO low-cost TGV)</div>
+      <div style="color:#cbd5e1;">Paris → Carcassonne: <strong style="color:#fff;">~€100–160 family of 4</strong></div>
+      <div style="color:#cbd5e1;">All regional legs combined: <strong style="color:#fff;">~€80–120 family</strong></div>
+      <div style="color:#cbd5e1;">Travel time Paris→Carc: <strong style="color:#fff;">5h (vs 7–9h drive)</strong></div>
+      <div style="color:#94a3b8;margin-top:6px;font-size:0.78rem;">Book OUIGO 2–3 months ahead. Kids often €5–8.</div>
+    </div>
+    <div>
+      <div style="color:#f87171;font-weight:600;margin-bottom:4px;">Car Rental (10 days, Paris pickup)</div>
+      <div style="color:#cbd5e1;">Rental: <strong style="color:#fff;">~€400–600</strong></div>
+      <div style="color:#cbd5e1;">Fuel + tolls Paris↔south: <strong style="color:#fff;">~€400–500</strong></div>
+      <div style="color:#cbd5e1;">Insurance + parking: <strong style="color:#fff;">~€150–300</strong></div>
+      <div style="color:#f87171;font-weight:700;margin-top:6px;">Total ~€950–1,400 vs ~€180–280 train</div>
+      <div style="color:#94a3b8;margin-top:4px;font-size:0.78rem;">Cassis &amp; Carcassonne have limited/expensive parking.</div>
+    </div>
+  </div>
+  <div style="color:#94a3b8;font-size:0.78rem;margin-top:12px;border-top:1px solid #334155;padding-top:10px;">
+    💡 <strong style="color:#fcd34d;">Verdict:</strong> Take OUIGO TGV. Optionally rent a car in Nîmes for 1 day (~€50) to drive to Pont du Gard — everything else is train/taxi.
+  </div>
+</div>
+
+<h3 style="font-size:1.1rem;font-weight:700;color:#e2e8f0;margin:28px 0 16px;">✅ Purchase Checklist</h3>
+<div id="todo-list" style="display:flex;flex-direction:column;gap:10px;"></div>
+
+</div>
+</section>
+
+<script>
+const TODO_ITEMS=[
+  {cat:"✈️ Flights",color:"#3b82f6",items:[
+    {label:"Transatlantic flights — fly INTO Paris CDG, OUT from Amsterdam AMS",note:"Book now — June is peak. Open-jaw ticket (in one city, out another).",url:"https://www.google.com/flights",cta:"Google Flights",priority:"high"},
+    {label:"Marseille (MRS) → Amsterdam (AMS) — end of trip",note:"easyJet or Transavia ~2h, ~$80–100/person. Book ahead for June.",url:"https://www.easyjet.com/en/cheap-flights/france/amsterdam",cta:"easyJet MRS→AMS",priority:"high"}
+  ]},
+  {cat:"🚆 Trains",color:"#10b981",items:[
+    {label:"Paris → Carcassonne (OUIGO TGV, family of 4)",note:"OUIGO is 3–4× cheaper. Book as soon as dates firm. Adults ~€19–59, kids €5–8.",url:"https://www.ouigo.com/en",cta:"Book OUIGO",priority:"high"},
+    {label:"Carcassonne → Nîmes (TER regional, ~1.5h)",note:"~€15–25/person on SNCF Connect.",url:"https://www.sncf-connect.com/en-en",cta:"SNCF Connect",priority:"medium"},
+    {label:"Nîmes → Cassis (via Marseille, TER regional)",note:"Nîmes→Marseille then short bus/taxi to Cassis. ~€20–30/person.",url:"https://www.sncf-connect.com/en-en",cta:"SNCF Connect",priority:"medium"},
+    {label:"Cassis → Marseille airport (taxi, ~25 min)",note:"For the MRS→AMS flight. Taxi ~€40–50 for family.",url:"https://www.marseille-airport.com/en/access/by-taxi",cta:"MRS Airport info",priority:"low"}
+  ]},
+  {cat:"🏨 Hotels",color:"#8b5cf6",items:[
+    {label:"Carcassonne — 2 nights, inside or near the Cité",note:"Staying inside the walled city is magical — limited options, book very early.",url:"https://www.booking.com/searchresults.en-us.html?ss=Carcassonne&checkin=2026-06-15&checkout=2026-06-17&group_adults=4",cta:"Booking.com",priority:"high"},
+    {label:"Nîmes — 1 night, central near the Arena",note:"Simple stop. ~€100–150/night for a family room.",url:"https://www.booking.com/searchresults.en-us.html?ss=Nimes+France&checkin=2026-06-17&checkout=2026-06-18&group_adults=4",cta:"Booking.com",priority:"medium"},
+    {label:"Cassis — 2 nights, village or near the port",note:"Cassis is tiny and fills up in June. Port-side best. Book ASAP.",url:"https://www.booking.com/searchresults.en-us.html?ss=Cassis+France&checkin=2026-06-18&checkout=2026-06-20&group_adults=4",cta:"Booking.com",priority:"high"}
+  ]},
+  {cat:"🎟️ Activities",color:"#f59e0b",items:[
+    {label:"Calanques boat tour from Cassis port",note:"Half-day cruise through limestone calanques — turquoise water, sea caves. ~€25–35/person. Book ahead.",url:"https://www.calanques-cassis.fr",cta:"Cassis boat tours",priority:"medium"},
+    {label:"Pont du Gard — free entry (parking €9)",note:"No ticket for the aqueduct. Swim in river Gardon below. Arrive before 10am.",url:"https://www.pontdugard.fr/en",cta:"Pont du Gard site",priority:"low"},
+    {label:"Nîmes Amphitheatre tickets",note:"~€10–13/adult, kids cheaper. Still hosts real events. Can buy at door.",url:"https://www.arenes-nimes.com",cta:"Arènes de Nîmes",priority:"low"},
+    {label:"Canal du Midi boat rental (Carcassonne)",note:"Day rental — peaceful float through vineyards on the 17th-c. canal. ~€70–120 half day.",url:"https://www.locaboat.com/en/canal-du-midi",cta:"Locaboat",priority:"low"}
+  ]},
+  {cat:"📋 Practical",color:"#64748b",items:[
+    {label:"Travel insurance — family Europe policy",note:"Book once flights confirmed. Cover medical, cancellation, delays.",url:"https://www.insuremytrip.com",cta:"InsureMyTrip",priority:"medium"},
+    {label:"Notify credit cards of travel dates",note:"Do 1 week before departure. Avoid fraud blocks in France.",url:null,cta:null,priority:"low"},
+    {label:"Download offline maps — southern France",note:"Google Maps offline. Cell service patchy in Calanques + rural Languedoc.",url:"https://maps.google.com",cta:"Google Maps",priority:"low"}
+  ]}
+];
+const PC={high:"#f87171",medium:"#fbbf24",low:"#4ade80"};
+const PL={high:"Book Now",medium:"Book Soon",low:"Do Later"};
+const listEl=document.getElementById('todo-list');
+TODO_ITEMS.forEach(sec=>{
+  const sd=document.createElement('div');
+  sd.style.cssText=`background:#1e293b;border:1px solid #2d3748;border-radius:12px;overflow:hidden;border-left:4px solid ${sec.color};`;
+  sd.innerHTML=`<div style="padding:12px 16px 8px;font-weight:700;font-size:0.9rem;color:${sec.color};border-bottom:1px solid #2d3748;background:#0f172a;">${sec.cat}</div>`;
+  sec.items.forEach(item=>{
+    const row=document.createElement('div');
+    row.setAttribute('data-label',item.label);
+    row.style.cssText='display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-bottom:1px solid #1a2234;cursor:default;';
+    row.innerHTML=`
+      <input type="checkbox" style="margin-top:3px;accent-color:${sec.color};width:16px;height:16px;flex-shrink:0;cursor:pointer;">
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:0.88rem;font-weight:600;color:#f1f5f9;line-height:1.4;">${item.label}</div>
+        <div style="font-size:0.78rem;color:#94a3b8;margin-top:3px;line-height:1.4;">${item.note}</div>
+        ${item.url?`<a href="${item.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="display:inline-block;margin-top:6px;padding:3px 10px;background:${sec.color}22;border:1px solid ${sec.color}66;border-radius:6px;color:${sec.color};font-size:0.75rem;font-weight:600;text-decoration:none;">${item.cta} ↗</a>`:''}
+      </div>
+      <span style="flex-shrink:0;font-size:0.7rem;font-weight:700;color:${PC[item.priority]};background:${PC[item.priority]}22;border:1px solid ${PC[item.priority]}44;border-radius:6px;padding:2px 7px;white-space:nowrap;margin-top:2px;">${PL[item.priority]}</span>
+    `;
+    const cb=row.querySelector('input');
+    cb.addEventListener('change',()=>{
+      row.style.opacity=cb.checked?'0.4':'1';
+      row.querySelector('div>div:first-child').style.textDecoration=cb.checked?'line-through':'none';
+      localStorage.setItem('arbor_r7_'+btoa(item.label).slice(0,20),cb.checked?'1':'0');
+    });
+    const saved=localStorage.getItem('arbor_r7_'+btoa(item.label).slice(0,20));
+    if(saved==='1'){cb.checked=true;row.style.opacity='0.4';row.querySelector('div>div:first-child').style.textDecoration='line-through';}
+    sd.appendChild(row);
+  });
+  listEl.appendChild(sd);
+});
+</script>
