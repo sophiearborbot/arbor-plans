@@ -137,37 +137,65 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
 }).addTo(map);
 
 let activeRouteIdx = 6;
-// Map route selector overlay
+// Map route selector overlay — dropdown + "show all" checkbox
 (function() {
   const mapEl = document.getElementById('map');
+  mapEl.style.position = 'relative';
+
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText = 'position:absolute;top:10px;left:60px;z-index:1000;display:flex;align-items:center;gap:10px;background:#16213e;border:1px solid #26a69a;border-radius:10px;padding:7px 12px;';
+
+  // Dropdown
   const sel = document.createElement('select');
   sel.id = 'map-route-select';
-  sel.style.cssText = 'position:absolute;top:10px;left:60px;z-index:1000;background:#16213e;color:#fff;padding:8px 12px;border-radius:8px;border:1px solid #26a69a;font-size:0.82rem;cursor:pointer;';
-  const options = [
-    {value:6, label:'Route 7 — Languedoc & Provence', selected:true},
+  sel.style.cssText = 'background:transparent;color:#fff;border:none;font-size:0.82rem;cursor:pointer;outline:none;';
+  const routeOptions = [
+    {value:6, label:'Route 7 — Languedoc & Provence'},
     {value:0, label:'Route 1 — Alpine Arc'},
     {value:1, label:'Route 2 — Rhine Valley'},
     {value:2, label:'Route 3 — Alps & Prague'},
     {value:3, label:'Route 4 — Iberian Arc & Morocco'},
     {value:4, label:'Route 5 — Interlaken & Riviera'},
     {value:5, label:'Route 6 — Spain & Morocco'},
-    {value:'all', label:'Show All Routes'},
   ];
-  options.forEach(o => {
+  routeOptions.forEach(o => {
     const opt = document.createElement('option');
     opt.value = o.value;
     opt.textContent = o.label;
-    if (o.selected) opt.selected = true;
+    if (o.value === 6) opt.selected = true;
     sel.appendChild(opt);
   });
-  sel.addEventListener('change', function() {
-    const v = this.value;
-    if (v === 'all') {
+
+  // Divider
+  const div = document.createElement('span');
+  div.style.cssText = 'color:#4a6080;font-size:0.9rem;';
+  div.textContent = '|';
+
+  // Checkbox label
+  const lbl = document.createElement('label');
+  lbl.style.cssText = 'display:flex;align-items:center;gap:5px;color:#94a3b8;font-size:0.78rem;cursor:pointer;white-space:nowrap;';
+  const chk = document.createElement('input');
+  chk.type = 'checkbox';
+  chk.id = 'show-all-routes';
+  chk.checked = false;  // default: only selected route shown
+  chk.style.cssText = 'accent-color:#26a69a;cursor:pointer;';
+  lbl.appendChild(chk);
+  lbl.appendChild(document.createTextNode('Show all routes'));
+
+  wrapper.appendChild(sel);
+  wrapper.appendChild(div);
+  wrapper.appendChild(lbl);
+  mapEl.appendChild(wrapper);
+
+  function applyMapDisplay() {
+    const showAll = chk.checked;
+    const idx = parseInt(sel.value);
+    if (showAll) {
       activeRouteIdx = -1;
-      layers.forEach((l, i) => {
-        l.line.setStyle({ opacity: 0.3, weight: 3, dashArray: l.line._origDash });
+      layers.forEach(l => {
+        l.line.setStyle({ opacity: 0.25, weight: 2 });
         l.group.addTo(map);
-        l.group.eachLayer(m => { const el = m.getElement(); if (el) el.style.opacity = '0.5'; });
+        l.group.eachLayer(m => { const el = m.getElement(); if (el) el.style.opacity = '0.4'; });
       });
       document.querySelectorAll('.route-toggle').forEach(el => { el.classList.remove('active'); el.style.opacity = '1'; });
       const allBounds = layers.reduce((b, l) => b.extend(l.line.getBounds()), L.latLngBounds());
@@ -175,12 +203,13 @@ let activeRouteIdx = 6;
       document.getElementById('city-list').innerHTML = '';
       document.getElementById('city-detail').style.display = 'none';
     } else {
-      setActiveRoute(parseInt(v));
+      setActiveRoute(idx);
     }
     updateSidebarOpacity();
-  });
-  mapEl.style.position = 'relative';
-  mapEl.appendChild(sel);
+  }
+
+  sel.addEventListener('change', applyMapDisplay);
+  chk.addEventListener('change', applyMapDisplay);
 })();
 
 function updateSidebarOpacity() {
