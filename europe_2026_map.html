@@ -399,13 +399,13 @@ setActiveRoute(0);
 <script>
 const TODO_ITEMS=[
   {cat:"✈️ Flights",color:"#3b82f6",items:[
-    {label:"Marseille (MRS) to Amsterdam (AMS) — last day of trip",note:"easyJet or Transavia, ~2h, ~$80-100/person. Book ahead for June — fills up fast.",url:"https://www.easyjet.com/en/cheap-flights/france/amsterdam",cta:"easyJet MRS to AMS",priority:"high"}
+    {label:"Jun 26 — Fly Marseille (MRS) → Amsterdam (AMS)",note:"easyJet or Transavia, ~2h, ~$80-100/person. Book ahead for June — fills up fast.",url:"https://www.easyjet.com/en/cheap-flights/france/amsterdam",cta:"easyJet MRS to AMS",priority:"high"}
   ]},
   {cat:"🚆 Trains",color:"#10b981",items:[
     {label:"Paris → Carcassonne — June 20 (search Jun 20, ~same times)",note:"Best deal found: €332.70 for 4 (€83/person), 1 connection, 5h 48min. Book on SNCF Connect — OUIGO does NOT serve Carcassonne. Search: Paris toutes gares → Carcassonne, June 20, 4 passengers (2 adults + child 14 + child 10).",url:"https://www.sncf-connect.com/en-en/train/route/paris/carcassonne",cta:"Book on SNCF Connect",priority:"high"},
-    {label:"Carcassonne → Nîmes (~1.5h, 1 connection)",note:"~€15–25/person. Book on SNCF Connect — search after booking Paris→Carcassonne.",url:"https://www.sncf-connect.com/en-en/train/route/carcassonne/nimes",cta:"SNCF Connect",priority:"medium"},
-    {label:"Nîmes → Cassis (via Marseille, ~2h total)",note:"Nîmes→Marseille Saint-Charles (~1h15), then taxi/bus to Cassis (~25min). ~€20–30/person. Book Nîmes→Marseille on SNCF Connect.",url:"https://www.sncf-connect.com/en-en/train/route/nimes/marseille",cta:"SNCF Connect",priority:"medium"},
-    {label:"Cassis → Marseille airport (taxi, ~25 min)",note:"For MRS→AMS flight. Taxi from Cassis to Marseille airport ~€40–50 for family (~25 min). No train to airport from Cassis.",url:"https://www.marseille-airport.com/en/access/by-taxi",cta:"MRS Airport info",priority:"low"}
+    {label:"Jun 22 — Carcassonne → Nîmes (~1.5h, 1 connection)",note:"~€15–25/person. Book on SNCF Connect — search after booking Paris→Carcassonne.",url:"https://www.sncf-connect.com/en-en/train/route/carcassonne/nimes",cta:"SNCF Connect",priority:"medium"},
+    {label:"Jun 23 — Nîmes → Cassis (via Marseille, ~2h total)",note:"Nîmes→Marseille Saint-Charles (~1h15), then taxi/bus to Cassis (~25min). ~€20–30/person. Book Nîmes→Marseille on SNCF Connect.",url:"https://www.sncf-connect.com/en-en/train/route/nimes/marseille",cta:"SNCF Connect",priority:"medium"},
+    {label:"Jun 26 — Cassis → Marseille airport (taxi, ~25 min)",note:"For MRS→AMS flight. Taxi from Cassis to Marseille airport ~€40–50 for family (~25 min). No train to airport from Cassis.",url:"https://www.marseille-airport.com/en/access/by-taxi",cta:"MRS Airport info",priority:"low"}
   ]},
   {cat:"🏨 Hotels",color:"#8b5cf6",items:[
     {label:"Carcassonne — 2 nights (Jun 20-22), inside or near the Cité",note:"Staying inside the walled city is magical — limited options, book very early.",url:"https://www.booking.com/searchresults.en-us.html?ss=Carcassonne&checkin=2026-06-20&checkout=2026-06-22&group_adults=4",cta:"Booking.com",priority:"high"},
@@ -413,10 +413,10 @@ const TODO_ITEMS=[
     {label:"Cassis — 3 nights, village or near the port (Jun 23-26)",note:"Jun 23-26, 3 nights. Cassis is tiny and fills up in June. Port-side best. Book ASAP.",url:"https://www.booking.com/searchresults.en-us.html?ss=Cassis+France&checkin=2026-06-23&checkout=2026-06-26&group_adults=4",cta:"Booking.com",priority:"high"}
   ]},
   {cat:"🎟️ Activities",color:"#f59e0b",items:[
-    {label:"Calanques boat tour from Cassis port",note:"Half-day cruise through limestone calanques — turquoise water, sea caves. ~€25–35/person. Book ahead.",url:"https://www.calanques-cassis.fr",cta:"Cassis boat tours",priority:"medium"},
-    {label:"Pont du Gard — free entry (parking €9)",note:"No ticket for the aqueduct. Swim in river Gardon below. Arrive before 10am.",url:"https://www.pontdugard.fr/en",cta:"Pont du Gard site",priority:"low"},
-    {label:"Nîmes Amphitheatre tickets",note:"~€10–13/adult, kids cheaper. Still hosts real events. Can buy at door.",url:"https://www.arenes-nimes.com",cta:"Arènes de Nîmes",priority:"low"},
-    {label:"Canal du Midi boat rental (Carcassonne)",note:"Day rental — peaceful float through vineyards on the 17th-c. canal. ~€70–120 half day.",url:"https://www.locaboat.com/en/canal-du-midi",cta:"Locaboat",priority:"low"}
+    {label:"Jun 23–25 — Calanques boat tour from Cassis port",note:"Half-day cruise through limestone calanques — turquoise water, sea caves. ~€25–35/person. Book ahead.",url:"https://www.calanques-cassis.fr",cta:"Cassis boat tours",priority:"medium"},
+    {label:"Jun 22 — Pont du Gard — free entry (parking €9)",note:"No ticket for the aqueduct. Swim in river Gardon below. Arrive before 10am.",url:"https://www.pontdugard.fr/en",cta:"Pont du Gard site",priority:"low"},
+    {label:"Jun 22 — Nîmes Amphitheatre tickets",note:"~€10–13/adult, kids cheaper. Still hosts real events. Can buy at door.",url:"https://www.arenes-nimes.com",cta:"Arènes de Nîmes",priority:"low"},
+    {label:"Jun 20–21 — Canal du Midi boat rental (Carcassonne)",note:"Day rental — peaceful float through vineyards on the 17th-c. canal. ~€70–120 half day.",url:"https://www.locaboat.com/en/canal-du-midi",cta:"Locaboat",priority:"low"}
   ]},
   {cat:"📋 Practical",color:"#64748b",items:[
     {label:"Travel insurance — family Europe policy",note:"Book once flights confirmed. Cover medical, cancellation, delays.",url:"https://www.insuremytrip.com",cta:"InsureMyTrip",priority:"medium"},
