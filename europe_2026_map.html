@@ -289,16 +289,23 @@ ROUTES.forEach((route, idx) => {
 
 function setActiveRoute(idx) {
   activeRouteIdx = idx;
+  const showAll = document.getElementById('show-all-routes') ? document.getElementById('show-all-routes').checked : false;
 
   layers.forEach((l, i) => {
     if (i === idx) {
       l.line.setStyle({ opacity: 1, weight: 6, dashArray: null });
+      l.line.addTo(map);
       l.group.eachLayer(m => { const el = m.getElement(); if (el) el.style.opacity = '1'; });
       l.group.addTo(map);
-    } else {
-      l.line.setStyle({ opacity: 0.55, weight: 3, dashArray: l.line._origDash });
-      l.group.eachLayer(m => { const el = m.getElement(); if (el) el.style.opacity = '0.45'; });
+    } else if (showAll) {
+      l.line.setStyle({ opacity: 0.2, weight: 2, dashArray: l.line._origDash });
+      l.line.addTo(map);
+      l.group.eachLayer(m => { const el = m.getElement(); if (el) el.style.opacity = '0.2'; });
       l.group.addTo(map);
+    } else {
+      // hide completely
+      l.line.remove();
+      l.group.remove();
     }
   });
 
