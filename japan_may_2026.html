@@ -439,6 +439,59 @@
 
     <!-- TIPS TAB -->
     <div class="tab-content" id="tab-tips">
+    <div style="background:#1a1a2e;border:1px solid #4a235a;border-radius:12px;padding:16px;margin-bottom:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="color:#ce93d8;font-weight:700;font-size:1rem">✈️ CLT → Tokyo Flight Prices (per person)</div>
+        <div id="price-current" style="color:#f39c12;font-weight:800;font-size:1.1rem">Loading…</div>
+      </div>
+      <canvas id="priceChart" height="120" style="width:100%"></canvas>
+      <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:0.72rem;color:#64748b">
+        <span>🎯 Target: &lt;$900/person</span>
+        <span id="price-trend"></span>
+        <span id="price-date"></span>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+    <script>
+    fetch('prices.json').then(r=>r.json()).then(data=>{
+      const hist = data.history || [];
+      const labels = hist.map(h=>h.date.slice(5)); // MM-DD
+      const prices = hist.map(h=>h.price);
+      const last = prices[prices.length-1];
+      const prev = prices[prices.length-2];
+      const trend = last < prev ? '📉 dropping' : last > prev ? '📈 rising' : '➡️ flat';
+      document.getElementById('price-current').textContent = '$'+last+'/person';
+      document.getElementById('price-trend').textContent = trend;
+      document.getElementById('price-date').textContent = 'Updated '+hist[hist.length-1].date;
+      new Chart(document.getElementById('priceChart'), {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            data: prices,
+            borderColor: '#9c27b0',
+            backgroundColor: 'rgba(156,39,176,0.1)',
+            borderWidth: 2,
+            pointBackgroundColor: prices.map(p=>p<900?'#22c55e':'#9c27b0'),
+            pointRadius: 4,
+            tension: 0.3,
+            fill: true
+          }]
+        },
+        options: {
+          plugins: { legend: { display: false },
+            annotation: { annotations: [{type:'line',yMin:900,yMax:900,borderColor:'#22c55e',borderWidth:1,borderDash:[4,4],label:{content:'$900 target',display:true,color:'#22c55e',font:{size:10}}}]}
+          },
+          scales: {
+            y: { grid:{color:'rgba(255,255,255,0.05)'}, ticks:{color:'#94a3b8',callback:v=>'$'+v} },
+            x: { grid:{color:'rgba(255,255,255,0.05)'}, ticks:{color:'#94a3b8'} }
+          }
+        }
+      });
+    }).catch(()=>{
+      document.getElementById('price-current').textContent = 'No data';
+    });
+    </script>
 
       <div class="alert-strip">
         <strong>⚠️ Book These ASAP — All Sell Out:</strong>
