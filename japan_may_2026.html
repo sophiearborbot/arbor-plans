@@ -636,7 +636,7 @@ const cities = [
   { name: 'Kyoto', lat: 35.0116, lng: 135.7681, color: '#ffcc80', emoji: '⛩️',
     desc: '<b>Kyoto</b><br>Days 5–7 (May 2–4)<br>Fushimi Inari · Arashiyama · Gion · Pontocho' },
   { name: 'Osaka / KIX', lat: 34.4374, lng: 135.2440, color: '#80cbc4', emoji: '✈️',
-    desc: '<b>Osaka / KIX</b><br>May 16 (open-jaw option)<br>Fly home from KIX — 75 min Haruka from Kyoto<br>Open-jaw flights: ~$3,569–3,669 for 2' },
+
 ];
 
 // ── ROUTE A: Round-trip (Tokyo in + out) ─────────────────────────────────
@@ -651,16 +651,6 @@ L.polyline(rtCoords, {
   color: '#ce93d8', weight: 3.5, opacity: 0.85, dashArray: null
 }).addTo(map).bindTooltip('🟣 Round-trip HND — $3,038 total transport (cheapest)', {sticky:true});
 
-// ── ROUTE B: Open-jaw (fly into HND, out of KIX) ────────────────────────
-const ojCoords = [
-  [35.6762, 139.6503], // Tokyo
-  [35.2327, 139.1069], // Hakone
-  [35.0116, 135.7681], // Kyoto
-  [34.4374, 135.2440], // Osaka KIX
-];
-L.polyline(ojCoords, {
-  color: '#80cbc4', weight: 2.5, opacity: 0.6, dashArray: '8, 6'
-}).addTo(map).bindTooltip('🟢 Open-jaw KIX out — $3,609–3,669 total (no return train needed)', {sticky:true});
 
 // ── LEGEND ────────────────────────────────────────────────────────────────
 const legend = L.control({position: 'bottomleft'});
