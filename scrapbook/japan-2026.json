@@ -1,13 +1,13 @@
 {
   "trip": {
     "title": "Japan 2026",
-    "subtitle": "Sage & Tafline · May 9–16, 2026",
+    "subtitle": "Sage & Tafline · Apr 28–May 6, 2026",
     "tagline": "First time in Japan — Tokyo, Hakone, Kyoto",
     "who": [
       "Sage",
       "Tafline"
     ],
-    "dates": "May 9–16, 2026",
+    "dates": "Apr 28–May 6, 2026",
     "status": "planning"
   },
   "planning": {
@@ -78,7 +78,7 @@
         "name": "Charlotte (Home)",
         "lat": 35.227,
         "lng": -80.843,
-        "dates": "May 16",
+        "dates": "Apr 28",
         "nights": 0,
         "note": "Depart KIX or NRT",
         "type": "home"
@@ -136,7 +136,7 @@
     },
     {
       "title": "Coming Home",
-      "dates": "May 16",
+      "dates": "Apr 28",
       "who": [
         "Sage",
         "Tafline"

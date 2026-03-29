@@ -5,9 +5,9 @@
     {
       "id": "spring-break-2026",
       "title": "Spring Break Backpacking",
-      "subtitle": "Arbor Family \u00b7 Apr 9\u201312, 2026",
-      "emoji": "\ud83c\udfd5\ufe0f",
-      "dates": "Apr 9\u201312, 2026",
+      "subtitle": "Arbor Family · Apr 9–12, 2026",
+      "emoji": "🏕️",
+      "dates": "Apr 9–12, 2026",
       "startDate": "2026-04-09",
       "who": [
         "Sage",
@@ -20,24 +20,24 @@
       "color": "#4caf50",
       "planPage": "./spring_break_camping.html",
       "endDate": "2026-04-12",
-      "category": "Family \u00b7 Backpacking",
+      "category": "Family · Backpacking",
       "accentColor2": "#2d5016",
-      "desc": "3-night dark-sky loop. #1 pick: Linville Gorge (best skies East Coast) \u2014 verify Helene trail conditions first. 4 ranked backup options.",
-      "cardLink": "View plan \u2192",
+      "desc": "3-night dark-sky loop. #1 pick: Linville Gorge (best skies East Coast) — verify Helene trail conditions first. 4 ranked backup options.",
+      "cardLink": "View plan →",
       "whoTags": [
         "family"
       ],
       "extraStatus": [],
-      "dateLabel": "Apr 9\u201312, 2026",
+      "dateLabel": "Apr 9–12, 2026",
       "statusLabel": "Planning"
     },
     {
       "id": "japan-2026",
-      "title": "Japan \u2014 Sage & Tafline",
-      "subtitle": "Couples Trip \u00b7 May 9\u201316, 2026",
-      "emoji": "\ud83c\uddef\ud83c\uddf5",
-      "dates": "May 9\u201316, 2026",
-      "startDate": "2026-05-09",
+      "title": "Japan — Sage & Tafline",
+      "subtitle": "Couples Trip · Apr 28–May 6, 2026",
+      "emoji": "🇯🇵",
+      "dates": "Apr 28–May 6, 2026",
+      "startDate": "2026-04-28",
       "who": [
         "Sage",
         "Tafline"
@@ -46,25 +46,25 @@
       "data": "./scrapbook/japan-2026.json",
       "color": "#673ab7",
       "planPage": "./japan_may_2026.html",
-      "endDate": "2026-05-16",
-      "category": "Couples \u00b7 International",
+      "endDate": "2026-05-06",
+      "category": "Couples · International",
       "accentColor2": "#673ab7",
-      "desc": "Tokyo \u2192 Hakone \u2192 Kyoto. $4,500\u2013$7,000 for two. Price tracker active \u2014 alert set at $900/person. teamLab, ryokan, kaiseki, Fushimi Inari at dawn.",
-      "cardLink": "View plan \u2192",
+      "desc": "Tokyo → Hakone → Kyoto. $4,500–$7,000 for two. Price tracker active — alert set at $900/person. teamLab, ryokan, kaiseki, Fushimi Inari at dawn.",
+      "cardLink": "View plan →",
       "whoTags": [
         "sage",
         "tafline"
       ],
       "extraStatus": [],
-      "dateLabel": "May 9\u201316, 2026",
+      "dateLabel": "Apr 28–May 6, 2026",
       "statusLabel": "Planning"
     },
     {
       "id": "europe-2026",
       "title": "Europe 2026",
-      "subtitle": "Arbor Family \u00b7 Jun 12\u201328, 2026",
-      "emoji": "\ud83c\udf0d",
-      "dates": "Jun 12\u201328, 2026",
+      "subtitle": "Arbor Family · Jun 12–28, 2026",
+      "emoji": "🌍",
+      "dates": "Jun 12–28, 2026",
       "startDate": "2026-06-12",
       "who": [
         "Sage",
@@ -77,18 +77,18 @@
       "color": "#9c27b0",
       "planPage": "./europe_2026_map.html",
       "endDate": "2026-06-28",
-      "category": "Family \u00b7 International",
+      "category": "Family · International",
       "accentColor2": "#c0392b",
-      "desc": "AMS \u2192 Belgium \u2192 Paris (Jun 12\u201319 with Oma). Jun 20\u201327 family route TBD \u2014 6 options: \ud83d\udd34 Alpine Arc \u00b7 \ud83d\udd35 Rhine Valley \u00b7 \ud83d\udfe3 Alps & Prague \u00b7 \ud83d\udfe1 Iberian Arc & Morocco \u00b7 \ud83e\ude75 Interlaken & Riviera \u00b7 \ud83c\udf36\ufe0f Spain & Morocco Loop",
-      "cardLink": "View map \u2197",
+      "desc": "AMS → Belgium → Paris (Jun 12–19 with Oma). Jun 20–27 family route TBD — 6 options: 🔴 Alpine Arc · 🔵 Rhine Valley · 🟣 Alps & Prague · 🟡 Iberian Arc & Morocco · 🩵 Interlaken & Riviera · 🌶️ Spain & Morocco Loop",
+      "cardLink": "View map ↗",
       "whoTags": [
         "family"
       ],
       "extraStatus": [
-        "\u2708\ufe0f Flights Confirmed",
-        "\ud83d\uddfa\ufe0f Route: Planning"
+        "✈️ Flights Confirmed",
+        "🗺️ Route: Planning"
       ],
-      "dateLabel": "Jun 12\u201328, 2026 \u00b7 Conf. LXTIOD",
+      "dateLabel": "Jun 12–28, 2026 · Conf. LXTIOD",
       "statusLabel": "Planning"
     }
   ]
