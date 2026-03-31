@@ -168,6 +168,35 @@
     #map { height: 55vw; min-height: 280px; max-height: 420px; }
     .sidebar { width: 100%; }
   }
+
+  /* ── Day Options Panel ── */
+  .options-label { font-size:0.72rem; font-weight:700; letter-spacing:.08em;
+    color:#888; text-transform:uppercase; margin:16px 0 10px; }
+  .options-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; margin-bottom:6px; }
+  .opt-card { border:2px solid rgba(255,255,255,0.10); border-radius:12px; overflow:hidden;
+    background:rgba(255,255,255,0.04); cursor:pointer; transition:all .2s;
+    position:relative; }
+  .opt-card:hover { border-color:rgba(255,255,255,0.3); transform:translateY(-2px); }
+  .opt-card.selected { border-color:#7c4dff; background:rgba(124,77,255,0.12); }
+  .opt-card.selected::after { content:'✓ Selected'; position:absolute; top:8px; right:8px;
+    background:#7c4dff; color:#fff; font-size:0.65rem; font-weight:700; padding:2px 7px;
+    border-radius:20px; }
+  .opt-card img { width:100%; height:130px; object-fit:cover; display:block; }
+  .opt-card .opt-body { padding:10px 12px 12px; }
+  .opt-card .opt-name { font-weight:700; font-size:0.92rem; margin-bottom:4px; }
+  .opt-card .opt-meta { display:flex; gap:8px; font-size:0.72rem; color:#aaa; margin-bottom:8px; }
+  .opt-card .opt-meta span { background:rgba(255,255,255,0.08); padding:2px 7px; border-radius:10px; }
+  .opt-card .opt-meta .tag-nature { background:rgba(76,175,80,0.2); color:#81c784; }
+  .opt-card .opt-meta .tag-culture { background:rgba(255,152,0,0.2); color:#ffb74d; }
+  .opt-card .opt-meta .tag-easy { background:rgba(33,150,243,0.2); color:#64b5f6; }
+  .opt-card .opt-meta .tag-splurge { background:rgba(233,30,99,0.2); color:#f48fb1; }
+  .opt-card ul { margin:0; padding-left:14px; font-size:0.78rem; color:#ccc; line-height:1.6; }
+  .opt-default-badge { font-size:0.65rem; font-weight:700; color:#7c4dff;
+    text-transform:uppercase; letter-spacing:.05em; margin-bottom:6px; }
+  .opt-cost-row { font-size:0.78rem; color:#aaa; margin-top:8px; padding-top:8px;
+    border-top:1px solid rgba(255,255,255,0.08); }
+  .opt-cost-row strong { color:#fff; }
+
 </style>
 </head>
 <body>
@@ -344,11 +373,77 @@
           </div>
         </div>
         <div class="day-body">
+          <div class="options-label">📍 Day trip options — pick one</div>
+          <div class="options-grid" id="day3-opts">
+
+            <div class="opt-card selected" id="opt-d3-nikko" onclick="selectOption('day3','opt-d3-nikko')">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Kegon_Falls_%28Kegon-no-taki%29.jpg/480px-Kegon_Falls_%28Kegon-no-taki%29.jpg"
+                   onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Kegon-Fall.jpg/480px-Kegon-Fall.jpg'"
+                   alt="Kegon Falls, Nikkō" loading="lazy">
+              <div class="opt-body">
+                <div class="opt-default-badge">★ Recommended</div>
+                <div class="opt-name">🏔️ Nikkō</div>
+                <div class="opt-meta">
+                  <span>2h from Tokyo</span>
+                  <span class="tag-nature">nature</span>
+                  <span class="tag-culture">UNESCO</span>
+                </div>
+                <ul>
+                  <li>Kegon Falls — 97m, elevator to base</li>
+                  <li>Toshogu Shrine in ancient cedar forest</li>
+                  <li>Lake Chūzenji above the falls</li>
+                  <li>400-year-old cedar avenue</li>
+                </ul>
+                <div class="opt-cost-row">¥2,800/pp · Full day · Leave 7am</div>
+              </div>
+            </div>
+
+            <div class="opt-card" id="opt-d3-kamakura" onclick="selectOption('day3','opt-d3-kamakura')">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Great_Buddha_of_Kamakura.jpg/480px-Great_Buddha_of_Kamakura.jpg"
+                   alt="Kamakura Great Buddha" loading="lazy">
+              <div class="opt-body">
+                <div class="opt-name">🌊 Kamakura</div>
+                <div class="opt-meta">
+                  <span>1h from Tokyo</span>
+                  <span class="tag-nature">coastal</span>
+                  <span class="tag-culture">temples</span>
+                </div>
+                <ul>
+                  <li>Giant Buddha (Daibutsu) — outdoor, 13m</li>
+                  <li>Daibutsu Hiking Trail — sea views</li>
+                  <li>Zen temples + bamboo garden</li>
+                  <li>Ocean town for lunch</li>
+                </ul>
+                <div class="opt-cost-row">¥1,500/pp · Half-day possible</div>
+              </div>
+            </div>
+
+            <div class="opt-card" id="opt-d3-takao" onclick="selectOption('day3','opt-d3-takao')">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Mount_Takao_Summit_201411.jpg/480px-Mount_Takao_Summit_201411.jpg"
+                   alt="Mt Takao summit" loading="lazy">
+              <div class="opt-body">
+                <div class="opt-name">🌿 Mt. Takao</div>
+                <div class="opt-meta">
+                  <span>1h from Shinjuku</span>
+                  <span class="tag-nature">hike</span>
+                  <span class="tag-easy">easy</span>
+                </div>
+                <ul>
+                  <li>Forest hike to summit (599m)</li>
+                  <li>Fuji views on clear days</li>
+                  <li>Temple + monkey park on trail</li>
+                  <li>Lowest effort, still 100% nature</li>
+                </ul>
+                <div class="opt-cost-row">Free w/ JR Pass · Half-day</div>
+              </div>
+            </div>
+
+          </div>
           <div class="activity"><div class="act-time">7am</div><div class="act-desc"><strong>Train: Shinjuku → Nikkō</strong> <span class="act-tag nature">nature</span> — ~2h via JR Utsunomiya + Tobu. Covered by JR Pass to Utsunomiya, then Tobu (~¥1,400/person)</div></div>
-          <div class="activity"><div class="act-time">Morning</div><div class="act-desc"><strong>Cedar Avenue → Toshogu Shrine</strong> <span class="act-tag culture">culture</span> <span class="act-tag nature">nature</span> — 400-year-old cedar forest lining the approach. UNESCO shrine complex buried in mountain forest. Seriously jaw-dropping.</div></div>
-          <div class="activity"><div class="act-time">Lunch</div><div class="act-desc"><strong>Yuba (tofu skin) lunch in Nikkō town</strong> <span class="act-tag food">food</span> — local specialty, served everywhere near the shrine</div></div>
-          <div class="activity"><div class="act-time">Afternoon</div><div class="act-desc"><strong>Kegon Falls + Lake Chūzenji</strong> <span class="act-tag nature">nature</span> — 97m waterfall; take the elevator down for the spray-in-your-face view. Mountain lake above. One of Japan's top natural sights.</div></div>
-          <div class="activity"><div class="act-time">Evening</div><div class="act-desc"><strong>Train back to Tokyo · dinner in Shinjuku</strong> — back by 7pm. Low-key ramen or izakaya after a full day outdoors</div></div>
+          <div class="activity"><div class="act-time">Morning</div><div class="act-desc"><strong>Cedar Avenue → Toshogu Shrine</strong> <span class="act-tag culture">culture</span> <span class="act-tag nature">nature</span> — 400-year-old cedar forest lining the approach. UNESCO shrine complex buried in mountain forest.</div></div>
+          <div class="activity"><div class="act-time">Lunch</div><div class="act-desc"><strong>Yuba lunch in Nikkō town</strong> <span class="act-tag food">food</span> — local specialty (tofu skin), served everywhere near the shrine</div></div>
+          <div class="activity"><div class="act-time">Afternoon</div><div class="act-desc"><strong>Kegon Falls + Lake Chūzenji</strong> <span class="act-tag nature">nature</span> — 97m waterfall, elevator to base for spray-in-your-face view.</div></div>
+          <div class="activity"><div class="act-time">Evening</div><div class="act-desc"><strong>Train back → dinner in Shinjuku</strong> — back by 7pm. Ramen or izakaya.</div></div>
         </div>
       </div>
 
