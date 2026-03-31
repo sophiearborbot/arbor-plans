@@ -204,7 +204,7 @@
 <header>
   <div>
     <h1>🇯🇵 Sage &amp; Tafline — Japan Spring 2026</h1>
-    <p>Tokyo → Kyoto → Hakone · 8 nights · No kids · Apr 28–May 6</p>
+    <p>Tokyo → Hakone → Kyoto · 8 nights · No kids · Apr 28–May 6 · Fly home KIX</p>
   </div>
   <div class="header-right">
     <div class="price-badge">
@@ -446,7 +446,7 @@
       <div class="transit-card">
         <div class="transit-icon">🚅</div>
         <div class="transit-info">
-          <strong>Tokyo → Kyoto</strong> — Shinkansen Hikari ~2h15m. Covered by JR Pass. Reserve seats at smart-ex.jp — GW trains fill fast.
+          <strong>Tokyo → Hakone</strong> — Romancecar from Shinjuku ~85min. Opens Apr 1 10pm EDT at odakyu-global.com — book immediately.
         </div>
       </div>
 
@@ -454,8 +454,8 @@
         <div class="day-header" style="background: linear-gradient(135deg, rgba(233,30,99,0.15), transparent);">
           <div class="day-num">4</div>
           <div>
-            <div class="day-city">⛩️ Kyoto — Arrive + Gion Evening</div>
-            <div class="day-title">May 1 — Shinkansen to Kyoto · Gion + Pontocho at night</div>
+            <div class="day-city">🗻 Hakone — Ryokan + Private Onsen + Mt Fuji</div>
+            <div class="day-title">May 1 — Romancecar from Tokyo · check in to ryokan · onsen at sunset</div>
           </div>
         </div>
         <div class="day-body">
@@ -469,7 +469,7 @@
       <div class="transit-card">
         <div class="transit-icon">🚅</div>
         <div class="transit-info">
-          <strong>Hakone → Kyoto</strong> — ~2.5h by Shinkansen from Odawara. The bullet train is an experience in itself.
+          <strong>Hakone → Kyoto</strong> — Shinkansen Hikari from Odawara ~2h20m. Reserve at smart-ex.jp.
         </div>
       </div>
 
@@ -477,8 +477,8 @@
         <div class="day-header" style="background: linear-gradient(135deg, rgba(255,152,0,0.12), transparent);">
           <div class="day-num">5</div>
           <div>
-            <div class="day-city">🌲 Kyoto — Fushimi + Arashiyama</div>
-            <div class="day-title">May 2 — Gates at dawn, bamboo grove, tea ceremony</div>
+            <div class="day-city">⛩️ Kyoto — Arrive + Fushimi Inari</div>
+            <div class="day-title">May 2 — Shinkansen from Odawara · Fushimi Inari gates at dusk</div>
           </div>
         </div>
         <div class="day-body">
@@ -535,8 +535,8 @@
         <div class="day-header" style="background: linear-gradient(135deg, rgba(255,152,0,0.12), transparent);">
           <div class="day-num">6</div>
           <div>
-            <div class="day-city">🕌 Kyoto — Kinkaku-ji + Nishiki Market</div>
-            <div class="day-title">May 3 — Golden Pavilion, last Kyoto wander</div>
+            <div class="day-city">🎍 Kyoto — Arashiyama + 🦌 Nara</div>
+            <div class="day-title">May 3 — Bamboo grove at dawn · deer park half-day trip</div>
           </div>
         </div>
         <div class="day-body">
@@ -552,8 +552,8 @@
         <div class="day-header" style="background: linear-gradient(135deg, rgba(255,152,0,0.12), transparent);">
           <div class="day-num">7</div>
           <div>
-            <div class="day-city">🗻 Hakone — Ryokan + Private Onsen + Mt Fuji</div>
-            <div class="day-title">May 4 — Best night of the trip: ryokan, kaiseki, open-air bath</div>
+            <div class="day-city">🏯 Kyoto — Gion + Golden Pavilion + Farewell</div>
+            <div class="day-title">May 4 — Gion morning · Kinkaku-ji · Nishiki market · fly home from KIX</div>
           </div>
         </div>
         <div class="day-body">
@@ -566,7 +566,7 @@
       <div class="transit-card">
         <div class="transit-icon">✈️</div>
         <div class="transit-info">
-          <strong>May 5 — Fly home from Hakone (HND)</strong> — Romancecar Hakone→Shinjuku (85min) → Keikyu to HND (~40min). Leave Hakone by 9am. Must be home by May 15 (Asher tournament).
+          <strong>May 5 — Fly home from Kyoto (KIX)</strong> — Haruka Express Kyoto→KIX (~75min, ~$25/pp). Leave Kyoto by 9am for afternoon departure. Must be home by May 15 (Asher tournament).
         </div>
       </div>
 
@@ -765,8 +765,8 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
 // ── CITIES ──────────────────────────────────────────────
 const cities = [
   { latlng: [35.6762, 139.6503], label: 'Tokyo / HND', days: 'Apr 28–30 (Days 1–3)', color: '#9c27b0' },
-  { latlng: [35.0116, 135.7681], label: 'Kyoto', days: 'May 1–3 (Days 4–6)', color: '#ff9800' },
-  { latlng: [35.2326, 139.1069], label: 'Hakone', days: 'May 4 (Day 7) · Ryokan + Onsen', color: '#e91e63' },
+  { latlng: [35.2326, 139.1069], label: 'Hakone', days: 'May 1 (Day 4) · Ryokan + Onsen', color: '#e91e63' },
+  { latlng: [35.0116, 135.7681], label: 'Kyoto', days: 'May 2–4 (Days 5–7) · Fly KIX', color: '#ff9800' },
 ];
 
 cities.forEach(c => {
@@ -785,14 +785,14 @@ cities.forEach(c => {
 
 // ── ROUTE LINE ───────────────────────────────────────────
 L.polyline(
-  [[35.6762, 139.6503], [35.0116, 135.7681], [35.2326, 139.1069], [35.6762, 139.6503]],
+  [[35.6762, 139.6503], [35.2326, 139.1069], [35.0116, 135.7681], [35.6762, 139.6503]],
   { color: '#9c27b0', weight: 2.5, opacity: 0.7, dashArray: '6,4' }
-).addTo(map).bindTooltip('Tokyo → Kyoto → Hakone → Tokyo (HND) · Round-trip', {sticky:true});
+).addTo(map).bindTooltip('Tokyo → Hakone → Kyoto · Fly home KIX', {sticky:true});
 
 // ── FLIGHT ARC CLT → HND ─────────────────────────────────
 L.polyline([[35.2271, -80.8431], [35.6762, 139.6503]], {
   color: '#64b5f6', weight: 1.5, opacity: 0.5, dashArray: '3,5'
-}).addTo(map).bindTooltip('✈️ CLT → HND Apr 28 · Return May 5/6', {sticky:true});
+}).addTo(map).bindTooltip('✈️ CLT → HND Apr 28 · Return KIX May 5', {sticky:true});
 
 // ── LEGEND ───────────────────────────────────────────────
 const legend = L.control({position:'bottomleft'});
@@ -846,10 +846,10 @@ document.getElementById('day1').classList.add('open');
         <td style="padding:8px 12px;text-align:center"><a href="https://www.google.com/travel/flights#flt=CLT.HND.2026-04-28;c:USD;e:1;s:1*1;sd:1;t:f" target="_blank" style="background:#9c27b0;color:#fff;padding:5px 10px;border-radius:5px;text-decoration:none;font-size:0.75rem;white-space:nowrap">Search →</a></td>
       </tr>
       <tr style="border-top:1px solid #2d1a3e;background:#160820">
-        <td style="padding:8px 12px;color:#fff;font-weight:600">Tokyo HND → CLT</td>
+        <td style="padding:8px 12px;color:#fff;font-weight:600">Kyoto KIX → CLT</td>
         <td style="padding:8px;text-align:center;color:#7ec8e3">May 5</td>
         <td style="padding:8px;text-align:center;color:#94a3b8">incl. in RT</td>
-        <td style="padding:8px;color:#94a3b8;font-size:0.75rem">Depart HND evening · arrive CLT May 6 · Romancecar→Shinjuku→Keikyu→HND, leave Hakone by 9am</td>
+        <td style="padding:8px;color:#94a3b8;font-size:0.75rem">Haruka Express Kyoto→KIX ~75min · depart afternoon · arrive CLT May 6</td>
         <td style="padding:8px 12px;text-align:center"><a href="https://www.google.com/travel/flights#flt=HND.CLT.2026-05-05;c:USD;e:1;s:1*1;sd:1;t:f" target="_blank" style="background:#673ab7;color:#fff;padding:5px 10px;border-radius:5px;text-decoration:none;font-size:0.75rem;white-space:nowrap">Search →</a></td>
       </tr>
     </table>
@@ -883,7 +883,7 @@ document.getElementById('day1').classList.add('open');
         <td style="padding:8px 12px;text-align:center"><a href="https://www.nikko-travel.jp/english/" target="_blank" style="background:#26a69a;color:#fff;padding:5px 10px;border-radius:5px;text-decoration:none;font-size:0.75rem">Nikkō guide →</a></td>
       </tr>
       <tr style="border-top:1px solid #1a3a3a">
-        <td style="padding:8px 12px;color:#fff;font-weight:600">Tokyo → Kyoto (Shinkansen)</td>
+        <td style="padding:8px 12px;color:#fff;font-weight:600">Tokyo → Hakone (Romancecar)</td>
         <td style="padding:8px;text-align:center;color:#7ec8e3">May 1</td>
         <td style="padding:8px;text-align:center;color:#e0e0e0">Hikari (not Nozomi)</td>
         <td style="padding:8px;text-align:center">~2h 15m</td>
@@ -891,28 +891,28 @@ document.getElementById('day1').classList.add('open');
         <td style="padding:8px 12px;text-align:center"><a href="https://smart-ex.jp/en/" target="_blank" style="background:#26a69a;color:#fff;padding:5px 10px;border-radius:5px;text-decoration:none;font-size:0.75rem">smart-ex.jp →</a></td>
       </tr>
       <tr style="border-top:1px solid #1a3a3a;background:#081515">
-        <td style="padding:8px 12px;color:#fff;font-weight:600">Kyoto → Odawara (Shinkansen)</td>
-        <td style="padding:8px;text-align:center;color:#7ec8e3">May 4</td>
+        <td style="padding:8px 12px;color:#fff;font-weight:600">Hakone → Kyoto (Shinkansen, Odawara)</td>
+        <td style="padding:8px;text-align:center;color:#7ec8e3">May 2</td>
         <td style="padding:8px;text-align:center;color:#e0e0e0">Hikari (not Nozomi)</td>
         <td style="padding:8px;text-align:center">~2h 20m</td>
         <td style="padding:8px;text-align:center;color:#4ade80">~$116</td>
         <td style="padding:8px 12px;text-align:center"><a href="https://smart-ex.jp/en/" target="_blank" style="background:#26a69a;color:#fff;padding:5px 10px;border-radius:5px;text-decoration:none;font-size:0.75rem">smart-ex.jp →</a></td>
       </tr>
       <tr style="border-top:1px solid #1a3a3a">
-        <td style="padding:8px 12px;color:#fff;font-weight:600">Odawara/Shinjuku → Hakone (Romancecar)</td>
-        <td style="padding:8px;text-align:center;color:#7ec8e3">May 4</td>
-        <td style="padding:8px;text-align:center;color:#e0e0e0">Odakyu Romancecar <span style="color:#f59e0b;font-size:0.7rem">⚠️ not JR</span></td>
-        <td style="padding:8px;text-align:center">~85 min</td>
-        <td style="padding:8px;text-align:center;color:#4ade80">~$40</td>
+        <td style="padding:8px 12px;color:#fff;font-weight:600">Kyoto → KIX (Haruka Express)</td>
+        <td style="padding:8px;text-align:center;color:#7ec8e3">May 5</td>
+        <td style="padding:8px;text-align:center;color:#e0e0e0">JR Haruka Express</td>
+        <td style="padding:8px;text-align:center">~75 min</td>
+        <td style="padding:8px;text-align:center;color:#4ade80">~$50</td>
         <td style="padding:8px 12px;text-align:center"><a href="https://www.odakyu-global.com/" target="_blank" style="background:#26a69a;color:#fff;padding:5px 10px;border-radius:5px;text-decoration:none;font-size:0.75rem">Odakyu →</a></td>
       </tr>
       <tr style="border-top:1px solid #1a3a3a;background:#081515">
-        <td style="padding:8px 12px;color:#fff;font-weight:600">Hakone → Shinjuku → HND (fly home)</td>
-        <td style="padding:8px;text-align:center;color:#7ec8e3">May 5</td>
-        <td style="padding:8px;text-align:center;color:#e0e0e0">Romancecar + Keikyu</td>
-        <td style="padding:8px;text-align:center">~2h total</td>
-        <td style="padding:8px;text-align:center;color:#4ade80">~$50</td>
-        <td style="padding:8px 12px;text-align:center"><span style="color:#94a3b8;font-size:0.75rem">Leave ryokan by 9am</span></td>
+        <td style="padding:8px 12px;color:#fff;font-weight:600">HND → Shinjuku (arrive Apr 28)</td>
+        <td style="padding:8px;text-align:center;color:#7ec8e3">Apr 28</td>
+        <td style="padding:8px;text-align:center;color:#e0e0e0">Keikyu Line</td>
+        <td style="padding:8px;text-align:center">~40 min</td>
+        <td style="padding:8px;text-align:center;color:#4ade80">~$10</td>
+        <td style="padding:8px 12px;text-align:center"><span style="color:#94a3b8;font-size:0.75rem">Suica card at airport</span></td>
       </tr>
     </table>
     <div style="padding:10px 16px;border-top:1px solid #1a3a3a">
@@ -926,11 +926,11 @@ document.getElementById('day1').classList.add('open');
   <div style="background:#1a1500;border:1px solid #78350f;border-radius:12px;padding:14px 16px">
     <div style="font-weight:700;color:#fcd34d;margin-bottom:10px;font-size:0.9rem">🎟️ Book in this order:</div>
     <ol style="color:#e0e0e0;font-size:0.82rem;line-height:2;padding-left:20px">
-      <li><strong>Flights CLT → HND (Apr 28) + HND → CLT (May 5)</strong> — Air Canada ~$1,136/pp <a href="https://www.google.com/travel/flights#flt=CLT.HND.2026-04-28;c:USD;e:1;s:1*1;sd:1;t:f" target="_blank" style="color:#ce93d8">Google Flights →</a></li>
-      <li><strong>Hakone ryokan (May 4 nt)</strong> — GW peak, books out fast <a href="https://www.booking.com/searchresults.html?ss=Hakone&checkin=2026-05-04&checkout=2026-05-05&group_adults=2&nflt=popular_activities%3D157" target="_blank" style="color:#ce93d8">Booking.com →</a></li>
-      <li><strong>Shinkansen Tokyo→Kyoto (May 1)</strong> — reserve seats now at smart-ex.jp <a href="https://smart-ex.jp/en/" target="_blank" style="color:#ce93d8">smart-ex.jp →</a></li>
-      <li><strong>Shinkansen Kyoto→Odawara (May 4)</strong> — same, book now <a href="https://smart-ex.jp/en/" target="_blank" style="color:#ce93d8">smart-ex.jp →</a></li>
-      <li><strong>Romancecar Shinjuku→Hakone (May 4)</strong> — opens Apr 1, 10pm EDT. Book immediately <a href="https://www.odakyu-global.com/" target="_blank" style="color:#ce93d8">odakyu-global.com →</a></li>
+      <li><strong>Flights CLT→HND (Apr 28) + KIX→CLT (May 5)</strong> — Air Canada/cheapest ~$1,136/pp <a href="https://www.google.com/travel/flights#flt=CLT.HND.2026-04-28;c:USD;e:1;s:1*1;sd:1;t:f" target="_blank" style="color:#ce93d8">Google Flights →</a></li>
+      <li><strong>Hakone ryokan (May 1 nt)</strong> — GW peak, books out fast <a href="https://www.booking.com/searchresults.html?ss=Hakone&checkin=2026-05-01&checkout=2026-05-02&group_adults=2&nflt=popular_activities%3D157" target="_blank" style="color:#ce93d8">Booking.com →</a></li>
+      <li><strong>Romancecar Shinjuku→Hakone (May 1)</strong> — opens Apr 1, 10pm EDT. Book immediately <a href="https://www.odakyu-global.com/" target="_blank" style="color:#ce93d8">odakyu-global.com →</a></li>
+      <li><strong>Shinkansen Odawara→Kyoto (May 2)</strong> — reserve seats now at smart-ex.jp <a href="https://smart-ex.jp/en/" target="_blank" style="color:#ce93d8">smart-ex.jp →</a></li>
+      <li><strong>Haruka Express Kyoto→KIX (May 5)</strong> — buy at Kyoto station or in advance <a href="https://www.westjr.co.jp/global/en/ticket/pass/haruka/" target="_blank" style="color:#ce93d8">JR West →</a></li>
       <li><strong>Tokyo, Kyoto hotels</strong> — mid-range, book after flights confirmed</li>
     </ol>
   </div>
