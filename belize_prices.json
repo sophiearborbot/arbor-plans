@@ -1,0 +1,14 @@
+{
+  "route": "CLT-BZE",
+  "dates": "2026-04-29/2026-05-06",
+  "note": "Round-trip per person estimates",
+  "tracked": [
+    {
+      "date": "2026-04-02",
+      "low": 299,
+      "mid": 547,
+      "high": 790,
+      "source": "search estimate"
+    }
+  ]
+}

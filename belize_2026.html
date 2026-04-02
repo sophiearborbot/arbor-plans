@@ -5,6 +5,56 @@
 <title>🤿 Belize Diving — Sage & Tafline · Apr 29–May 6, 2026</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+/* ── DARK / LIGHT MODE ── */
+body.light-mode {
+  --bg: #f0f4f8; --bg2: #ffffff; --bg3: #e8edf2;
+  --accent: #0077a8; --accent2: #005f87; --ocean: #0077a8;
+  --text: #1a2a3a; --muted: #5a7a8a; --border: rgba(0,119,168,0.2);
+  --gold: #b8860b; --green: #2e7d32; --coral: #c62828;
+}
+body.light-mode .hero { background: linear-gradient(160deg,#b3e5fc 0%,#e0f7fa 50%,#f0f4f8 100%); }
+body.light-mode .hero h1 { color: #003040; }
+body.light-mode .hero p { color: #00607a; }
+body.light-mode .badge { background: rgba(0,119,168,0.12); border-color: rgba(0,119,168,0.3); color: #005f87; }
+body.light-mode .badge.hot { background: rgba(200,60,20,0.1); color: #c0390c; }
+body.light-mode .whale-shark-banner { background: linear-gradient(135deg,rgba(255,213,79,0.1),rgba(0,150,136,0.08)); }
+body.light-mode .whale-shark-banner h3 { color: #8a6000; }
+body.light-mode .whale-shark-banner p { color: #2a3a4a; }
+body.light-mode .section-head { background: #e0eaf2; }
+body.light-mode table th { background: #e0eaf2; color: #3a5a6a; }
+body.light-mode td { color: #1a2a3a; }
+body.light-mode .book-order { background: rgba(255,213,79,0.08); border-color: rgba(180,140,0,0.3); }
+body.light-mode .book-order h3 { color: #8a6000; }
+body.light-mode .book-order ol { color: #1a2a3a; }
+body.light-mode .info-card { background: #e8f4f8; border-left-color: #0077a8; color: #1a2a3a; }
+body.light-mode .tab { color: #5a7a8a; }
+body.light-mode .tab.active { color: #0077a8; border-bottom-color: #0077a8; background: #f8fafb; }
+body.light-mode .opt-badge { background: rgba(0,119,168,0.12); color: #005f87; }
+body.light-mode .opt-bullets { color: #4a6a7a; }
+body.light-mode .transit-card { background: rgba(0,150,136,0.06); }
+body.light-mode .day-num { background: rgba(0,119,168,0.15); color: #0077a8; }
+body.light-mode .day-city { color: #5a7a8a; }
+body.light-mode .act-time { color: #5a7a8a; }
+body.light-mode .cond-val { color: #0077a8; }
+body.light-mode .cond-label { color: #5a7a8a; }
+body.light-mode .options-label { color: #0077a8; }
+body.light-mode .opt-card { border-color: rgba(0,0,0,0.1); background: rgba(0,0,0,0.02); }
+body.light-mode .opt-card.selected { border-color: #0077a8; background: rgba(0,119,168,0.07); }
+
+/* ── MODE TOGGLE BUTTON ── */
+.mode-toggle {
+  position: fixed; top: 14px; right: 14px; z-index: 9999;
+  background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2);
+  color: #fff; border-radius: 24px; padding: 6px 14px; cursor: pointer;
+  font-size: 0.8rem; font-weight: 600; backdrop-filter: blur(8px);
+  transition: all 0.2s; user-select: none;
+}
+.mode-toggle:hover { background: rgba(0,188,212,0.3); }
+body.light-mode .mode-toggle { background: rgba(255,255,255,0.8); color: #003040;
+  border-color: rgba(0,0,0,0.15); }
+</style>
 <style>
   :root {
     --bg: #0a0a12; --bg2: #10101e; --bg3: #18182a;
@@ -127,6 +177,7 @@
 </head>
 <body>
 
+<button class="mode-toggle" onclick="toggleMode()" id="modeBtn">☀️ Light Mode</button>
 <div class="hero">
   <h1>🤿 <span>Belize</span> Diving Trip</h1>
   <p>Sage & Tafline · Apr 29 – May 6, 2026 · 7 nights</p>
@@ -147,6 +198,7 @@
   <div class="tab" onclick="showTab('hotels')">🏨 Hotels</div>
   <div class="tab" onclick="showTab('transport')">✈️ Flights & Transport</div>
   <div class="tab" onclick="showTab('costs')">💰 Costs</div>
+  <div class="tab" onclick="showTab('prices')">📈 Flight Prices</div>
 </div>
 
 <!-- ════════════════════════════════════════════════
@@ -493,8 +545,13 @@
 
 <script>
 const map = L.map('map', {zoomControl:true}).setView([17.0, -87.8], 8);
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-  attribution:'© OpenStreetMap © CARTO', maxZoom:14}).addTo(map);
+window._belizeMap = map;
+const darkTile = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {attribution:'© OpenStreetMap © CARTO', maxZoom:14});
+const lightTile = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {attribution:'© OpenStreetMap © CARTO', maxZoom:14});
+const startLight = document.body.classList.contains('light-mode');
+const activeTile = startLight ? lightTile : darkTile;
+activeTile.addTo(map);
+window._tileLayers = { dark: darkTile, light: lightTile, current: activeTile };
 
 const diveSites = [
   {ll:[17.9240,-87.9713], label:'San Pedro / Ambergris Caye', sub:'Days 1–3 · Base camp', color:'#00bcd4'},
@@ -548,5 +605,119 @@ function selectOption(dayId, el) {
 }
 document.getElementById('day1').classList.add('open');
 </script>
+
+<!-- ════════════════════════════════════════════════
+     TAB: FLIGHT PRICES
+════════════════════════════════════════════════ -->
+<div class="tab-content" id="tab-prices">
+  <div class="info-card" style="margin-bottom:16px">
+    📊 <strong>CLT → BZE Round-trip price tracking</strong> — Apr 29 / May 6 · 2 adults<br>
+    <span style="font-size:0.78rem;color:var(--muted)">Prices tracked manually. Lower is better. Book before 2 weeks out — prices typically spike 14-21 days before departure.</span>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px">
+    <canvas id="priceChart" height="200"></canvas>
+  </div>
+  <div class="section-box">
+    <div class="section-head">📅 Price Observations</div>
+    <table>
+      <tr><th>Date Checked</th><th>Low/pp</th><th>Mid/pp</th><th>High/pp</th><th>Note</th></tr>
+      <tr><td>Apr 2, 2026</td><td style="color:#4caf50">$299</td><td>$547</td><td>$790</td><td>27 days out — still reasonable. Book now.</td></tr>
+    </table>
+  </div>
+  <div class="book-order">
+    <h3>📉 Price Trend Analysis</h3>
+    <ul style="font-size:0.83rem;line-height:2;padding-left:20px;color:#e0e0e0">
+      <li><strong>Now (27 days out):</strong> $299–790/pp — reasonable range, good availability</li>
+      <li><strong>14 days out (Apr 15):</strong> Expect $450–900/pp — prices climb fast here</li>
+      <li><strong>7 days out (Apr 22):</strong> $700–1,200/pp likely — last-minute premium</li>
+      <li><strong>Recommendation: Book by Apr 10</strong> to catch the best fares</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+// Price chart
+async function loadPriceChart() {
+  let data = { tracked: [{date:"Apr 2",low:299,mid:547,high:790}] };
+  try {
+    const r = await fetch('./belize_prices.json?t=' + Date.now());
+    if (r.ok) {
+      const raw = await r.json();
+      if (raw.tracked && raw.tracked.length) {
+        data.tracked = raw.tracked.map(p => ({
+          date: p.date.replace("2026-",""),
+          low: p.low, mid: p.mid, high: p.high
+        }));
+      }
+    }
+  } catch(e) {}
+  
+  const isDark = !document.body.classList.contains('light-mode');
+  const ctx = document.getElementById('priceChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: data.tracked.map(p => p.date),
+      datasets: [
+        { label: 'Low/pp', data: data.tracked.map(p=>p.low),
+          borderColor:'#4caf50', backgroundColor:'rgba(76,175,80,0.1)',
+          tension:0.3, fill:false, pointRadius:5 },
+        { label: 'Mid/pp', data: data.tracked.map(p=>p.mid),
+          borderColor:'#00bcd4', backgroundColor:'rgba(0,188,212,0.1)',
+          tension:0.3, fill:false, pointRadius:5 },
+        { label: 'High/pp', data: data.tracked.map(p=>p.high),
+          borderColor:'#ff7043', backgroundColor:'rgba(255,112,67,0.1)',
+          tension:0.3, fill:false, pointRadius:5 },
+      ]
+    },
+    options: {
+      responsive:true,
+      plugins: {
+        legend: { labels: { color: isDark ? '#e0f7fa' : '#1a2a3a' } },
+        title: { display:true, text:'CLT → BZE Round-trip Price/person (Apr 29 – May 6)',
+          color: isDark ? '#80deea' : '#005f87', font:{size:13} }
+      },
+      scales: {
+        y: { ticks:{color: isDark?'#7a9aaa':'#3a5a6a', callback:v=>'$'+v},
+             grid:{color: isDark?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.08)'} },
+        x: { ticks:{color: isDark?'#7a9aaa':'#3a5a6a'},
+             grid:{color: isDark?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.08)'} }
+      }
+    }
+  });
+}
+document.querySelector('.tab[onclick*="prices"]').addEventListener('click', ()=>{
+  setTimeout(loadPriceChart, 50);
+});
+</script>
+
+
+<script>
+// ── DARK/LIGHT MODE TOGGLE ──
+let tileLayer = null;
+function toggleMode() {
+  const body = document.body;
+  body.classList.toggle('light-mode');
+  const isLight = body.classList.contains('light-mode');
+  document.getElementById('modeBtn').textContent = isLight ? '🌙 Dark Mode' : '☀️ Light Mode';
+  localStorage.setItem('belizeMode', isLight ? 'light' : 'dark');
+  // Swap map tiles
+  if (window._belizeMap && window._tileLayers) {
+    window._belizeMap.removeLayer(window._tileLayers.current);
+    window._tileLayers.current = isLight ? window._tileLayers.light : window._tileLayers.dark;
+    window._tileLayers.current.addTo(window._belizeMap);
+    window._tileLayers.current.bringToBack();
+  }
+}
+// Restore preference
+(function(){
+  if(localStorage.getItem('belizeMode')==='light') {
+    document.body.classList.add('light-mode');
+    const btn = document.getElementById('modeBtn');
+    if(btn) btn.textContent='🌙 Dark Mode';
+  }
+})();
+</script>
+
 </body>
 </html>
