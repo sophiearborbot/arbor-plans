@@ -171,6 +171,12 @@ body.light-mode .mode-toggle { background: rgba(255,255,255,0.8); color: #003040
   .book-order a { color: #80deea; }
 
   /* ── INFO CARDS ── */
+
+  .act-thumb { height:65px; width:95px; object-fit:cover; border-radius:6px; float:right; margin-left:10px; flex-shrink:0; display:block; }
+  .act-thumb-wrap { display:flex; align-items:flex-start; gap:10px; }
+  .act-thumb-wrap img { height:65px; min-width:90px; max-width:90px; object-fit:cover; border-radius:6px; flex-shrink:0; }
+  .tbl-thumb { height:52px; width:72px; object-fit:cover; border-radius:6px; }
+
   .info-card { background: var(--bg3); border-left: 3px solid var(--accent);
     border-radius: 0 8px 8px 0; padding: 10px 14px; margin: 10px 0; font-size: 0.82rem; line-height: 1.6; }
 </style>
@@ -223,8 +229,8 @@ body.light-mode .mode-toggle { background: rgba(255,255,255,0.8); color: #003040
     <div class="day-body">
       <div class="activity"><div class="act-time">Morning</div><div class="act-desc"><strong>Fly CLT → BZE</strong> <span class="act-tag tag-dive">transit</span> — American via MIA or DFW, ~4-5h total. Arrive Belize City ~midday.</div></div>
       <div class="activity"><div class="act-time">Arrival</div><div class="act-desc"><strong>Water taxi or island hopper to Ambergris Caye</strong> — Water taxi: San Pedro Express ~75min from BZE (~$25/pp). OR Maya Island Air 15min flight (~$90/pp).</div></div>
-      <div class="activity"><div class="act-time">Afternoon</div><div class="act-desc"><strong>Check in, gear up</strong> — Rent dive gear at resort shop. Register with dive operator for tomorrow. Walk Front Street, fish tacos at local spot.</div></div>
-      <div class="activity"><div class="act-time">Evening</div><div class="act-desc"><strong>Pier 66 or Elvi's Kitchen</strong> <span class="act-tag tag-food">food</span> — Best intro dinner on the island. Grilled lobster, Belikin beer, watch sunset over Caribbean.</div></div>
+      <div class="activity"><div class="act-time">Afternoon</div><div class="act-desc"><strong>Check in, gear up</strong> — Rent dive gear at resort shop. Register with dive operator for tomorrow. Walk Front Street, fish tacos at local spot. <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/SanPedro_Belize.jpg/320px-SanPedro_Belize.jpg" alt="San Pedro" class="act-thumb" onerror="this.style.display='none'"></div></div>
+      <div class="activity"><div class="act-time">Evening</div><div class="act-desc"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Ambergris_Caye_-_waterfront.jpg/320px-Ambergris_Caye_-_waterfront.jpg" alt="Ambergris waterfront" class="act-thumb" onerror="this.style.display='none'"><strong>Pier 66 or Elvi's Kitchen</strong> <span class="act-tag tag-food">food</span> — Best intro dinner on the island. Grilled lobster, Belikin beer, watch sunset over Caribbean.</div></div>
     </div>
   </div>
 
@@ -238,8 +244,8 @@ body.light-mode .mode-toggle { background: rgba(255,255,255,0.8); color: #003040
       </div>
     </div>
     <div class="day-body">
-      <div class="activity"><div class="act-time">6:30am</div><div class="act-desc"><strong>2-tank morning dive — Hol Chan Marine Reserve</strong> <span class="act-tag tag-dive">dive</span> — 5 min by boat from San Pedro. Channel cut through reef, sea turtles, massive schools of fish, moray eels, eagle rays. One of the best reef dives in Belize.</div></div>
-      <div class="activity"><div class="act-time">Midday</div><div class="act-desc"><strong>Shark Ray Alley</strong> <span class="act-tag tag-dive">dive</span> — Snorkel/dive with 10-15 nurse sharks and southern stingrays in 10ft of water. Surreal, zero danger. Guide feeds them, they swarm around you.</div></div>
+      <div class="activity"><div class="act-time">6:30am</div><div class="act-desc"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/HolChan_cut.jpg/320px-HolChan_cut.jpg" alt="Hol Chan" class="act-thumb" onerror="this.style.display='none'"><strong>2-tank morning dive — Hol Chan Marine Reserve</strong> <span class="act-tag tag-dive">dive</span> — 5 min by boat from San Pedro. Channel cut through reef, sea turtles, massive schools of fish, moray eels, eagle rays. One of the best reef dives in Belize.</div></div>
+      <div class="activity"><div class="act-time">Midday</div><div class="act-desc"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Nurse_sharks_belize.jpg/320px-Nurse_sharks_belize.jpg" alt="Nurse sharks" class="act-thumb" onerror="this.style.display='none'"><strong>Shark Ray Alley</strong> <span class="act-tag tag-dive">dive</span> — Snorkel/dive with 10-15 nurse sharks and southern stingrays in 10ft of water. Surreal, zero danger. Guide feeds them, they swarm around you.</div></div>
       <div class="activity"><div class="act-time">Afternoon</div><div class="act-desc"><strong>Recover + explore San Pedro</strong> — Rent golf cart (standard transport), drive to Secret Beach on west side — stunning shallow turquoise flat water. Lunch at any palapa.</div></div>
       <div class="activity"><div class="act-time">Evening</div><div class="act-desc"><strong>Dinner at Palmilla / Cocina Mexicana</strong> <span class="act-tag tag-food">food</span> — Good local spots, not touristy. Or happy hour at the Palapa Bar (water bar on stilts over the sea).</div></div>
     </div>
@@ -257,8 +263,8 @@ body.light-mode .mode-toggle { background: rgba(255,255,255,0.8); color: #003040
     <div class="day-body">
       <div class="info-card">⏰ Long day — boat departs 5:30–6am, returns 6pm. Bring snacks, sunscreen, motion sickness tabs if needed. 70 miles offshore on open water.</div>
       <div class="activity"><div class="act-time">5:30am</div><div class="act-desc"><strong>Depart San Pedro — 2.5h to Blue Hole</strong> <span class="act-tag tag-dive">dive</span> — Catamaran or fast boat. Sunrise on the water.</div></div>
-      <div class="activity"><div class="act-time">Morning</div><div class="act-desc"><strong>Great Blue Hole dive</strong> <span class="act-tag tag-dive">dive</span> <span class="act-tag tag-splurge">bucket list</span> — 410ft across, 407ft deep. Dive to ~130ft (advanced certification needed). Massive stalactites from Ice Age cave. Caribbean reef sharks circle below you. One of the top 10 dive sites on Earth.</div></div>
-      <div class="activity"><div class="act-time">Midday</div><div class="act-desc"><strong>Half Moon Caye — 2 more dives</strong> <span class="act-tag tag-dive">dive</span> — Lighthouse Reef wall diving, sea turtles, nurse sharks. Red-footed booby bird colony on shore — hundreds of nesting birds, completely unbothered by humans.</div></div>
+      <div class="activity"><div class="act-time">Morning</div><div class="act-desc"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Belize_Blue_Hole.jpg/320px-Belize_Blue_Hole.jpg" alt="Great Blue Hole" class="act-thumb" onerror="this.style.display='none'"><strong>Great Blue Hole dive</strong> <span class="act-tag tag-dive">dive</span> <span class="act-tag tag-splurge">bucket list</span> — 410ft across, 407ft deep. Dive to ~130ft (advanced certification needed). Massive stalactites from Ice Age cave. Caribbean reef sharks circle below you. One of the top 10 dive sites on Earth.</div></div>
+      <div class="activity"><div class="act-time">Midday</div><div class="act-desc"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Booby_birds_half_moon_caye.jpg/320px-Booby_birds_half_moon_caye.jpg" alt="Half Moon Caye" class="act-thumb" onerror="this.style.display='none'"><strong>Half Moon Caye — 2 more dives</strong> <span class="act-tag tag-dive">dive</span> — Lighthouse Reef wall diving, sea turtles, nurse sharks. Red-footed booby bird colony on shore — hundreds of nesting birds, completely unbothered by humans.</div></div>
       <div class="activity"><div class="act-time">Afternoon</div><div class="act-desc"><strong>Long Island stop + BBQ lunch on boat</strong> <span class="act-tag tag-food">food</span> — Included in most Blue Hole trip packages. Rum punch on the way back.</div></div>
       <div class="activity"><div class="act-time">Evening</div><div class="act-desc"><strong>Arrive San Pedro ~6pm</strong> — Exhausted but exhilarated. Easy dinner, early bed.</div></div>
     </div>
@@ -301,7 +307,7 @@ body.light-mode .mode-toggle { background: rgba(255,255,255,0.8); color: #003040
         <p>Whale sharks (up to 40ft) gather at Gladden Spit every full moon April–June to feed on snapper eggs. This is the most reliable whale shark diving in the Western Hemisphere. May 3 is a full moon. You will likely see them.</p>
       </div>
       <div class="activity"><div class="act-time">Afternoon</div><div class="act-desc"><strong>Boat to Gladden Spit Marine Reserve</strong> <span class="act-tag tag-dive">dive</span> — ~1h from Placencia. Dive starts ~4–5pm (timed to snapper spawn at dusk). 2 tanks. Depth 70–100ft.</div></div>
-      <div class="activity"><div class="act-time">Dive</div><div class="act-desc"><strong>Whale shark encounter</strong> <span class="act-tag tag-dive">dive</span> <span class="act-tag tag-splurge">bucket list</span> — Gentle giants circling through a cloud of snapper eggs. Some trips see 5+ whale sharks. ~$175/pp. No guarantee, but full moon in May = highest probability of any dive trip in the Americas.</div></div>
+      <div class="activity"><div class="act-time">Dive</div><div class="act-desc"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Whale_shark.jpg/320px-Whale_shark.jpg" alt="Whale shark" class="act-thumb" onerror="this.style.display='none'"><strong>Whale shark encounter</strong> <span class="act-tag tag-dive">dive</span> <span class="act-tag tag-splurge">bucket list</span> — Gentle giants circling through a cloud of snapper eggs. Some trips see 5+ whale sharks. ~$175/pp. No guarantee, but full moon in May = highest probability of any dive trip in the Americas.</div></div>
       <div class="activity"><div class="act-time">Evening</div><div class="act-desc"><strong>Celebrate in Placencia</strong> <span class="act-tag tag-food">food</span> — Whatever you want. This is the night. Tipsy Tuna Bar or a nice dinner at Turtle Inn if you're staying there.</div></div>
     </div>
   </div>
@@ -385,7 +391,7 @@ body.light-mode .mode-toggle { background: rgba(255,255,255,0.8); color: #003040
     <div class="day-body">
       <div class="activity"><div class="act-time">Morning</div><div class="act-desc"><strong>Optional morning dive or snorkel</strong> <span class="act-tag tag-dive">dive</span> — Silk Cayes day trip from Placencia (~$65/pp) or just snorkel from shore.</div></div>
       <div class="activity"><div class="act-time">Afternoon</div><div class="act-desc"><strong>Placencia village stroll</strong> — Pick up Maya crafts, hot sauce, Belizean chocolate. Lunch at a local spot.</div></div>
-      <div class="activity"><div class="act-time">Evening</div><div class="act-desc"><strong>Last sunset dinner</strong> <span class="act-tag tag-food">food</span> — Best sunset in Belize is from the west-facing beach bars in Placencia. Rum punch mandatory.</div></div>
+      <div class="activity"><div class="act-time">Evening</div><div class="act-desc"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Placencia_Belize_sunset.jpg/320px-Placencia_Belize_sunset.jpg" alt="Placencia sunset" class="act-thumb" onerror="this.style.display='none'"><strong>Last sunset dinner</strong> <span class="act-tag tag-food">food</span> — Best sunset in Belize is from the west-facing beach bars in Placencia. Rum punch mandatory.</div></div>
     </div>
   </div>
 
@@ -426,14 +432,14 @@ body.light-mode .mode-toggle { background: rgba(255,255,255,0.8); color: #003040
   <div class="section-box">
     <div class="section-head">🤿 Dive Sites</div>
     <table>
-      <tr><th>Site</th><th>Type</th><th>Depth</th><th>Highlights</th><th>Certification</th></tr>
-      <tr><td><strong>Hol Chan Marine Reserve</strong></td><td>Reef channel</td><td>20–40ft</td><td>Sea turtles, moray eels, rays, massive fish schools</td><td>Open Water</td></tr>
-      <tr><td><strong>Shark Ray Alley</strong></td><td>Shallow flat</td><td>10–15ft</td><td>Nurse sharks + stingrays circling you</td><td>Open Water</td></tr>
-      <tr><td><strong>Great Blue Hole</strong> ⭐</td><td>Sinkhole</td><td>130ft max</td><td>Stalactites, Caribbean reef sharks, mind-bending geology</td><td>Advanced OW</td></tr>
-      <tr><td><strong>Half Moon Caye Wall</strong></td><td>Reef wall</td><td>40–80ft</td><td>Wall drop, sea turtles, nurse sharks, booby colony shore</td><td>Open Water</td></tr>
-      <tr><td><strong>Gladden Spit</strong> 🐋</td><td>Open water</td><td>70–100ft</td><td>WHALE SHARKS — full moon only. Snapper spawn feeding</td><td>Advanced OW</td></tr>
-      <tr><td><strong>Turneffe Atoll</strong></td><td>Wall + reef</td><td>60–130ft</td><td>Hammerheads, eagle rays, pristine untouched reef</td><td>Advanced OW</td></tr>
-      <tr><td><strong>Silk Cayes</strong></td><td>Reef flat</td><td>20–40ft</td><td>Calm, colorful, good for relaxed final dive</td><td>Open Water</td></tr>
+      <tr><th>Photo</th><th>Site</th><th>Type</th><th>Depth</th><th>Highlights</th><th>Cert</th></tr>
+      <tr><td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/HolChan_cut.jpg/160px-HolChan_cut.jpg" alt="Hol Chan" class="tbl-thumb" onerror="this.style.display='none'"></td><td><strong>Hol Chan Marine Reserve</strong></td><td>Reef channel</td><td>20–40ft</td><td>Sea turtles, moray eels, rays, massive fish schools</td><td>Open Water</td></tr>
+      <tr><td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Nurse_shark_belize2.jpg/160px-Nurse_shark_belize2.jpg" alt="Nurse sharks" class="tbl-thumb" onerror="this.style.display='none'"></td><td><strong>Shark Ray Alley</strong></td><td>Shallow flat</td><td>10–15ft</td><td>Nurse sharks + stingrays circling you</td><td>Open Water</td></tr>
+      <tr><td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Belize_Blue_Hole.jpg/160px-Belize_Blue_Hole.jpg" alt="Blue Hole" class="tbl-thumb" onerror="this.style.display='none'"></td><td><strong>Great Blue Hole</strong> ⭐</td><td>Sinkhole</td><td>130ft max</td><td>Stalactites, Caribbean reef sharks, mind-bending geology</td><td>Advanced OW</td></tr>
+      <tr><td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Half_moon_caye_lighthouse.jpg/160px-Half_moon_caye_lighthouse.jpg" alt="Half Moon Caye" class="tbl-thumb" onerror="this.style.display='none'"></td><td><strong>Half Moon Caye Wall</strong></td><td>Reef wall</td><td>40–80ft</td><td>Wall drop, sea turtles, nurse sharks, booby colony shore</td><td>Open Water</td></tr>
+      <tr><td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Whale_shark.jpg/160px-Whale_shark.jpg" alt="Whale shark" class="tbl-thumb" onerror="this.style.display='none'"></td><td><strong>Gladden Spit</strong> 🐋</td><td>Open water</td><td>70–100ft</td><td>WHALE SHARKS — full moon only. Snapper spawn feeding</td><td>Advanced OW</td></tr>
+      <tr><td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Turneffe_atoll_aerial.jpg/160px-Turneffe_atoll_aerial.jpg" alt="Turneffe" class="tbl-thumb" onerror="this.style.display='none'"></td><td><strong>Turneffe Atoll</strong></td><td>Wall + reef</td><td>60–130ft</td><td>Hammerheads, eagle rays, pristine untouched reef</td><td>Advanced OW</td></tr>
+      <tr><td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Silk_Cayes_Belize.jpg/160px-Silk_Cayes_Belize.jpg" alt="Silk Cayes" class="tbl-thumb" onerror="this.style.display='none'"></td><td><strong>Silk Cayes</strong></td><td>Reef flat</td><td>20–40ft</td><td>Calm, colorful, good for relaxed final dive</td><td>Open Water</td></tr>
     </table>
   </div>
 
@@ -460,9 +466,9 @@ body.light-mode .mode-toggle { background: rgba(255,255,255,0.8); color: #003040
   <div class="section-box">
     <div class="section-head">🏝️ Ambergris Caye (Apr 29–May 2, 3 nights)</div>
     <table>
-      <tr><th>Property</th><th>Stars</th><th>Price/nt</th><th>Notes</th><th>Book</th></tr>
-      <tr><td><strong>Ramon's Village Resort</strong></td><td>⭐⭐⭐⭐</td><td>~$175</td><td>Dive shop on-site, overwater cabanas, great location. Best value for divers.</td><td><a class="book-btn" href="https://www.booking.com/hotel/bz/ramon-s-village.html?checkin=2026-04-29&checkout=2026-05-02&group_adults=2" target="_blank">Book →</a></td></tr>
-      <tr><td><strong>Alaia Belize, Autograph Collection</strong></td><td>⭐⭐⭐⭐½</td><td>~$450</td><td>Luxury, infinity pool, stunning design. Splurge option.</td><td><a class="book-btn" href="https://www.booking.com/hotel/bz/alaia-belize-autograph-collection.html?checkin=2026-04-29&checkout=2026-05-02&group_adults=2" target="_blank">Book →</a></td></tr>
+      <tr><th>Photo</th><th>Property</th><th>Stars</th><th>Price/nt</th><th>Notes</th><th>Book</th></tr>
+      <tr><td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/SanPedro_Belize.jpg/160px-SanPedro_Belize.jpg" alt="Ramons" class="tbl-thumb" onerror="this.style.display='none'"></td><td><strong>Ramon's Village Resort</strong></td><td>⭐⭐⭐⭐</td><td>~$175</td><td>Dive shop on-site, overwater cabanas, great location. Best value for divers.</td><td><a class="book-btn" href="https://www.booking.com/hotel/bz/ramon-s-village.html?checkin=2026-04-29&checkout=2026-05-02&group_adults=2" target="_blank">Book →</a></td></tr>
+      <tr><td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Ambergris-caye-beach.jpg/160px-Ambergris-caye-beach.jpg" alt="Alaia Belize, Autograph Collection" class="tbl-thumb" onerror="this.style.display='none'"></td><td><strong>Alaia Belize, Autograph Collection</strong></td><td>⭐⭐⭐⭐½</td><td>~$450</td><td>Luxury, infinity pool, stunning design. Splurge option.</td><td><a class="book-btn" href="https://www.booking.com/hotel/bz/alaia-belize-autograph-collection.html?checkin=2026-04-29&checkout=2026-05-02&group_adults=2" target="_blank">Book →</a></td></tr>
       <tr><td><strong>Mahogany Bay Resort (Hilton Curio)</strong></td><td>⭐⭐⭐⭐</td><td>~$230</td><td>Well-rounded resort, good beach, reliable quality.</td><td><a class="book-btn" href="https://www.booking.com/hotel/bz/mahogany-bay-resort-beach-club-curio-collection-by-hilton.html?checkin=2026-04-29&checkout=2026-05-02&group_adults=2" target="_blank">Book →</a></td></tr>
       <tr><td><strong>Matachica Resort (Adults Only)</strong></td><td>⭐⭐⭐⭐</td><td>~$436 AI</td><td>All-inclusive, adults-only, north of town (private). Very romantic.</td><td><a class="book-btn" href="https://www.booking.com/hotel/bz/matachica-beach-resort.html?checkin=2026-04-29&checkout=2026-05-02&group_adults=2" target="_blank">Book →</a></td></tr>
     </table>
@@ -472,9 +478,9 @@ body.light-mode .mode-toggle { background: rgba(255,255,255,0.8); color: #003040
     <div class="section-head">🌴 Placencia (May 2–6, 4 nights)</div>
     <table>
       <tr><th>Property</th><th>Stars</th><th>Price/nt</th><th>Notes</th><th>Book</th></tr>
-      <tr><td><strong>Turtle Inn</strong> ⭐</td><td>⭐⭐⭐⭐⭐</td><td>~$350</td><td>Francis Ford Coppola's resort. Stunning thatched villas, private beach. Most romantic place in Belize.</td><td><a class="book-btn" href="https://www.coppolaresorts.com/turtleinn/" target="_blank">Book →</a></td></tr>
-      <tr><td><strong>Chabil Mar Villas</strong></td><td>⭐⭐⭐⭐</td><td>~$200</td><td>Boutique resort, quiet, right on beach. Great for couples. Walking distance to village.</td><td><a class="book-btn" href="https://www.booking.com/hotel/bz/chabil-mar.html?checkin=2026-05-02&checkout=2026-05-06&group_adults=2" target="_blank">Book →</a></td></tr>
-      <tr><td><strong>Singing Sands Inn</strong></td><td>⭐⭐⭐½</td><td>~$130</td><td>Charming small inn south of village. Excellent value, good beach access.</td><td><a class="book-btn" href="https://www.booking.com/hotel/bz/singing-sands-inn.html?checkin=2026-05-02&checkout=2026-05-06&group_adults=2" target="_blank">Book →</a></td></tr>
+      <tr><td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Placencia_resort.jpg/160px-Placencia_resort.jpg" alt="Turtle Inn" class="tbl-thumb" onerror="this.style.display='none'"></td><td><strong>Turtle Inn</strong> ⭐</td><td>⭐⭐⭐⭐⭐</td><td>~$350</td><td>Francis Ford Coppola's resort. Stunning thatched villas, private beach. Most romantic place in Belize.</td><td><a class="book-btn" href="https://www.coppolaresorts.com/turtleinn/" target="_blank">Book →</a></td></tr>
+      <tr><td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Placencia_beach.jpg/160px-Placencia_beach.jpg" alt="Chabil Mar Villas" class="tbl-thumb" onerror="this.style.display='none'"></td><td><strong>Chabil Mar Villas</strong></td><td>⭐⭐⭐⭐</td><td>~$200</td><td>Boutique resort, quiet, right on beach. Great for couples. Walking distance to village.</td><td><a class="book-btn" href="https://www.booking.com/hotel/bz/chabil-mar.html?checkin=2026-05-02&checkout=2026-05-06&group_adults=2" target="_blank">Book →</a></td></tr>
+      <tr><td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Belize_beach_cottage.jpg/160px-Belize_beach_cottage.jpg" alt="Singing Sands Inn" class="tbl-thumb" onerror="this.style.display='none'"></td><td><strong>Singing Sands Inn</strong></td><td>⭐⭐⭐½</td><td>~$130</td><td>Charming small inn south of village. Excellent value, good beach access.</td><td><a class="book-btn" href="https://www.booking.com/hotel/bz/singing-sands-inn.html?checkin=2026-05-02&checkout=2026-05-06&group_adults=2" target="_blank">Book →</a></td></tr>
     </table>
   </div>
 
