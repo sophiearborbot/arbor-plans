@@ -183,6 +183,7 @@ body.light-mode .mode-toggle { background: rgba(255,255,255,0.8); color: #003040
 </head>
 <body>
 
+<script>(function(){if(localStorage.getItem("belizeMode")!=="dark"){document.body.classList.add("light-mode");}})()</script>
 <button class="mode-toggle" onclick="toggleMode()" id="modeBtn">☀️ Light Mode</button>
 <div class="hero">
   <h1>🤿 <span>Belize</span> Diving Trip</h1>
@@ -715,14 +716,11 @@ function toggleMode() {
     window._tileLayers.current.bringToBack();
   }
 }
-// Default: light mode
+// Sync button label to current mode (class already set above)
 (function(){
-  const saved = localStorage.getItem('belizeMode');
-  if (saved !== 'dark') {
-    document.body.classList.add('light-mode');
-    const btn = document.getElementById('modeBtn');
-    if(btn) btn.textContent='🌙 Dark Mode';
-  }
+  const isLight = document.body.classList.contains('light-mode');
+  const btn = document.getElementById('modeBtn');
+  if(btn) btn.textContent = isLight ? '🌙 Dark Mode' : '☀️ Light Mode';
 })();
 </script>
 
