@@ -207,10 +207,48 @@
     body { background: white; color: black; }
     .plan-card { border: 1px solid #ccc; break-inside: avoid; }
   }
+
+/* ── LIGHT MODE ── */
+body.light-mode {
+  --bg-primary: #f0f4f8;
+  --bg-card: #ffffff;
+  --bg-header: #e8edf2;
+  --text-primary: #1a2a3a;
+  --text-muted: #5a7a8a;
+  --border-color: rgba(0,0,0,0.1);
+  --accent: #7c3aed;
+  background: #f0f4f8;
+  color: #1a2a3a;
+}
+body.light-mode header { background: #1e1b4b; } /* keep header dark for contrast */
+body.light-mode .plan-card { background: #fff; border-color: rgba(0,0,0,0.1); color: #1a2a3a; }
+body.light-mode .card-desc { color: #5a7a8a; }
+body.light-mode .card-date { color: #6d28d9; }
+body.light-mode .filter-bar { background: #e8edf2; border-color: rgba(0,0,0,0.08); }
+body.light-mode .filter-btn { color: #5a7a8a; background: transparent; }
+body.light-mode .filter-btn.active { background: #1e1b4b; color: #fff; }
+body.light-mode .section-header { color: #1a2a3a; border-color: rgba(0,0,0,0.1); }
+body.light-mode footer { background: #e0e7ef; color: #3a5a6a; border-color: rgba(0,0,0,0.1); }
+body.light-mode #sophie-notes { background: rgba(109,40,217,0.05); }
+body.light-mode .year-ribbon { background: #e0e7ef; border-color: rgba(0,0,0,0.1); }
+body.light-mode .ribbon-track { background: #d0dae8; }
+body.light-mode .ribbon-months span { color: #5a7a8a; }
+
+.mode-toggle-idx {
+  position: fixed; top: 14px; right: 14px; z-index: 9999;
+  background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25);
+  color: #fff; border-radius: 24px; padding: 6px 14px; cursor: pointer;
+  font-size: 0.8rem; font-weight: 600; backdrop-filter: blur(8px);
+  transition: all 0.2s;
+}
+.mode-toggle-idx:hover { background: rgba(255,255,255,0.25); }
+body.light-mode .mode-toggle-idx { background: rgba(30,27,75,0.1); color: #1e1b4b; border-color: rgba(30,27,75,0.2); }
+
 </style>
 </head>
 <body>
 
+<button class="mode-toggle-idx" onclick="toggleIndexMode()" id="idxModeBtn">☀️ Light</button>
 <header>
   <div class="header-top">
     <div>
@@ -228,8 +266,8 @@
   <span style="font-size:0.72rem;color:#ce93d8;font-weight:700;">🎭 Sophie:</span>
   <div style="display:flex;gap:16px;flex-wrap:wrap;" id="sophie-notes-items">
     <span style="font-size:0.73rem;color:#9c7ab0;">🏕️ Linville Gorge trail status — <strong style="color:#ffd54f;">call (828) 652-2144</strong> before booking. West rim still closed from Helene.</span>
-    <span style="font-size:0.73rem;color:#9c7ab0;">✈️ Japan fare alert active — targeting &lt;$900/person. Check 📈 Prices tab for trend.</span>
-    <span style="font-size:0.73rem;color:#9c7ab0;">🏛️ Asher's DC trip Mar 4–6 added to calendar. Carpool 5:45 AM Wed.</span>
+    <span style="font-size:0.73rem;color:#9c7ab0;">🤿 Belize Apr 29–May 6 — <strong style="color:#ffd54f;">book flights + whale shark dive ASAP</strong>. Prices climbing.</span>
+    <span style="font-size:0.73rem;color:#9c7ab0;">📊 <a href="https://docs.google.com/spreadsheets/d/1XCgrsyij0GG0yak5FqK4gVDXHGOhUZKNBlOhnxgcrAA/edit" target="_blank" style="color:#80cbc4;">Trip planner sheet →</a></span>
   </div>
   <button onclick="document.getElementById('sophie-notes').style.display='none'" style="margin-left:auto;background:none;border:none;color:#546e7a;cursor:pointer;font-size:1rem;line-height:1;">✕</button>
 </div>
@@ -280,7 +318,7 @@
 </div>
 
 <footer>
-  Updated by Sophie 🎭 · <a href="https://github.com/sophiearborbot/arbor-plans" style="color:#3a5a7a;">github.com/sophiearborbot/arbor-plans</a>
+  Updated by Sophie 🎭 · <a href="https://github.com/sophiearborbot/arbor-plans" style="color:#3a5a7a;">github.com/sophiearborbot/arbor-plans</a> · <a href="https://docs.google.com/spreadsheets/d/1XCgrsyij0GG0yak5FqK4gVDXHGOhUZKNBlOhnxgcrAA/edit" target="_blank" style="color:#80cbc4;">📊 Trip Planner Sheet</a>
 </footer>
 
 <script>
@@ -798,6 +836,25 @@ function navigateToTrip(trip) {
   else if (trip.planPage) location.href = trip.planPage;
 }
 
+</script>
+
+<script>
+function toggleIndexMode() {
+  const body = document.body;
+  body.classList.toggle('light-mode');
+  const isLight = body.classList.contains('light-mode');
+  document.getElementById('idxModeBtn').textContent = isLight ? '🌙 Dark' : '☀️ Light';
+  localStorage.setItem('indexMode', isLight ? 'light' : 'dark');
+}
+// Default: light mode
+(function(){
+  const saved = localStorage.getItem('indexMode');
+  if (saved !== 'dark') {
+    document.body.classList.add('light-mode');
+    const btn = document.getElementById('idxModeBtn');
+    if (btn) btn.textContent = '🌙 Dark';
+  }
+})();
 </script>
 </body>
 </html>

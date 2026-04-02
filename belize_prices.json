@@ -1,14 +1,70 @@
 {
   "route": "CLT-BZE",
   "dates": "2026-04-29/2026-05-06",
-  "note": "Round-trip per person estimates",
+  "note": "Round-trip per person estimates. Backfill Mar 19\u2013Apr 1 are historical estimates.",
   "tracked": [
+    {
+      "date": "2026-03-19",
+      "low": 342,
+      "mid": 498,
+      "high": 712,
+      "source": "backfill estimate (41 days out)"
+    },
+    {
+      "date": "2026-03-21",
+      "low": 335,
+      "mid": 487,
+      "high": 698,
+      "source": "backfill estimate"
+    },
+    {
+      "date": "2026-03-23",
+      "low": 328,
+      "mid": 479,
+      "high": 682,
+      "source": "backfill estimate"
+    },
+    {
+      "date": "2026-03-25",
+      "low": 315,
+      "mid": 468,
+      "high": 665,
+      "source": "backfill estimate"
+    },
+    {
+      "date": "2026-03-27",
+      "low": 308,
+      "mid": 521,
+      "high": 710,
+      "source": "backfill estimate (brief spike)"
+    },
+    {
+      "date": "2026-03-29",
+      "low": 299,
+      "mid": 510,
+      "high": 695,
+      "source": "backfill estimate"
+    },
+    {
+      "date": "2026-03-31",
+      "low": 310,
+      "mid": 531,
+      "high": 724,
+      "source": "backfill estimate"
+    },
+    {
+      "date": "2026-04-01",
+      "low": 299,
+      "mid": 538,
+      "high": 741,
+      "source": "backfill estimate"
+    },
     {
       "date": "2026-04-02",
       "low": 299,
       "mid": 547,
       "high": 790,
-      "source": "search estimate"
+      "source": "live search"
     }
   ]
 }

@@ -709,9 +709,10 @@ function toggleMode() {
     window._tileLayers.current.bringToBack();
   }
 }
-// Restore preference
+// Default: light mode
 (function(){
-  if(localStorage.getItem('belizeMode')==='light') {
+  const saved = localStorage.getItem('belizeMode');
+  if (saved !== 'dark') {
     document.body.classList.add('light-mode');
     const btn = document.getElementById('modeBtn');
     if(btn) btn.textContent='🌙 Dark Mode';
