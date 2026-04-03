@@ -224,6 +224,7 @@ body.light-mode .think-box { background: rgba(0,150,136,0.06); }
   <button onclick="setTripMode('chill')" id="navChill" style="flex:1;max-width:200px;padding:11px 0;background:transparent;border:none;color:#80deea;font-weight:700;font-size:0.85rem;cursor:pointer;transition:all 0.2s;">🌴 Chill Mode</button>
 </div>
 
+<div id="map"></div>
 <div id="chillView">
 
   <div class="chill-hero">
@@ -326,7 +327,7 @@ body.light-mode .think-box { background: rgba(0,150,136,0.06); }
 
 </div><!-- /chillView -->
 
-<div id="map"></div>
+
 
 <div class="tabs">
   <div class="tab active" onclick="showTab('overview')">🗓️ Itinerary</div>
@@ -700,13 +701,8 @@ const diveSites = [
   {ll:[16.5042,-88.9853], label:'Cockscomb Jaguar Reserve 🐆', sub:'May 4 option', color:'#8d6e63'},
 ];
 
-diveSites.forEach(s => {
-  L.circleMarker(s.ll, {radius:9, fillColor:s.color, color:'#fff', weight:2, fillOpacity:0.9}).addTo(map)
-   .bindTooltip(`<b>${s.label}</b><br>${s.sub}`, {direction:'top'});
-  L.marker(s.ll, {icon:L.divIcon({className:'',
-    html:`<div style="color:${s.color};font-size:10px;font-weight:700;white-space:nowrap;text-shadow:0 0 4px #000,0 0 4px #000;margin-top:-22px;margin-left:13px">${s.label}</div>`,
-    iconSize:[150,20],iconAnchor:[0,10]})}).addTo(map);
-});
+window._belizeMarkers = [];
+renderMapSpots(diveSpots);
 
 // Route line
 L.polyline([[17.9240,-87.9713],[17.3167,-87.5167],[17.3167,-87.5167],
@@ -855,6 +851,40 @@ function toggleMode() {
 
 
 <script>
+// Chill mode map spots (island bases + key sites)
+const chillSpots = [
+  {ll:[17.9240,-87.9713],label:'Ambergris Caye — home base 🏝️',color:'#00bcd4'},
+  {ll:[17.7480,-88.0320],label:'Caye Caulker — day trip 🚲',color:'#4caf50'},
+  {ll:[16.5136,-88.3680],label:'Placencia — second base option 🌴',color:'#26a69a'},
+  {ll:[17.2100,-88.6830],label:'ATM Cave — Actun Tunichil Muknal 🏛️',color:'#8d6e63'},
+  {ll:[16.4903,-87.9050],label:'Gladden Spit 🐋 — whale sharks May 3 🌕',color:'#ffd54f'},
+  {ll:[17.2000,-87.5333],label:'Half Moon Caye 🌊 — wall diving',color:'#1565c0'},
+];
+const diveSpots = [
+  {ll:[17.9240,-87.9713],label:'San Pedro / Ambergris Caye',color:'#00bcd4'},
+  {ll:[15.8394,-88.3680],label:'Belize City (BZE)',color:'#7986cb'},
+  {ll:[16.5136,-88.3680],label:'Placencia',color:'#26a69a'},
+  {ll:[17.3167,-87.5167],label:'Great Blue Hole 🔵',color:'#1565c0'},
+  {ll:[16.4903,-87.9050],label:'Gladden Spit 🐋',color:'#ffd54f'},
+  {ll:[17.2000,-87.5333],label:'Half Moon Caye 🌊',color:'#4caf50'},
+  {ll:[17.3000,-87.8000],label:'Turneffe Atoll',color:'#7e57c2'},
+  {ll:[16.5042,-88.9853],label:'Cockscomb Jaguar Reserve 🐆',color:'#8d6e63'},
+];
+
+function renderMapSpots(spots) {
+  // Clear existing markers by rebuilding (simple approach)
+  if (window._belizeMarkers) window._belizeMarkers.forEach(m => window._belizeMap && window._belizeMap.removeLayer(m));
+  window._belizeMarkers = [];
+  spots.forEach(s => {
+    const m = L.circleMarker(s.ll, {radius:9, fillColor:s.color, color:'#fff', weight:2, fillOpacity:0.9}).addTo(window._belizeMap)
+      .bindTooltip('<b>' + s.label + '</b>', {direction:'top'});
+    const lbl = L.marker(s.ll, {icon:L.divIcon({className:'',
+      html:'<div style="color:'+s.color+';font-size:10px;font-weight:700;white-space:nowrap;text-shadow:0 0 4px #000,0 0 4px #000;margin-top:-22px;margin-left:13px">'+s.label+'</div>',
+      iconSize:[150,20],iconAnchor:[0,10]})}).addTo(window._belizeMap);
+    window._belizeMarkers.push(m, lbl);
+  });
+}
+
 function setTripMode(mode) {
   const diveView = document.querySelector('.tabs');
   const chillView = document.getElementById('chillView');
@@ -869,6 +899,8 @@ function setTripMode(mode) {
     document.getElementById('navChill').style.color = '#e0f7fa';
     document.getElementById('navDive').style.background = 'transparent';
     document.getElementById('navDive').style.color = '#80deea';
+    renderMapSpots(chillSpots);
+    if (window._belizeMap) { window._belizeMap.setView([16.8, -88.2], 7); window._belizeMap.invalidateSize(); }
   } else {
     diveView.style.display = 'flex';
     allTabContent.forEach(t => t.style.display = '');
@@ -879,6 +911,8 @@ function setTripMode(mode) {
     document.getElementById('navDive').style.color = '#e0f7fa';
     document.getElementById('navChill').style.background = 'transparent';
     document.getElementById('navChill').style.color = '#80deea';
+    renderMapSpots(diveSpots);
+    if (window._belizeMap) { window._belizeMap.setView([17.0, -87.8], 8); window._belizeMap.invalidateSize(); }
   }
   localStorage.setItem('belizeTripMode', mode);
   if (window._belizeMap) window._belizeMap.invalidateSize();
