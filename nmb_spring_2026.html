@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>🏖️ North Myrtle Beach — Arbor Spring Break 2026</title>
+<script>(function(){if(localStorage.getItem('nmbMode')!=='dark')document.body&&document.body.classList.add('light-mode');})()</script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+:root {
+  --bg:#0a0a12;--bg2:#10101e;--bg3:#18182a;
+  --accent:#f59e0b;--accent2:#d97706;
+  --text:#fef3c7;--muted:#92817a;--border:rgba(245,158,11,0.2);
+  --green:#4caf50;--blue:#29b6f6;--red:#ef5350;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;}
+body.light-mode{--bg:#fffbf0;--bg2:#fff;--bg3:#fef3c7;--text:#1a1008;--muted:#7a6a5a;--border:rgba(180,120,0,0.2);background:#fffbf0;color:#1a1008;}
+body.light-mode .hero{background:linear-gradient(160deg,#fde68a,#fbbf24,#fffbf0);}
+body.light-mode .hero h1,body.light-mode .hero p{color:#78350f;}
+body.light-mode .day-card{background:#fff;border-color:rgba(0,0,0,0.1);}
+body.light-mode .day-header{background:#fef3c7;}
+body.light-mode .activity{border-color:rgba(0,0,0,0.06);}
+body.light-mode .section-box{background:#fff;border-color:rgba(0,0,0,0.1);}
+body.light-mode .section-head{background:#fef3c7;color:#92400e;}
+body.light-mode table th{background:#fef3c7;color:#78350f;}
+body.light-mode .info-card{background:#fef9e7;border-color:#f59e0b;}
+body.light-mode .weather-card{background:#e0f7fa;border-color:#29b6f6;}
+body.light-mode .tab{color:#92817a;}body.light-mode .tab.active{color:#d97706;border-bottom-color:#d97706;}
+body.light-mode .badge{background:rgba(245,158,11,0.15);border-color:rgba(245,158,11,0.3);color:#92400e;}
+body.light-mode .warn{background:rgba(239,83,80,0.07);border-color:rgba(239,83,80,0.3);}
+
+.mode-toggle{position:fixed;top:14px;right:14px;z-index:9999;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.2);color:#fff;border-radius:24px;padding:6px 14px;cursor:pointer;font-size:0.8rem;font-weight:600;backdrop-filter:blur(8px);}
+body.light-mode .mode-toggle{background:rgba(255,255,255,0.8);color:#78350f;border-color:rgba(0,0,0,0.15);}
+
+.hero{background:linear-gradient(160deg,#78350f,#b45309,#0a0a12);padding:44px 20px 32px;text-align:center;position:relative;overflow:hidden;}
+.hero h1{font-size:clamp(1.6rem,5vw,2.4rem);font-weight:900;margin-bottom:6px;}
+.hero h1 span{color:var(--accent);}
+.hero p{color:#fbbf24;font-size:0.95rem;}
+.hero-badges{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px;}
+.badge{background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);color:#fbbf24;border-radius:20px;padding:4px 14px;font-size:0.75rem;font-weight:600;}
+.badge.dog{background:rgba(76,175,80,0.15);border-color:rgba(76,175,80,0.3);color:#a5d6a7;}
+.badge.rain{background:rgba(41,182,246,0.15);border-color:rgba(41,182,246,0.3);color:#81d4fa;}
+
+#map{width:100%;height:320px;}
+
+.tabs{display:flex;border-bottom:1px solid var(--border);background:var(--bg2);overflow-x:auto;}
+.tab{padding:11px 18px;font-size:0.82rem;font-weight:600;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap;transition:all 0.2s;}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);background:var(--bg3);}
+.tab-content{display:none;max-width:740px;margin:0 auto;padding:18px 16px;}
+.tab-content.active{display:block;}
+
+.weather-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;}
+.weather-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center;}
+.wday{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:4px;}
+.wicon{font-size:1.8rem;margin:4px 0;}
+.wtemp{font-size:1.1rem;font-weight:800;color:var(--accent);}
+.wdesc{font-size:0.7rem;color:var(--muted);margin-top:2px;}
+
+.day-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden;cursor:pointer;}
+.day-card.open .day-body{display:block;}
+.day-header{display:flex;align-items:center;gap:12px;padding:13px 16px;background:rgba(245,158,11,0.06);}
+.day-num{width:38px;height:38px;border-radius:50%;background:rgba(245,158,11,0.2);color:var(--accent);font-weight:800;font-size:0.85rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.day-body{display:none;padding:0 16px 14px;border-top:1px solid var(--border);}
+.activity{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:0.83rem;align-items:flex-start;}
+.activity:last-child{border-bottom:none;}
+.act-time{color:var(--muted);font-size:0.72rem;min-width:62px;padding-top:2px;flex-shrink:0;}
+.act-tag{display:inline-block;font-size:0.65rem;padding:1px 7px;border-radius:10px;margin-left:6px;}
+.tag-beach{background:rgba(41,182,246,0.2);color:#81d4fa;}
+.tag-food{background:rgba(255,152,0,0.2);color:#ffcc80;}
+.tag-activity{background:rgba(156,39,176,0.2);color:#e1bee7;}
+.tag-dog{background:rgba(76,175,80,0.2);color:#a5d6a7;}
+.tag-res{background:rgba(239,83,80,0.2);color:#ef9a9a;}
+
+.warn{background:rgba(239,83,80,0.08);border:1px solid rgba(239,83,80,0.3);border-radius:10px;padding:10px 14px;margin:10px 0;font-size:0.82rem;color:#ef9a9a;}
+.info-card{background:var(--bg3);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0;font-size:0.82rem;line-height:1.6;}
+.section-box{background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px;}
+.section-head{background:var(--bg3);padding:9px 14px;font-weight:700;font-size:0.85rem;color:var(--accent);}
+table{width:100%;border-collapse:collapse;font-size:0.82rem;}
+th{padding:8px 12px;text-align:left;color:var(--muted);background:var(--bg3);}
+td{padding:8px 12px;border-top:1px solid rgba(255,255,255,0.05);}
+</style>
+</head>
+<body>
+<script>(function(){if(localStorage.getItem('nmbMode')!=='dark'){document.body.classList.add('light-mode');}})()</script>
+<button class="mode-toggle" id="modeBtn" onclick="toggleMode()">🌙 Dark</button>
+
+<div class="hero">
+  <h1>🏖️ <span>North Myrtle Beach</span></h1>
+  <p>Arbor Family Spring Break · Apr 3–7, 2026</p>
+  <div class="hero-badges">
+    <span class="badge">Sage · Tafline · Asher · Verity</span>
+    <span class="badge dog">🐕 Dogs welcome</span>
+    <span class="badge">Check-in Fri 4pm · Check-out Mon 10am</span>
+    <span class="badge rain">🌧️ Rain Sun 5pm–10pm only</span>
+  </div>
+</div>
+
+<div id="map"></div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab('itinerary')">🗓️ Itinerary</div>
+  <div class="tab" onclick="showTab('food')">🍽️ Food</div>
+  <div class="tab" onclick="showTab('activities')">🎯 Activities</div>
+  <div class="tab" onclick="showTab('tips')">🐕 Dog Tips</div>
+</div>
+
+<!-- ITINERARY TAB -->
+<div class="tab-content active" id="tab-itinerary">
+
+  <div class="weather-strip">
+    <div class="weather-card"><div class="wday">Fri Apr 3</div><div class="wicon">🌤️</div><div class="wtemp">68°F</div><div class="wdesc">Partly cloudy, warm</div></div>
+    <div class="weather-card"><div class="wday">Sat Apr 4</div><div class="wicon">☀️</div><div class="wtemp">74°F</div><div class="wdesc">Sunny, perfect beach</div></div>
+    <div class="weather-card"><div class="wday">Sun Apr 5</div><div class="wicon">⛅</div><div class="wtemp">72°F</div><div class="wdesc">Good AM · 🌧️ after 5pm</div></div>
+    <div class="weather-card"><div class="wday">Mon Apr 6</div><div class="wicon">🌤️</div><div class="wtemp">69°F</div><div class="wdesc">Quick breakfast + drive</div></div>
+  </div>
+
+  <!-- Friday -->
+  <div class="day-card open" id="fri" onclick="toggleDay('fri')">
+    <div class="day-header">
+      <div class="day-num">Fri</div>
+      <div><div style="font-size:0.7rem;color:var(--muted)">Apr 3 · Arrive 4pm</div><div style="font-weight:700">Settle in · First evening</div></div>
+    </div>
+    <div class="day-body">
+      <div class="activity"><div class="act-time">4:00pm</div><div>Check in · unpack · dogs explore apartment</div></div>
+      <div class="activity"><div class="act-time">5:00pm</div><div><strong>Cherry Grove Beach walk</strong> <span class="act-tag tag-dog">🐕 dogs OK after 5pm</span> — dogs allowed on leash after 5pm. Great first look at the water.</div></div>
+      <div class="activity"><div class="act-time">6:30pm</div><div><strong>Dinner: Dockside 1 or Crab Catchers</strong> <span class="act-tag tag-food">🍽️</span> — casual waterfront seafood. Walk-ins usually fine Friday evening.</div></div>
+      <div class="activity"><div class="act-time">Evening</div><div><strong>Cherry Grove Pier</strong> — short walk, watch the sunset, ice cream nearby. Low-key landing-night vibe.</div></div>
+    </div>
+  </div>
+
+  <!-- Saturday -->
+  <div class="day-card" id="sat" onclick="toggleDay('sat')">
+    <div class="day-header">
+      <div class="day-num">Sat</div>
+      <div><div style="font-size:0.7rem;color:var(--muted)">Apr 4 · Full sunny day</div><div style="font-weight:700">☀️ Best weather day — pack it in</div></div>
+    </div>
+    <div class="day-body">
+      <div class="activity"><div class="act-time">7:30am</div><div><strong>Early beach with dogs</strong> <span class="act-tag tag-dog">🐕 dogs OK before 9am</span> — best window. Dogs, waves, boogie boards.</div></div>
+      <div class="activity"><div class="act-time">9:30am</div><div>Back to apartment · breakfast · rinse off</div></div>
+      <div class="activity"><div class="act-time">10:30am</div><div><strong>Alligator Adventure @ Barefoot Landing</strong> <span class="act-tag tag-activity">🐊</span> <span class="act-tag tag-res">⚠️ buy tickets online</span> — giant gators, tortoises, albino crocs. Verity and Asher will both love this. ~90min.</div></div>
+      <div class="activity"><div class="act-time">Noon</div><div><strong>Lunch at Barefoot Landing</strong> <span class="act-tag tag-food">🍽️</span> — Landshark Bar & Grill (Jimmy Buffett vibes on the water) or walk the boardwalk.</div></div>
+      <div class="activity"><div class="act-time">2:00pm</div><div><strong>Mini golf</strong> <span class="act-tag tag-activity">⛳</span> — impossible to pick wrong in NMB. Hawaiian Rumble is legendary (right at Barefoot Landing area). ~1hr.</div></div>
+      <div class="activity"><div class="act-time">4:00pm</div><div><strong>Afternoon beach</strong> <span class="act-tag tag-beach">🏖️</span> — Asher + boogie board. Tafline + book. Verity builds sandcastles.</div></div>
+      <div class="activity"><div class="act-time">7:00pm</div><div><strong>Dinner: Duffy Street Seafood Shack</strong> <span class="act-tag tag-food">🍽️</span> — local favorite, not touristy, excellent she-crab soup. Or Sea Captain's House (bit fancier).</div></div>
+    </div>
+  </div>
+
+  <!-- Sunday -->
+  <div class="day-card" id="sun" onclick="toggleDay('sun')">
+    <div class="day-header">
+      <div class="day-num">Sun</div>
+      <div><div style="font-size:0.7rem;color:var(--muted)">Apr 5 · Good till 5pm · 🌧️ after</div><div style="font-weight:700">Morning adventure · indoor afternoon</div></div>
+    </div>
+    <div class="day-body">
+      <div class="warn">🌧️ Rain arrives ~5pm — plan outdoor stuff in the morning, pivot indoors by 4pm</div>
+      <div class="activity"><div class="act-time">8:30am</div><div><strong>Jet ski rentals OR kayak</strong> <span class="act-tag tag-activity">🛥️</span> <span class="act-tag tag-res">⚠️ call ahead</span> — Action Water Sportz or Downwind Sails. Jet skis: Asher can ride with adult. Kayak/paddleboard also great. Book for 9am window.</div></div>
+      <div class="activity"><div class="act-time">11:00am</div><div><strong>Beach time</strong> <span class="act-tag tag-beach">🏖️</span> — last good window before weather turns.</div></div>
+      <div class="activity"><div class="act-time">1:00pm</div><div><strong>Lunch: The Brentwood</strong> <span class="act-tag tag-food">🍽️</span> <span class="act-tag tag-res">⚠️ call for reservation</span> — nicest meal of the trip. Historic home, excellent lowcountry food. Worth it.</div></div>
+      <div class="activity"><div class="act-time">3:00pm</div><div><strong>Broadway Grand Prix</strong> <span class="act-tag tag-activity">🏎️</span> — go-karts, arcade, laser tag, mini golf. Multiple tracks. Asher (14) can drive solo. Mostly covered/indoor — perfect as clouds roll in.</div></div>
+      <div class="activity"><div class="act-time">5:30pm</div><div><strong>Back to apartment</strong> — beat the rain home. Cook in or order delivery. Movie night, card games.</div></div>
+    </div>
+  </div>
+
+  <!-- Monday -->
+  <div class="day-card" id="mon" onclick="toggleDay('mon')">
+    <div class="day-header">
+      <div class="day-num">Mon</div>
+      <div><div style="font-size:0.7rem;color:var(--muted)">Apr 6 · Check out 10am</div><div style="font-weight:700">Quick morning · drive home</div></div>
+    </div>
+    <div class="day-body">
+      <div class="activity"><div class="act-time">7:00am</div><div><strong>Sunrise beach walk with dogs</strong> <span class="act-tag tag-dog">🐕</span> — dogs allowed before 9am. Last look at the ocean.</div></div>
+      <div class="activity"><div class="act-time">8:00am</div><div><strong>Breakfast: Hoskins Restaurant</strong> <span class="act-tag tag-food">🍽️</span> — NMB institution since 1948. Cash only, huge portions, locals love it. 15min drive.</div></div>
+      <div class="activity"><div class="act-time">10:00am</div><div>Check out · load car · drive home 🏡</div></div>
+    </div>
+  </div>
+
+</div><!-- /itinerary -->
+
+<!-- FOOD TAB -->
+<div class="tab-content" id="tab-food">
+  <div class="section-box">
+    <div class="section-head">🍽️ Recommended Restaurants</div>
+    <table>
+      <tr><th>Name</th><th>Vibe</th><th>Best For</th><th>Reservation?</th></tr>
+      <tr><td><strong>Hoskins Restaurant</strong></td><td>Classic diner, 1948</td><td>Monday breakfast — NMB institution</td><td>No · cash only</td></tr>
+      <tr><td><strong>Duffy Street Seafood Shack</strong></td><td>Local, casual</td><td>Saturday dinner, she-crab soup</td><td>No</td></tr>
+      <tr><td><strong>The Brentwood</strong></td><td>Upscale, historic home</td><td>Sunday lunch — nicest meal</td><td><strong>Yes — call today</strong></td></tr>
+      <tr><td><strong>Crab Catchers</strong></td><td>Waterfront, casual</td><td>Friday arrival dinner</td><td>No</td></tr>
+      <tr><td><strong>Landshark Bar & Grill</strong></td><td>Jimmy Buffett-ish</td><td>Saturday lunch @ Barefoot Landing</td><td>No</td></tr>
+      <tr><td><strong>Sea Captain's House</strong></td><td>Classic oceanfront</td><td>Nicer dinner alternative</td><td>Recommended</td></tr>
+    </table>
+  </div>
+  <div class="info-card">💡 <strong>She-crab soup</strong> is the local specialty — order it everywhere you see it. Also: boiled peanuts at roadside stands on the way in.</div>
+</div>
+
+<!-- ACTIVITIES TAB -->
+<div class="tab-content" id="tab-activities">
+  <div class="section-box">
+    <div class="section-head">🎯 Things To Do</div>
+    <table>
+      <tr><th>Activity</th><th>Best For</th><th>Cost Est.</th><th>Reserve?</th></tr>
+      <tr><td><strong>Alligator Adventure</strong> 🐊</td><td>Everyone — Verity esp.</td><td>~$22/adult, $17/kid</td><td>✅ Buy online</td></tr>
+      <tr><td><strong>Hawaiian Rumble Mini Golf</strong> ⛳</td><td>All ages</td><td>~$12/person</td><td>No</td></tr>
+      <tr><td><strong>Broadway Grand Prix</strong> 🏎️</td><td>Asher + Verity</td><td>~$10-20/person</td><td>No</td></tr>
+      <tr><td><strong>Jet Ski Rentals</strong> 🛥️</td><td>Adults + Asher</td><td>~$80-120/hr</td><td>✅ Call ahead</td></tr>
+      <tr><td><strong>Cherry Grove Pier</strong> 🎣</td><td>Casual fishing/walking</td><td>Free to walk, ~$3 fishing</td><td>No</td></tr>
+      <tr><td><strong>Barefoot Landing</strong> 🛍️</td><td>Whole family</td><td>Free to walk</td><td>No</td></tr>
+      <tr><td><strong>Kayak/Paddleboard</strong> 🏄</td><td>Everyone</td><td>~$30-50/hr</td><td>Call morning of</td></tr>
+    </table>
+  </div>
+  <div class="info-card">📞 <strong>Action Water Sportz:</strong> (843) 272-7000 — jet skis + watersports<br>📞 <strong>Alligator Adventure:</strong> barefootlanding.com/alligator-adventure — buy tickets online</div>
+</div>
+
+<!-- DOG TIPS TAB -->
+<div class="tab-content" id="tab-tips">
+  <div class="section-box">
+    <div class="section-head">🐕 Dog-Friendly NMB Guide</div>
+    <table>
+      <tr><th>Location</th><th>Dogs Allowed?</th><th>Hours/Notes</th></tr>
+      <tr><td><strong>Cherry Grove Beach</strong></td><td>✅ Yes</td><td>Before 9am + after 5pm · on leash</td></tr>
+      <tr><td><strong>North Myrtle Beach Oceanfront</strong></td><td>⚠️ Restricted</td><td>Seasonal hours — stick to Cherry Grove</td></tr>
+      <tr><td><strong>Barefoot Landing (grounds)</strong></td><td>✅ Yes</td><td>Leash required · well-behaved dogs welcome</td></tr>
+      <tr><td><strong>Cherry Grove Pier area</strong></td><td>✅ Yes</td><td>Parking lot + approach · not on pier itself</td></tr>
+      <tr><td><strong>Apartment/complex</strong></td><td>✅ Yes</td><td>Dogs stay in unit when you go to restaurants</td></tr>
+    </table>
+  </div>
+  <div class="info-card">🐾 <strong>Tip:</strong> The 7am beach walk Monday is the best dog moment — quiet, cool, empty beach. Plan to do it even if you're tired.</div>
+  <div class="info-card">🛒 <strong>Need supplies?</strong> Walmart on Hwy 17 is 10min away for any forgotten dog food, leashes, bags, etc.</div>
+</div>
+
+<script>
+const map = L.map('map').setView([33.845, -78.68], 12);
+const isLight = document.body.classList.contains('light-mode');
+window._nmbMap = map;
+const darkTile = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO',maxZoom:16});
+const lightTile = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO',maxZoom:16});
+window._nmbTiles = {dark:darkTile,light:lightTile,current:isLight?lightTile:darkTile};
+window._nmbTiles.current.addTo(map);
+
+const spots = [
+  {ll:[33.878,-78.666],label:'Cherry Grove Beach 🏖️',color:'#29b6f6'},
+  {ll:[33.845,-78.687],label:"Barefoot Landing 🐊",color:'#f59e0b'},
+  {ll:[33.842,-78.686],label:'Alligator Adventure',color:'#4caf50'},
+  {ll:[33.858,-78.680],label:'Hawaiian Rumble Mini Golf ⛳',color:'#ab47bc'},
+  {ll:[33.875,-78.665],label:'Cherry Grove Pier 🎣',color:'#26c6da'},
+  {ll:[33.756,-78.867],label:'Broadway Grand Prix 🏎️ (south)',color:'#ef5350'},
+  {ll:[33.849,-78.709],label:'Hoskins Restaurant 🍳',color:'#ff7043'},
+  {ll:[33.838,-78.618],label:'The Brentwood 🍽️',color:'#ec407a'},
+];
+spots.forEach(s=>{
+  L.circleMarker(s.ll,{radius:8,fillColor:s.color,color:'#fff',weight:2,fillOpacity:0.9}).addTo(map)
+   .bindTooltip(s.label,{direction:'top'});
+});
+
+function showTab(id){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  document.querySelector('.tab[onclick*="'+id+'"]').classList.add('active');
+}
+function toggleDay(id){document.getElementById(id).classList.toggle('open');}
+function toggleMode(){
+  document.body.classList.toggle('light-mode');
+  const l=document.body.classList.contains('light-mode');
+  document.getElementById('modeBtn').textContent=l?'🌙 Dark':'☀️ Light';
+  localStorage.setItem('nmbMode',l?'light':'dark');
+  map.removeLayer(window._nmbTiles.current);
+  window._nmbTiles.current=l?window._nmbTiles.light:window._nmbTiles.dark;
+  window._nmbTiles.current.addTo(map);window._nmbTiles.current.bringToBack();
+}
+// Sync button label
+(function(){const l=document.body.classList.contains('light-mode');document.getElementById('modeBtn').textContent=l?'🌙 Dark':'☀️ Light';})();
+</script>
+</body>
+</html>

@@ -122,6 +122,35 @@
       ],
       "dateLabel": "Apr 29\u2013May 6, 2026",
       "statusLabel": "Planning"
+    },
+    {
+      "id": "nmb-spring-2026",
+      "title": "North Myrtle Beach \u2014 Spring Break",
+      "subtitle": "Family Trip \u00b7 Apr 3\u20136, 2026",
+      "emoji": "\ud83c\udfd6\ufe0f",
+      "dates": "Apr 3\u20136, 2026",
+      "startDate": "2026-04-03",
+      "endDate": "2026-04-06",
+      "who": [
+        "Sage",
+        "Tafline",
+        "Asher",
+        "Verity"
+      ],
+      "whoTags": [
+        "sage",
+        "tafline",
+        "asher",
+        "verity"
+      ],
+      "status": "active",
+      "color": "#f59e0b",
+      "accentColor2": "#d97706",
+      "planPage": "./nmb_spring_2026.html",
+      "category": "Family \u00b7 Beach \u00b7 Weekend",
+      "desc": "North Myrtle Beach spring break. Cherry Grove Beach, Alligator Adventure, jet skis, mini golf, Broadway Grand Prix. Dogs welcome. Rain Sun 5pm only.",
+      "statusLabel": "Happening Now \ud83c\udfd6\ufe0f",
+      "cardLink": "View plan \u2192"
     }
   ]
 }
