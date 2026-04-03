@@ -30,6 +30,7 @@ body.light-mode .tab{color:#92817a;}body.light-mode .tab.active{color:#d97706;bo
 body.light-mode .badge{background:rgba(245,158,11,0.15);border-color:rgba(245,158,11,0.3);color:#92400e;}
 body.light-mode .warn{background:rgba(239,83,80,0.07);border-color:rgba(239,83,80,0.3);}
 body.light-mode #dayFilter{background:#fef3c7;color:#78350f;border-color:rgba(180,120,0,0.3);}
+body.light-mode .tab-content a{color:#0077a8;}
 
 .mode-toggle{position:fixed;top:14px;right:14px;z-index:9999;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.2);color:#fff;border-radius:24px;padding:6px 14px;cursor:pointer;font-size:0.8rem;font-weight:600;backdrop-filter:blur(8px);}
 body.light-mode .mode-toggle{background:rgba(255,255,255,0.8);color:#78350f;border-color:rgba(0,0,0,0.15);}
@@ -125,6 +126,18 @@ td{padding:8px 12px;border-top:1px solid rgba(255,255,255,0.05);}
     <div class="weather-card"><div class="wday">Sat Apr 4</div><div class="wicon">☀️</div><div class="wtemp">74°F</div><div class="wdesc">Sunny, perfect beach</div></div>
     <div class="weather-card"><div class="wday">Sun Apr 5</div><div class="wicon">⛅</div><div class="wtemp">72°F</div><div class="wdesc">Good AM · 🌧️ after 5pm</div></div>
     <div class="weather-card"><div class="wday">Mon Apr 6</div><div class="wicon">🌤️</div><div class="wtemp">69°F</div><div class="wdesc">Quick breakfast + drive</div></div>
+  </div>
+
+  <div style="background:rgba(239,83,80,0.08);border:1px solid rgba(239,83,80,0.35);border-radius:14px;padding:14px 16px;margin-bottom:16px;">
+    <div style="font-weight:800;color:#ef5350;margin-bottom:10px;font-size:0.9rem;">⚠️ Reserve These — Do It Now</div>
+    <div style="display:flex;flex-direction:column;gap:7px;font-size:0.83rem;">
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer"><input type="checkbox" id="chk1" onchange="saveChk()" style="width:16px;height:16px;accent-color:#ef5350"> <span><strong>Ripley's Aquarium</strong> — buy online (skip line) &nbsp;<a href="https://www.ripleys.com/myrtlebeach/aquarium/" target="_blank" style="color:#81d4fa;font-size:0.75rem">→ ripleys.com</a></span></label>
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer"><input type="checkbox" id="chk2" onchange="saveChk()" style="width:16px;height:16px;accent-color:#ef5350"> <span><strong>WonderWorks</strong> — buy online &nbsp;<a href="https://www.wonderworksonline.com/myrtle-beach/" target="_blank" style="color:#81d4fa;font-size:0.75rem">→ wonderworksonline.com</a></span></label>
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer"><input type="checkbox" id="chk3" onchange="saveChk()" style="width:16px;height:16px;accent-color:#ef5350"> <span><strong>Saturday dinner reservation</strong> — Duffy Street <a href="tel:+18432729334" style="color:#81d4fa;font-size:0.75rem">(843) 272-9334</a> or Sea Captain's House <a href="tel:+18434483474" style="color:#81d4fa;font-size:0.75rem">(843) 448-8082</a></span></label>
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer"><input type="checkbox" id="chk4" onchange="saveChk()" style="width:16px;height:16px;accent-color:#ef5350"> <span><strong>Bowling lane Sunday ~5pm</strong> — Main Event <a href="tel:+18434444501" style="color:#81d4fa;font-size:0.75rem">(843) 444-3501</a></span></label>
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer"><input type="checkbox" id="chk5" onchange="saveChk()" style="width:16px;height:16px;accent-color:#ef5350"> <span><strong>Jet skis Sunday AM</strong> — Action Water Sportz <a href="tel:+18432727000" style="color:#81d4fa;font-size:0.75rem">(843) 272-7000</a> · call morning of</span></label>
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer"><input type="checkbox" id="chk6" onchange="saveChk()" style="width:16px;height:16px;accent-color:#ef5350"> <span><strong>Alligator Adventure</strong> — optional, buy online to skip line &nbsp;<a href="https://www.barefootlanding.com/alligator-adventure" target="_blank" style="color:#81d4fa;font-size:0.75rem">→ barefootlanding.com</a></span></label>
+    </div>
   </div>
 
   <!-- Friday -->
@@ -395,6 +408,29 @@ function toggleMode(){
 }
 // Sync button label
 (function(){const l=document.body.classList.contains('light-mode');document.getElementById('modeBtn').textContent=l?'🌙 Dark':'☀️ Light';})();
+</script>
+
+<script>
+function saveChk(){
+  [1,2,3,4,5,6].forEach(i=>{
+    const el=document.getElementById('chk'+i);
+    if(el) localStorage.setItem('nmbChk'+i, el.checked?'1':'0');
+  });
+}
+(function restoreChk(){
+  [1,2,3,4,5,6].forEach(i=>{
+    const el=document.getElementById('chk'+i);
+    if(el && localStorage.getItem('nmbChk'+i)==='1'){
+      el.checked=true;
+      el.closest('label').style.opacity='0.45';
+      el.closest('label').style.textDecoration='line-through';
+    }
+    if(el) el.addEventListener('change',function(){
+      this.closest('label').style.opacity=this.checked?'0.45':'1';
+      this.closest('label').style.textDecoration=this.checked?'line-through':'none';
+    });
+  });
+})();
 </script>
 </body>
 </html>
