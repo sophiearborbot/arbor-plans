@@ -1067,52 +1067,43 @@ function renderMapSpots(spots) {
 }
 
 function setTripMode(mode) {
+  // Hide all views first
+  document.querySelector('.tabs').style.display = 'none';
+  document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+  document.getElementById('chillView').style.display = 'none';
   document.getElementById('tafView').style.display = 'none';
-  const diveView = document.querySelector('.tabs');
-  const chillView = document.getElementById('chillView');
-  const allTabContent = document.querySelectorAll('.tab-content');
-  const mapEl = document.getElementById('map');
-  
-  if (mode === 'chill') {
-    diveView.style.display = 'none';
-    allTabContent.forEach(t => t.style.display = 'none');
-    chillView.style.display = 'block';
-    document.getElementById('navChill').style.background = 'rgba(0,188,212,0.2)';
-    document.getElementById('navChill').style.color = '#e0f7fa';
-    document.getElementById('navDive').style.background = 'transparent';
-    document.getElementById('navDive').style.color = '#80deea';
-    if(document.getElementById('navTaf')){document.getElementById('navTaf').style.background='transparent';document.getElementById('navTaf').style.color='#80deea';}
-    renderMapSpots(chillSpots);
-    if (window._belizeMap) { window._belizeMap.setView([16.8, -88.2], 7); window._belizeMap.invalidateSize(); }
-  } else {
-    diveView.style.display = 'flex';
-    allTabContent.forEach(t => t.style.display = '');
-    // restore active tab
+
+  // Reset all nav buttons
+  ['navDive','navChill','navTaf'].forEach(id => {
+    const b = document.getElementById(id);
+    if (b) { b.style.background = 'transparent'; b.style.color = '#80deea'; }
+  });
+
+  if (mode === 'dive') {
+    document.querySelector('.tabs').style.display = 'flex';
+    document.querySelectorAll('.tab-content').forEach(t => t.style.display = '');
     document.querySelectorAll('.tab-content.active').forEach(t => t.style.display = 'block');
-    chillView.style.display = 'none';
     document.getElementById('navDive').style.background = 'rgba(0,188,212,0.2)';
     document.getElementById('navDive').style.color = '#e0f7fa';
-    document.getElementById('navChill').style.background = 'transparent';
-    document.getElementById('navChill').style.color = '#80deea';
-    if(document.getElementById('navTaf')){document.getElementById('navTaf').style.background='transparent';document.getElementById('navTaf').style.color='#80deea';}
     renderMapSpots(diveSpots);
-    if (window._belizeMap) { window._belizeMap.setView([17.0, -87.8], 8); window._belizeMap.invalidateSize(); }
+    if (window._belizeMap) window._belizeMap.setView([17.0, -87.8], 8);
+
+  } else if (mode === 'chill') {
+    document.getElementById('chillView').style.display = 'block';
+    document.getElementById('navChill').style.background = 'rgba(0,188,212,0.2)';
+    document.getElementById('navChill').style.color = '#e0f7fa';
+    renderMapSpots(chillSpots);
+    if (window._belizeMap) window._belizeMap.setView([16.8, -88.2], 7);
+
   } else if (mode === 'taf') {
-    diveView.style.display = 'none';
-    allTabContent.forEach(t => t.style.display = 'none');
-    document.getElementById('chillView').style.display = 'none';
     document.getElementById('tafView').style.display = 'block';
     document.getElementById('navTaf').style.background = 'rgba(76,175,80,0.2)';
     document.getElementById('navTaf').style.color = '#e0f7fa';
-    document.getElementById('navDive').style.background = 'transparent';
-    document.getElementById('navDive').style.color = '#80deea';
-    document.getElementById('navChill').style.background = 'transparent';
-    document.getElementById('navChill').style.color = '#80deea';
     const tafSpots = [
       {ll:[17.9240,-87.9713],label:'Ambergris Caye — Base 1 (3 nts)',color:'#00bcd4'},
       {ll:[17.7480,-88.0320],label:'Caye Caulker — day trip option',color:'#4caf50'},
       {ll:[16.5136,-88.3680],label:'Placencia — Turtle Inn (4 nts)',color:'#a5d6a7'},
-      {ll:[17.7800,-88.6600],label:'Lamanai Ruins — jungle riverboat 🏛️',color:'#8d6e63'},
+      {ll:[17.7800,-88.6600],label:'Lamanai Ruins 🏛️',color:'#8d6e63'},
       {ll:[17.2228,-89.6229],label:'Tikal, Guatemala 🏛️',color:'#ff7043'},
       {ll:[17.2100,-88.6830],label:'ATM Cave 🏛️',color:'#795548'},
       {ll:[16.4903,-87.9050],label:'Gladden Spit 🐋 whale sharks',color:'#ffd54f'},
@@ -1120,18 +1111,11 @@ function setTripMode(mode) {
       {ll:[17.2000,-87.5333],label:'Half Moon Caye 🌊',color:'#1565c0'},
     ];
     renderMapSpots(tafSpots);
-    if (window._belizeMap) { window._belizeMap.setView([17.2, -88.6], 7); window._belizeMap.invalidateSize(); }
+    if (window._belizeMap) window._belizeMap.setView([17.2, -88.6], 7);
   }
+
   localStorage.setItem('belizeTripMode', mode);
   if (window._belizeMap) window._belizeMap.invalidateSize();
 }
-// Restore mode on load
-(function(){
-  const saved = localStorage.getItem('belizeTripMode');
-  if (saved === 'chill') setTimeout(() => setTripMode('chill'), 100);
-  else if (saved === 'taf') setTimeout(() => setTripMode('taf'), 100);
-})();
-</script>
 
-</body>
-</html>
+
