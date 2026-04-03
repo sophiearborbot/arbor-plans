@@ -138,6 +138,28 @@ body.light-mode .mode-toggle { background: rgba(255,255,255,0.8); color: #003040
   .opt-badge { font-size: 0.68rem; padding: 2px 8px; border-radius: 20px; background: rgba(0,188,212,0.15); color: #80deea; }
   .opt-badge.rec { background: rgba(255,213,79,0.2); color: #fff176; }
   .opt-bullets { font-size: 0.76rem; color: var(--muted); margin: 0; padding-left: 14px; line-height: 1.6; }
+
+/* ── CHILL MODE ── */
+#chillView { display: none; max-width: 760px; margin: 0 auto; padding: 20px 16px; }
+.chill-hero { background: linear-gradient(135deg, #e8f5e9 0%, #e0f7fa 100%); border-radius: 14px; padding: 20px; margin-bottom: 16px; text-align: center; }
+body:not(.light-mode) .chill-hero { background: linear-gradient(135deg, rgba(0,100,80,0.3), rgba(0,150,180,0.2)); }
+.chill-hero h2 { font-size: 1.3rem; font-weight: 800; color: #00695c; margin-bottom: 6px; }
+body:not(.light-mode) .chill-hero h2 { color: #80cbc4; }
+.chill-hero p { font-size: 0.85rem; color: #555; line-height: 1.6; }
+body:not(.light-mode) .chill-hero p { color: #b2dfdb; }
+.pick-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 14px; }
+.pick-head { padding: 12px 16px; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; }
+.pick-body { padding: 0 16px 14px; font-size: 0.83rem; line-height: 1.7; color: var(--text); }
+.pick-img { width: 100%; height: 180px; object-fit: cover; display: block; }
+.base-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 14px; margin-bottom: 16px; }
+.base-card { background: var(--bg2); border: 2px solid var(--border); border-radius: 14px; overflow: hidden; transition: border-color 0.2s; }
+.base-card.pick { border-color: var(--accent); }
+.base-label { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.1em; padding: 2px 8px; border-radius: 10px; margin-left: 6px; }
+.lbl-rec { background: rgba(0,188,212,0.2); color: #80deea; }
+.lbl-splurge { background: rgba(255,213,79,0.2); color: #fff176; }
+.think-box { background: rgba(0,150,136,0.08); border-left: 3px solid #00bcd4; border-radius: 0 10px 10px 0; padding: 12px 14px; margin: 10px 0; font-size: 0.82rem; line-height: 1.6; }
+body.light-mode .think-box { background: rgba(0,150,136,0.06); }
+
   .opt-selected-note { font-size: 0.7rem; color: var(--accent); margin-top: 6px; display: none; }
   .opt-card.selected .opt-selected-note { display: block; }
 
@@ -196,6 +218,113 @@ body.light-mode .mode-toggle { background: rgba(255,255,255,0.8); color: #003040
     <span class="badge">✈️ CLT → BZE</span>
   </div>
 </div>
+
+<div id="modeNav" style="background:#003d4a;border-bottom:2px solid rgba(0,188,212,0.3);display:flex;align-items:center;justify-content:center;gap:0;padding:0;">
+  <button onclick="setTripMode('dive')" id="navDive" style="flex:1;max-width:200px;padding:11px 0;background:rgba(0,188,212,0.2);border:none;color:#e0f7fa;font-weight:700;font-size:0.85rem;cursor:pointer;border-right:1px solid rgba(0,188,212,0.2);transition:all 0.2s;">🤿 Dive Mode</button>
+  <button onclick="setTripMode('chill')" id="navChill" style="flex:1;max-width:200px;padding:11px 0;background:transparent;border:none;color:#80deea;font-weight:700;font-size:0.85rem;cursor:pointer;transition:all 0.2s;">🌴 Chill Mode</button>
+</div>
+
+<div id="chillView">
+
+  <div class="chill-hero">
+    <h2>🌴 Belize for Couples — Relaxed Edition</h2>
+    <p>Two highlight dives. One or two beautiful home bases. The ATM Cave. Good food, hammocks, and beach bars. Everything else is optional.</p>
+  </div>
+
+  <!-- Sophie's take -->
+  <div class="think-box">
+    <strong>Sophie's read:</strong> The dive-heavy plan is for max underwater time. This version is for an <em>amazing trip</em> that happens to include scuba. Fewer sites, more depth on each experience. Still hits the whale sharks — that's non-negotiable.
+  </div>
+
+  <!-- Two dives worth keeping -->
+  <div class="pick-card">
+    <div class="pick-head" style="background:rgba(0,100,150,0.15)">🤿 The 2 Dives Worth Keeping</div>
+    <div class="pick-body">
+      <p style="margin-bottom:10px"><strong>🔵 Great Blue Hole (May 1)</strong> — Full-day boat trip, 130ft dive through Ice Age stalactites with Caribbean reef sharks. UNESCO. Bucket list. Non-negotiable.</p>
+      <p style="margin-bottom:10px"><strong>🐋 Gladden Spit whale sharks (May 3)</strong> — Full moon evening dive. The most reliable whale shark experience in the Western Hemisphere. ~$175/pp. Also non-negotiable.</p>
+      <p style="color:var(--muted);font-size:0.79rem">Everything else — Hol Chan, Shark Ray Alley, Turneffe — is good but skippable. Do a snorkel day instead if you'd rather relax than gear up.</p>
+    </div>
+  </div>
+
+  <!-- ATM Cave -->
+  <div class="pick-card">
+    <div class="pick-head" style="background:rgba(100,50,0,0.15)">🏛️ The Land Adventure: ATM Cave (Actun Tunichil Muknal)</div>
+    <img class="pick-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/ATM_Cave_Belize.jpg/640px-ATM_Cave_Belize.jpg" alt="ATM Cave" onerror="this.style.display='none'">
+    <div class="pick-body" style="margin-top:10px">
+      <p style="margin-bottom:8px">Ancient Maya ceremonial cave — hike in, swim the river, wade through passages, climb into chambers with pottery and skeletal remains left in place for 1,000+ years. The "Crystal Maiden" skeleton is calcite-encrusted and still exactly where she was found.</p>
+      <p style="margin-bottom:8px"><strong>Why add it:</strong> Nothing else like it. Pure Indiana Jones energy. Completely different texture from diving. Half-day from Belize City area. ~$100/pp guided.</p>
+      <p style="color:#ff7043;font-size:0.79rem">⚠️ No cameras inside the cave (phones OK with care). Guided tour required — all operators in Belize City.</p>
+    </div>
+  </div>
+
+  <!-- Caye Caulker note -->
+  <div class="pick-card">
+    <div class="pick-head" style="background:rgba(0,188,100,0.1)">🚲 Caye Caulker — Day Trip, Not Base</div>
+    <div class="pick-body">
+      <p style="margin-bottom:8px">The "Go Slow" island is genuinely charming — no cars, bicycles only, colorful painted buildings, split beach, great lobster tacos at local shacks. Worth a day trip from Ambergris Caye (30min water taxi, ~$25/pp).</p>
+      <p style="color:var(--muted);font-size:0.79rem"><strong>Sophie's take:</strong> The accommodation and restaurants don't match what Ambergris or Placencia offer at this trip's budget. Go for the vibe, come back to sleep somewhere nicer.</p>
+    </div>
+  </div>
+
+  <!-- Home Base Options -->
+  <h3 style="font-size:0.85rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);margin:16px 0 10px">🏨 Home Base: One Stay or Two?</h3>
+  
+  <div class="think-box" style="margin-bottom:12px">
+    <strong>Option A — One resort, all-in:</strong> Stay at one place the whole time. Less packing, deeper relaxation, you really live in one spot. Best if you want to truly unwind.<br><br>
+    <strong>Option B — Split stay:</strong> Ambergris Caye (3 nts) → Placencia (4 nts). Different energy each half. Blue Hole from Ambergris; whale sharks from Placencia. More of Belize. More packing.
+  </div>
+
+  <div class="base-grid">
+
+    <div class="base-card pick">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Secret_Beach_Ambergris_Caye%2C_Belize%2C_January_2022_-_01.jpg/400px-Secret_Beach_Ambergris_Caye%2C_Belize%2C_January_2022_-_01.jpg" style="width:100%;height:140px;object-fit:cover" alt="Ambergris" onerror="this.style.display='none'">
+      <div style="padding:12px">
+        <div style="font-weight:800;font-size:0.9rem">Ambergris Caye <span class="base-label lbl-rec">Option A whole-trip</span></div>
+        <div style="font-size:0.75rem;color:var(--muted);margin:4px 0 8px">San Pedro · golf carts · restaurants · dive shop on-site</div>
+        <ul style="font-size:0.78rem;padding-left:14px;line-height:1.9;color:var(--text)">
+          <li>Ramon's Village — dive shop on-site, beachfront, ~$175/nt</li>
+          <li>Alaia (Autograph Collection) — luxury, ~$450/nt</li>
+          <li>Day trip to Caye Caulker from here (30min)</li>
+          <li>Great Blue Hole departs from here</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="base-card">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Placencia_Belize%2C_December_2021_-_The_Beach.jpg/400px-Placencia_Belize%2C_December_2021_-_The_Beach.jpg" style="width:100%;height:140px;object-fit:cover" alt="Placencia" onerror="this.style.display='none'">
+      <div style="padding:12px">
+        <div style="font-weight:800;font-size:0.9rem">Placencia <span class="base-label lbl-splurge">Option B second half</span></div>
+        <div style="font-size:0.75rem;color:var(--muted);margin:4px 0 8px">Village vibe · Coppola's Turtle Inn · whale shark base</div>
+        <ul style="font-size:0.78rem;padding-left:14px;line-height:1.9;color:var(--text)">
+          <li>Turtle Inn — Coppola's, Balinese villas, ~$350/nt ⭐</li>
+          <li>Chabil Mar — quieter, ~$200/nt, great beach</li>
+          <li>Whale shark dive (May 3) departs from here</li>
+          <li>Cockscomb Jaguar Reserve 1hr away</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Relaxed day flow -->
+  <div class="pick-card">
+    <div class="pick-head" style="background:rgba(245,158,11,0.1)">📅 Suggested Relaxed Flow (7 nights)</div>
+    <div class="pick-body">
+      <table style="font-size:0.8rem">
+        <tr><th>Day</th><th>Where</th><th>What</th></tr>
+        <tr><td>Apr 29</td><td>Arrive Ambergris</td><td>Check in, dinner, beach walk</td></tr>
+        <tr><td>Apr 30</td><td>Ambergris</td><td>Snorkel Hol Chan (no tanks needed), Caye Caulker day trip</td></tr>
+        <tr><td>May 1</td><td>All-day boat</td><td>🔵 <strong>Great Blue Hole + Half Moon Caye</strong></td></tr>
+        <tr><td>May 2</td><td>→ Placencia</td><td>ATM Cave day trip (or transit + settle in)</td></tr>
+        <tr><td>May 3</td><td>Placencia</td><td>🐋 <strong>Whale shark dive — Gladden Spit (full moon 🌕)</strong></td></tr>
+        <tr><td>May 4</td><td>Placencia</td><td>Cockscomb Jaguar Reserve or total beach day</td></tr>
+        <tr><td>May 5</td><td>Placencia</td><td>Relax, village walk, sunset dinner</td></tr>
+        <tr><td>May 6</td><td>Fly home</td><td>BZE → CLT</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /chillView -->
 
 <div id="map"></div>
 
@@ -721,6 +850,43 @@ function toggleMode() {
   const isLight = document.body.classList.contains('light-mode');
   const btn = document.getElementById('modeBtn');
   if(btn) btn.textContent = isLight ? '🌙 Dark Mode' : '☀️ Light Mode';
+})();
+</script>
+
+
+<script>
+function setTripMode(mode) {
+  const diveView = document.querySelector('.tabs');
+  const chillView = document.getElementById('chillView');
+  const allTabContent = document.querySelectorAll('.tab-content');
+  const mapEl = document.getElementById('map');
+  
+  if (mode === 'chill') {
+    diveView.style.display = 'none';
+    allTabContent.forEach(t => t.style.display = 'none');
+    chillView.style.display = 'block';
+    document.getElementById('navChill').style.background = 'rgba(0,188,212,0.2)';
+    document.getElementById('navChill').style.color = '#e0f7fa';
+    document.getElementById('navDive').style.background = 'transparent';
+    document.getElementById('navDive').style.color = '#80deea';
+  } else {
+    diveView.style.display = 'flex';
+    allTabContent.forEach(t => t.style.display = '');
+    // restore active tab
+    document.querySelectorAll('.tab-content.active').forEach(t => t.style.display = 'block');
+    chillView.style.display = 'none';
+    document.getElementById('navDive').style.background = 'rgba(0,188,212,0.2)';
+    document.getElementById('navDive').style.color = '#e0f7fa';
+    document.getElementById('navChill').style.background = 'transparent';
+    document.getElementById('navChill').style.color = '#80deea';
+  }
+  localStorage.setItem('belizeTripMode', mode);
+  if (window._belizeMap) window._belizeMap.invalidateSize();
+}
+// Restore mode on load
+(function(){
+  const saved = localStorage.getItem('belizeTripMode');
+  if (saved === 'chill') setTimeout(() => setTripMode('chill'), 100);
 })();
 </script>
 
