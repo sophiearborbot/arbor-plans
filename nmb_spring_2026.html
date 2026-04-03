@@ -236,7 +236,8 @@ td{padding:8px 12px;border-top:1px solid rgba(255,255,255,0.05);}
 </div>
 
 <script>
-const map = L.map('map').setView([33.845, -78.68], 12);
+// Verified GPS coordinates (Apr 2026)
+const map = L.map('map').setView([33.795, -78.720], 12);
 const isLight = document.body.classList.contains('light-mode');
 window._nmbMap = map;
 const darkTile = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO',maxZoom:16});
@@ -245,17 +246,16 @@ window._nmbTiles = {dark:darkTile,light:lightTile,current:isLight?lightTile:dark
 window._nmbTiles.current.addTo(map);
 
 const spots = [
-  {ll:[33.878,-78.666],label:'Cherry Grove Beach 🏖️',color:'#29b6f6'},
-  {ll:[33.845,-78.687],label:"Barefoot Landing 🐊",color:'#f59e0b'},
-  {ll:[33.842,-78.686],label:'Alligator Adventure',color:'#4caf50'},
-  {ll:[33.858,-78.680],label:'Hawaiian Rumble Mini Golf ⛳',color:'#ab47bc'},
-  {ll:[33.875,-78.665],label:'Cherry Grove Pier 🎣',color:'#26c6da'},
-  {ll:[33.756,-78.867],label:'Broadway at the Beach 🎡',color:'#ef5350'},
-  {ll:[33.703,-78.891],label:"Ripley's Aquarium 🦈",color:'#1565c0'},
-  {ll:[33.702,-78.890],label:'WonderWorks 🔬',color:'#6a1b9a'},
-  {ll:[33.720,-78.880],label:'Main Event Bowling 🎳',color:'#2e7d32'},
-  {ll:[33.849,-78.709],label:'Hoskins Restaurant 🍳',color:'#ff7043'},
-  {ll:[33.838,-78.618],label:'The Brentwood 🍽️',color:'#ec407a'},
+  {ll:[33.827,-78.631],label:'Cherry Grove Beach 🏖️',color:'#29b6f6'},
+  {ll:[33.827,-78.632],label:'Cherry Grove Pier 🎣',color:'#26c6da'},
+  {ll:[33.800,-78.737],label:'Barefoot Landing + Alligator Adventure 🐊',color:'#f59e0b'},
+  {ll:[33.816,-78.686],label:'Hawaiian Rumble Mini Golf ⛳',color:'#ab47bc'},
+  {ll:[33.703,-78.891],label:'Broadway at the Beach 🎡',color:'#ef5350'},
+  {ll:[33.701,-78.888],label:"Ripley's Aquarium 🦈",color:'#1565c0'},
+  {ll:[33.700,-78.887],label:'WonderWorks 🔬',color:'#6a1b9a'},
+  {ll:[33.705,-78.882],label:'Main Event Bowling 🎳',color:'#2e7d32'},
+  {ll:[33.818,-78.700],label:'Hoskins Restaurant 🍳',color:'#ff7043'},
+  {ll:[33.814,-78.685],label:'The Brentwood 🍽️',color:'#ec407a'},
 ];
 spots.forEach(s=>{
   L.circleMarker(s.ll,{radius:8,fillColor:s.color,color:'#fff',weight:2,fillOpacity:0.9}).addTo(map)
