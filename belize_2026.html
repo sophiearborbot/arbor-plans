@@ -139,6 +139,36 @@ body.light-mode .mode-toggle { background: rgba(255,255,255,0.8); color: #003040
   .opt-badge.rec { background: rgba(255,213,79,0.2); color: #fff176; }
   .opt-bullets { font-size: 0.76rem; color: var(--muted); margin: 0; padding-left: 14px; line-height: 1.6; }
 
+
+#tafView { display: none; max-width: 760px; margin: 0 auto; padding: 20px 16px; }
+.taf-hero { background: linear-gradient(135deg, rgba(46,125,50,0.25), rgba(0,150,136,0.15)); border-radius: 14px; padding: 20px; margin-bottom: 16px; }
+body.light-mode .taf-hero { background: linear-gradient(135deg, #e8f5e9, #e0f4f1); }
+.taf-hero h2 { font-size: 1.25rem; font-weight: 800; color: #a5d6a7; margin-bottom: 8px; }
+body.light-mode .taf-hero h2 { color: #2e7d32; }
+.taf-hero p { font-size: 0.83rem; line-height: 1.7; color: #b2dfdb; }
+body.light-mode .taf-hero p { color: #1b5e20; }
+.taf-day { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 12px; overflow: hidden; cursor: pointer; }
+.taf-day.open .taf-body { display: block; }
+.taf-day-hd { display: flex; align-items: center; gap: 12px; padding: 13px 16px; }
+.taf-num { width: 36px; height: 36px; border-radius: 50%; background: rgba(76,175,80,0.2); color: #81c784; font-weight: 800; font-size: 0.82rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.taf-body { display: none; padding: 0 16px 14px; border-top: 1px solid var(--border); }
+.taf-item { display: flex; gap: 10px; padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 0.83rem; }
+.taf-item:last-child { border-bottom: none; }
+.taf-time { color: var(--muted); font-size: 0.72rem; min-width: 62px; padding-top: 2px; flex-shrink: 0; }
+.taf-tag { display: inline-block; font-size: 0.65rem; padding: 1px 7px; border-radius: 10px; margin-left: 5px; }
+.tt-ruin { background: rgba(121,85,72,0.25); color: #d7ccc8; }
+.tt-jungle { background: rgba(46,125,50,0.25); color: #a5d6a7; }
+.tt-water { background: rgba(0,150,136,0.25); color: #80cbc4; }
+.tt-food { background: rgba(255,152,0,0.2); color: #ffcc80; }
+.tt-wow { background: rgba(255,213,79,0.25); color: #fff176; }
+.tt-hotel { background: rgba(156,39,176,0.15); color: #ce93d8; }
+.highlight-ruin { border-left: 3px solid #8d6e63; background: rgba(121,85,72,0.08); border-radius: 0 10px 10px 0; padding: 10px 14px; margin: 8px 0; font-size: 0.82rem; line-height: 1.65; }
+.highlight-water { border-left: 3px solid #4caf50; background: rgba(76,175,80,0.07); border-radius: 0 10px 10px 0; padding: 10px 14px; margin: 8px 0; font-size: 0.82rem; line-height: 1.65; }
+.taf-base-cards { display: grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap: 12px; margin: 12px 0 16px; }
+.taf-base { background: var(--bg2); border: 2px solid rgba(76,175,80,0.3); border-radius: 12px; overflow: hidden; }
+.taf-base-img { width: 100%; height: 140px; object-fit: cover; }
+.taf-base-body { padding: 12px; font-size: 0.82rem; line-height: 1.7; }
+
 /* ── CHILL MODE ── */
 #chillView { display: none; max-width: 760px; margin: 0 auto; padding: 20px 16px; }
 .chill-hero { background: linear-gradient(135deg, #e8f5e9 0%, #e0f7fa 100%); border-radius: 14px; padding: 20px; margin-bottom: 16px; text-align: center; }
@@ -221,10 +251,162 @@ body.light-mode .think-box { background: rgba(0,150,136,0.06); }
 
 <div id="modeNav" style="background:#003d4a;border-bottom:2px solid rgba(0,188,212,0.3);display:flex;align-items:center;justify-content:center;gap:0;padding:0;">
   <button onclick="setTripMode('dive')" id="navDive" style="flex:1;max-width:200px;padding:11px 0;background:rgba(0,188,212,0.2);border:none;color:#e0f7fa;font-weight:700;font-size:0.85rem;cursor:pointer;border-right:1px solid rgba(0,188,212,0.2);transition:all 0.2s;">🤿 Dive Mode</button>
-  <button onclick="setTripMode('chill')" id="navChill" style="flex:1;max-width:200px;padding:11px 0;background:transparent;border:none;color:#80deea;font-weight:700;font-size:0.85rem;cursor:pointer;transition:all 0.2s;">🌴 Chill Mode</button>
+  <button onclick="setTripMode('chill')" id="navChill" style="flex:1;max-width:200px;padding:11px 0;background:transparent;border:none;color:#80deea;font-weight:700;font-size:0.85rem;cursor:pointer;border-right:1px solid rgba(0,188,212,0.2);transition:all 0.2s;">🌴 Chill Mode</button>
+  <button onclick="setTripMode('taf')" id="navTaf" style="flex:1;max-width:200px;padding:11px 0;background:transparent;border:none;color:#80deea;font-weight:700;font-size:0.85rem;cursor:pointer;border-right:1px solid rgba(0,188,212,0.2);transition:all 0.2s;">🌴 Chill Mode</button>
+  <button onclick="setTripMode('taf')" id="navTaf" style="flex:1;max-width:200px;padding:11px 0;background:transparent;border:none;color:#80deea;font-weight:700;font-size:0.85rem;cursor:pointer;transition:all 0.2s;">🌿 Tafline's Pick</button>
 </div>
 
 <div id="map"></div>
+
+<div id="tafView">
+
+  <div class="taf-hero">
+    <h2>🌿 Tafline's Pick — Culture · Jungle · Ruins · Whale Sharks · Luxury</h2>
+    <p>Two beautiful bases. Two world-class archaeological sites. Whale shark snorkel at full moon. Jungle. Beach. The best of everything — easy and well-organized.</p>
+    <p style="margin-top:8px;font-size:0.78rem;opacity:0.8">📍 Ambergris Caye (3 nts) → Placencia / Turtle Inn (4 nts)</p>
+  </div>
+
+  <!-- Whale shark note -->
+  <div class="highlight-water">
+    🐋 <strong>Whale sharks at Gladden Spit = SNORKEL, not scuba</strong> — They feed at the surface on snapper spawn. You float alongside them. No certification needed, no tank, no air limit. Actually more time in the water than scuba. Full moon May 3 is the peak. This is the best whale shark experience in the Western Hemisphere.
+  </div>
+
+  <!-- Bases -->
+  <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;color:#81c784;font-weight:700;margin:14px 0 8px">🏨 Two Bases</div>
+  <div class="taf-base-cards">
+    <div class="taf-base">
+      <img class="taf-base-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Secret_Beach_Ambergris_Caye%2C_Belize%2C_January_2022_-_01.jpg/400px-Secret_Beach_Ambergris_Caye%2C_Belize%2C_January_2022_-_01.jpg" alt="Ambergris" onerror="this.style.display='none'">
+      <div class="taf-base-body">
+        <strong>Base 1: Ambergris Caye</strong> — 3 nights (Apr 29–May 1)<br>
+        <span style="font-size:0.75rem;color:var(--muted)">Alaia Belize (Autograph Collection) ~$450/nt OR Matachica Adults-Only ~$436/nt AI</span><br>
+        Snorkel, beach, Lamanai day trip, Half Moon Caye dive
+      </div>
+    </div>
+    <div class="taf-base">
+      <img class="taf-base-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Placencia_Belize%2C_December_2021_-_The_Beach.jpg/400px-Placencia_Belize%2C_December_2021_-_The_Beach.jpg" alt="Turtle Inn Placencia" onerror="this.style.display='none'">
+      <div class="taf-base-body">
+        <strong>Base 2: Turtle Inn, Placencia</strong> ⭐ — 4 nights (May 2–5)<br>
+        <span style="font-size:0.75rem;color:var(--muted)">Francis Ford Coppola's resort. Balinese villas, private beach, ~$350/nt</span><br>
+        Whale sharks, Tikal, ATM Cave, jungle, village
+      </div>
+    </div>
+  </div>
+
+  <!-- Day by day -->
+  <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;color:#81c784;font-weight:700;margin:14px 0 8px">📅 Day by Day</div>
+
+  <div class="taf-day open" id="td1" onclick="this.classList.toggle('open')">
+    <div class="taf-day-hd" style="background:rgba(0,150,136,0.08)">
+      <div class="taf-num">1</div>
+      <div><div style="font-size:0.7rem;color:var(--muted)">Apr 29 · Arrive</div><div style="font-weight:700">Fly in · Check into resort · Caribbean first night</div></div>
+    </div>
+    <div class="taf-body">
+      <div class="taf-item"><div class="taf-time">Arrive</div><div>CLT → BZE → Ambergris Caye. Water taxi or island hopper. Check into Alaia or Matachica. <span class="taf-tag tt-hotel">🏨 luxury base</span></div></div>
+      <div class="taf-item"><div class="taf-time">Evening</div><div>Beach walk, sunset cocktails, dinner on the water. Early night.</div></div>
+    </div>
+  </div>
+
+  <div class="taf-day" id="td2" onclick="this.classList.toggle('open')">
+    <div class="taf-day-hd" style="background:rgba(121,85,72,0.1)">
+      <div class="taf-num">2</div>
+      <div><div style="font-size:0.7rem;color:var(--muted)">Apr 30 · Ruins day</div><div style="font-weight:700">🏛️ Lamanai — jungle riverboat + Maya ruins</div></div>
+    </div>
+    <div class="taf-body">
+      <div class="highlight-ruin">
+        <strong>Lamanai</strong> is the best easy-access ruin in Belize — you reach it by riverboat through 26 miles of jungle river. Howler monkeys in the trees. Crocodiles in the water. The ruins emerge out of dense forest. A 3,000-year-old temple you can climb. More dramatic than Xunantunich and far easier to reach than Tikal. ~$120–150/pp guided day trip from Ambergris/Belize City. <strong>Do this day here, save Tikal for the expedition.</strong>
+      </div>
+      <div class="taf-item"><div class="taf-time">6:00am</div><div><strong>Depart for Lamanai tour</strong> <span class="taf-tag tt-ruin">🏛️ ruins</span> <span class="taf-tag tt-jungle">🌿 jungle</span> — guided day tour, riverboat through New River Lagoon</div></div>
+      <div class="taf-item"><div class="taf-time">Midday</div><div>Climb Temple of the Jaguar. Spot howler monkeys, morelet's crocodiles, iguanas, herons.</div></div>
+      <div class="taf-item"><div class="taf-time">Evening</div><div>Return to Ambergris. Dinner on the resort terrace.</div></div>
+    </div>
+  </div>
+
+  <div class="taf-day" id="td3" onclick="this.classList.toggle('open')">
+    <div class="taf-day-hd" style="background:rgba(0,100,140,0.1)">
+      <div class="taf-num">3</div>
+      <div><div style="font-size:0.7rem;color:var(--muted)">May 1 · Ocean day</div><div style="font-weight:700">🌊 Half Moon Caye Wall · Snorkel + dive</div></div>
+    </div>
+    <div class="taf-body">
+      <div class="taf-item"><div class="taf-time">7:00am</div><div><strong>Half Moon Caye boat trip</strong> <span class="taf-tag tt-water">🌊 ocean</span> — 45min from Ambergris. Dive or snorkel the reef wall (40–80ft). Sea turtles, nurse sharks, eagle rays.</div></div>
+      <div class="taf-item"><div class="taf-time">Afternoon</div><div>Pack up resort. Afternoon flight → Placencia. Check into <strong>Turtle Inn</strong>. <span class="taf-tag tt-hotel">🏨 Coppola resort</span></div></div>
+      <div class="taf-item"><div class="taf-time">Evening</div><div>First night at Turtle Inn. Balinese villas, private beach. Dinner at The Turtle Inn restaurant.</div></div>
+    </div>
+  </div>
+
+  <div class="taf-day" id="td4" onclick="this.classList.toggle('open')">
+    <div class="taf-day-hd" style="background:rgba(255,213,79,0.1)">
+      <div class="taf-num">4</div>
+      <div><div style="font-size:0.7rem;color:var(--muted)">May 2 · Rest day</div><div style="font-weight:700">🌴 Placencia village · Beach · Prep</div></div>
+    </div>
+    <div class="taf-body">
+      <div class="taf-item"><div class="taf-time">Morning</div><div>Explore Placencia village. Narrowest main street in the world. Local coffee, fresh fish, open-air shops.</div></div>
+      <div class="taf-item"><div class="taf-time">Afternoon</div><div>Private beach at Turtle Inn. Read. Swim. Hammock. This is the easy part.</div></div>
+      <div class="taf-item"><div class="taf-time">Evening</div><div>Register with dive/snorkel operator for whale sharks tomorrow. Early dinner, early bed.</div></div>
+    </div>
+  </div>
+
+  <div class="taf-day" id="td5" onclick="this.classList.toggle('open')">
+    <div class="taf-day-hd" style="background:rgba(255,213,79,0.12)">
+      <div class="taf-num">5</div>
+      <div><div style="font-size:0.7rem;color:var(--muted)">May 3 · 🌕 Full Moon</div><div style="font-weight:700">🐋 Whale Shark Snorkel — Gladden Spit</div></div>
+    </div>
+    <div class="taf-body">
+      <div class="highlight-water">
+        <strong>Snorkel, not scuba.</strong> Whale sharks surface-feed on snapper spawn at dusk. You float alongside them — up to 40ft long — as they vacuum up fish eggs. No tanks. No certification. Full moon May 3 = peak spawning = highest probability. ~$175/pp. This is the headline event.
+      </div>
+      <div class="taf-item"><div class="taf-time">Afternoon</div><div><strong>Boat to Gladden Spit</strong> <span class="taf-tag tt-wow">🐋 bucket list</span> — ~1h from Placencia. Dive/snorkel starts ~4–5pm at dusk.</div></div>
+      <div class="taf-item"><div class="taf-time">Evening</div><div>Return to Turtle Inn. Best dinner of the trip. Celebrate. 🥂</div></div>
+    </div>
+  </div>
+
+  <div class="taf-day" id="td6" onclick="this.classList.toggle('open')">
+    <div class="taf-day-hd" style="background:rgba(121,85,72,0.12)">
+      <div class="taf-num">6</div>
+      <div><div style="font-size:0.7rem;color:var(--muted)">May 4 · Big day</div><div style="font-weight:700">🏛️ Tikal, Guatemala — the expedition</div></div>
+    </div>
+    <div class="taf-body">
+      <div class="highlight-ruin">
+        <strong>Tikal</strong> is the crown jewel of Maya archaeology — massive stone pyramids rising above the jungle canopy in Guatemala. Temple IV view at sunrise is one of the iconic images of Central America. Spider monkeys, toucans, coatis everywhere. Guided full-day tour from Placencia ~$175–200/pp. Depart 5am, return by 9–10pm. Long day but completely worth it.
+      </div>
+      <div class="taf-item"><div class="taf-time">5:00am</div><div><strong>Depart for Tikal</strong> <span class="taf-tag tt-ruin">🏛️ ruins</span> <span class="taf-tag tt-jungle">🌿 jungle</span> — guided tour, ~4h drive to Guatemala border</div></div>
+      <div class="taf-item"><div class="taf-time">All day</div><div>Tikal National Park. Climb Temple I, Temple IV views above canopy. Wildlife everywhere. Guided archaeology tour.</div></div>
+      <div class="taf-item"><div class="taf-time">Evening</div><div>Return to Turtle Inn. Late dinner or room service. You'll be ready for bed.</div></div>
+    </div>
+  </div>
+
+  <div class="taf-day" id="td7" onclick="this.classList.toggle('open')">
+    <div class="taf-day-hd" style="background:rgba(46,125,50,0.1)">
+      <div class="taf-num">7</div>
+      <div><div style="font-size:0.7rem;color:var(--muted)">May 5 · Jungle day</div><div style="font-weight:700">🐆 ATM Cave OR Cockscomb · Last full day</div></div>
+    </div>
+    <div class="taf-body">
+      <div class="taf-item"><div class="taf-time">Option A</div><div><strong>ATM Cave</strong> <span class="taf-tag tt-ruin">🏛️ archaeology</span> <span class="taf-tag tt-jungle">🌿 jungle</span> — Actun Tunichil Muknal. Hike in, swim the river, wade underground Maya ceremonial cave with 1,000-year-old pottery and skeletal remains still in place. Physically demanding but extraordinary. ~$100/pp.</div></div>
+      <div class="taf-item"><div class="taf-time">Option B</div><div><strong>Cockscomb Basin Jaguar Reserve</strong> <span class="taf-tag tt-jungle">🌿 jungle</span> — 1h from Placencia. World's only jaguar reserve. Jungle hiking, waterfall swimming, tapirs, exotic birds. Much easier day than ATM Cave.</div></div>
+      <div class="taf-item"><div class="taf-time">Evening</div><div>Last sunset at Turtle Inn. Best meal of the trip. Pack for tomorrow.</div></div>
+    </div>
+  </div>
+
+  <div class="taf-day" id="td8" onclick="this.classList.toggle('open')">
+    <div class="taf-day-hd">
+      <div class="taf-num">8</div>
+      <div><div style="font-size:0.7rem;color:var(--muted)">May 6 · Fly home</div><div style="font-weight:700">✈️ BZE → CLT</div></div>
+    </div>
+    <div class="taf-body">
+      <div class="taf-item"><div class="taf-time">Morning</div><div>Final beach walk. Breakfast at Turtle Inn. Fly Placencia → BZE → home.</div></div>
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div style="background:rgba(76,175,80,0.08);border:1px solid rgba(76,175,80,0.25);border-radius:12px;padding:14px;margin-top:16px;font-size:0.82rem;line-height:1.8">
+    <strong style="color:#81c784">What you get:</strong><br>
+    🏛️ Lamanai ruins (jungle riverboat) · 🏛️ Tikal Guatemala (Maya pyramid expedition)<br>
+    🐋 Whale sharks snorkel (full moon May 3) · 🌊 Half Moon Caye wall dive/snorkel<br>
+    🌿 Jungle (Cockscomb or ATM Cave) · 🏨 Turtle Inn (Coppola) + Alaia/Matachica<br>
+    🏖️ Beach · 🌴 Caye Caulker day trip optional · 🚲 Placencia village stroll
+  </div>
+
+</div><!-- /tafView -->
+
 <div id="chillView">
 
   <div class="chill-hero">
@@ -886,6 +1068,7 @@ function renderMapSpots(spots) {
 }
 
 function setTripMode(mode) {
+  document.getElementById('tafView').style.display = 'none';
   const diveView = document.querySelector('.tabs');
   const chillView = document.getElementById('chillView');
   const allTabContent = document.querySelectorAll('.tab-content');
@@ -899,6 +1082,7 @@ function setTripMode(mode) {
     document.getElementById('navChill').style.color = '#e0f7fa';
     document.getElementById('navDive').style.background = 'transparent';
     document.getElementById('navDive').style.color = '#80deea';
+    if(document.getElementById('navTaf')){document.getElementById('navTaf').style.background='transparent';document.getElementById('navTaf').style.color='#80deea';}
     renderMapSpots(chillSpots);
     if (window._belizeMap) { window._belizeMap.setView([16.8, -88.2], 7); window._belizeMap.invalidateSize(); }
   } else {
@@ -911,8 +1095,33 @@ function setTripMode(mode) {
     document.getElementById('navDive').style.color = '#e0f7fa';
     document.getElementById('navChill').style.background = 'transparent';
     document.getElementById('navChill').style.color = '#80deea';
+    if(document.getElementById('navTaf')){document.getElementById('navTaf').style.background='transparent';document.getElementById('navTaf').style.color='#80deea';}
     renderMapSpots(diveSpots);
     if (window._belizeMap) { window._belizeMap.setView([17.0, -87.8], 8); window._belizeMap.invalidateSize(); }
+  } else if (mode === 'taf') {
+    diveView.style.display = 'none';
+    allTabContent.forEach(t => t.style.display = 'none');
+    document.getElementById('chillView').style.display = 'none';
+    document.getElementById('tafView').style.display = 'block';
+    document.getElementById('navTaf').style.background = 'rgba(76,175,80,0.2)';
+    document.getElementById('navTaf').style.color = '#e0f7fa';
+    document.getElementById('navDive').style.background = 'transparent';
+    document.getElementById('navDive').style.color = '#80deea';
+    document.getElementById('navChill').style.background = 'transparent';
+    document.getElementById('navChill').style.color = '#80deea';
+    const tafSpots = [
+      {ll:[17.9240,-87.9713],label:'Ambergris Caye — Base 1 (3 nts)',color:'#00bcd4'},
+      {ll:[17.7480,-88.0320],label:'Caye Caulker — day trip option',color:'#4caf50'},
+      {ll:[16.5136,-88.3680],label:'Placencia — Turtle Inn (4 nts)',color:'#a5d6a7'},
+      {ll:[17.7800,-88.6600],label:'Lamanai Ruins — jungle riverboat 🏛️',color:'#8d6e63'},
+      {ll:[17.2228,-89.6229],label:'Tikal, Guatemala 🏛️',color:'#ff7043'},
+      {ll:[17.2100,-88.6830],label:'ATM Cave 🏛️',color:'#795548'},
+      {ll:[16.4903,-87.9050],label:'Gladden Spit 🐋 whale sharks',color:'#ffd54f'},
+      {ll:[16.5042,-88.9853],label:'Cockscomb Jaguar Reserve 🐆',color:'#388e3c'},
+      {ll:[17.2000,-87.5333],label:'Half Moon Caye 🌊',color:'#1565c0'},
+    ];
+    renderMapSpots(tafSpots);
+    if (window._belizeMap) { window._belizeMap.setView([17.2, -88.6], 7); window._belizeMap.invalidateSize(); }
   }
   localStorage.setItem('belizeTripMode', mode);
   if (window._belizeMap) window._belizeMap.invalidateSize();
@@ -921,6 +1130,7 @@ function setTripMode(mode) {
 (function(){
   const saved = localStorage.getItem('belizeTripMode');
   if (saved === 'chill') setTimeout(() => setTripMode('chill'), 100);
+  else if (saved === 'taf') setTimeout(() => setTripMode('taf'), 100);
 })();
 </script>
 
