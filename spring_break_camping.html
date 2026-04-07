@@ -564,7 +564,17 @@ function showDest(id) {
   if (id === 'linville' && window._lmap) setTimeout(() => window._lmap.invalidateSize(), 100);
 }
 
-// ── ROUTE TOGGLE ──
+// ── THICK LINE TOGGLE (must be defined early — used by buildRouteLayers and buildNearbyTrails) ──
+let thickMode = false;
+function tw(base) { return thickMode ? base * 2.5 : base; }
+function toggleThick() {
+  thickMode = !thickMode;
+  document.getElementById('btn-thick').classList.toggle('on', thickMode);
+  buildRouteLayers();
+  buildNearbyTrails();
+}
+
+// ── ROUTE TOGGLE (deferred — updateMapLayers called after layers exist) ──
 const routeState = { a: true, b: true };
 
 function toggleRoute(r) {
@@ -572,7 +582,7 @@ function toggleRoute(r) {
   const btn = document.querySelector('.route-toggle.' + r);
   btn.classList.toggle('on', routeState[r]);
   btn.querySelector('.check').textContent = routeState[r] ? '✓' : '';
-  // Show/hide map layers
+  // Show/hide map layers (safe — layers are initialized by the time user clicks)
   updateMapLayers();
   // Show/hide day cards
   document.getElementById('route-' + r + '-section').style.display = routeState[r] ? '' : 'none';
@@ -934,17 +944,6 @@ function updateMapLayers() {
 }
 
 buildRouteLayers();
-
-// ── THICK LINE TOGGLE ──
-let thickMode = false;
-function toggleThick() {
-  thickMode = !thickMode;
-  document.getElementById('btn-thick').classList.toggle('on', thickMode);
-  // Rebuild everything with new weight
-  buildRouteLayers();
-  buildNearbyTrails();
-}
-function tw(base) { return thickMode ? base * 2.5 : base; } // thickness multiplier
 
 // ── ZOOM TO DAY ──
 function zoomDay(route, day) {
