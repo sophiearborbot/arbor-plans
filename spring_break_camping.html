@@ -281,9 +281,9 @@
   <!-- Map Controls -->
   <div class="map-bar">
     <span class="bar-label">Map:</span>
-    <button class="map-btn on" id="btn-dark" onclick="setTile('dark')">Dark</button>
+    <button class="map-btn" id="btn-dark" onclick="setTile('dark')">Dark</button>
     <button class="map-btn" id="btn-satellite" onclick="setTile('satellite')">Satellite</button>
-    <button class="map-btn" id="btn-terrain" onclick="setTile('terrain')">Terrain</button>
+    <button class="map-btn on" id="btn-terrain" onclick="setTile('terrain')">Terrain</button>
     <button class="map-btn" id="btn-topo" onclick="setTile('topo')">Topo</button>
     <div class="spacer"></div>
     <span class="bar-label">Trails:</span>
@@ -649,14 +649,14 @@ const routeA = {
   days: [
     { path: shortoffTrail, label: 'Day 1: 3.5 mi' },
     { path: eastRimShortoffToTableRock, label: 'Day 2: 7.5 mi' },
-    { // Day 3: FR 210 road walk back
+    { // Day 3: FR 210 road walk back — uses same road as nearby trails FR 210, reversed
       path: [
-        [35.8920,-81.8875],[35.8905,-81.8850],[35.8880,-81.8830],[35.8850,-81.8810],
-        [35.8820,-81.8795],[35.8790,-81.8780],[35.8755,-81.8765],[35.8720,-81.8755],
-        [35.8680,-81.8750],[35.8640,-81.8745],[35.8600,-81.8748],[35.8560,-81.8755],
-        [35.8520,-81.8765],[35.8480,-81.8775],[35.8440,-81.8790],[35.8400,-81.8800],
-        [35.8360,-81.8815],[35.8320,-81.8830],[35.8280,-81.8845],[35.8260,-81.8870],
-        [35.8242,-81.8897]
+        [35.9035,-81.8788],[35.9000,-81.8883],[35.8960,-81.8880],[35.8920,-81.8875],
+        [35.8905,-81.8850],[35.8880,-81.8830],[35.8850,-81.8810],[35.8820,-81.8795],
+        [35.8790,-81.8780],[35.8755,-81.8765],[35.8720,-81.8755],[35.8680,-81.8750],
+        [35.8640,-81.8745],[35.8600,-81.8748],[35.8560,-81.8755],[35.8520,-81.8765],
+        [35.8480,-81.8775],[35.8440,-81.8790],[35.8400,-81.8800],[35.8360,-81.8815],
+        [35.8320,-81.8830],[35.8280,-81.8845],[35.8260,-81.8870],[35.8242,-81.8897]
       ],
       label: 'Day 3: 7.5 mi (road)', dashed: true
     }
@@ -749,8 +749,8 @@ const tiles = {
     attribution: '© USGS', maxZoom: 16
   })
 };
-let currentTile = 'dark';
-tiles.dark.addTo(_lmap);
+let currentTile = 'terrain';
+tiles.terrain.addTo(_lmap);
 
 function setTile(name) {
   if (tiles[currentTile]) _lmap.removeLayer(tiles[currentTile]);
