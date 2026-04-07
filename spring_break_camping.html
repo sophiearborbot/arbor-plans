@@ -308,7 +308,7 @@
   <!-- Route A Day Cards -->
   <div class="route-section" id="route-a-section">
     <div class="route-label" style="color:#ef9a9a;">
-      Route A — East Rim Skyline <span class="total">~18 mi total · ~4,300 ft gain · No river crossing</span>
+      Route A — East Rim Skyline <span class="total">~21 mi total · ~4,300 ft gain · No river crossing</span>
     </div>
     <div class="day-cards">
       <div class="day-card a" onclick="zoomDay('a',1)">
@@ -333,12 +333,12 @@
       </div>
       <div class="day-card a" onclick="zoomDay('a',3)">
         <div class="day-label">Sun · Day 3</div>
-        <div class="day-dist">7.5 mi (gravel road) or shuttle</div>
-        <div class="day-route">FR 210 road walk → Wolf Pit TH</div>
+        <div class="day-dist">~20 min drive or shuttle</div>
+        <div class="day-route">FR 210 winds far east — drive/shuttle between trailheads</div>
         <div class="day-info">
-          <span class="warn">🏃 Option: jog ~7 mi on FR 210 to grab the car (~1 hr)</span><br>
-          <span class="warn">🚐 Or shuttle a 2nd car to Table Rock on Friday (20-min drive)</span><br>
-          <span class="water">Easy gravel road, no obstacles — fine for dogs</span>
+          <span class="warn">🚗 Best: shuttle a 2nd car to Table Rock on Friday (20-min drive via FR 210)</span><br>
+          <span class="warn">🏃 Ambitious: jog the road (~10+ mi, winding gravel, 1.5–2 hrs)</span><br>
+          <span class="warn">🚐 Or arrange a local shuttle (~$30-50, see shuttle info below)</span>
         </div>
       </div>
     </div>
@@ -390,7 +390,7 @@
       <h3>🚐 Day 3 Shuttle Options</h3>
       <ul>
         <li><span class="highlight">2-car shuttle (free):</span> Drop a car at Table Rock (Rte A) or Wolf Pit (Rte B) on Friday before starting. Drive ~20 min between trailheads via FR 210 / NC-181 / NC-126.</li>
-        <li><span class="highlight">Jog for the car (Rte A):</span> One person runs ~7 mi on FR 210 gravel road back to Wolf Pit. Mostly downhill, ~1 hr for a runner. Bring trail runners or sneakers in your pack.</li>
+        <li><span class="highlight">Jog for the car (Rte A):</span> FR 210 winds far east of the gorge — the road distance is 10+ mi. Doable but ambitious (~1.5-2 hrs running). Bring trail runners.</li>
         <li><span class="highlight">Paid shuttle (~$30-50):</span> No dedicated shuttle service. Post in the <strong>Linville Gorge Wilderness Area Facebook group</strong> a few days before — locals offer informal rides. Also try <strong>r/NCTrails</strong> on Reddit. Call ranger station (828) 652-2144 for current recommendations.</li>
         <li><span class="highlight">Bike stash:</span> Lock a bike at one trailhead, hike through, bike back to car. ~20 min ride on forest roads.</li>
         <li>Uber/Lyft: <span style="color:#f44336;">Unreliable</span> — very rural, no cell service in the gorge. Don't count on it.</li>
@@ -604,15 +604,20 @@ const shortoffTrail = [
   [35.8284,-81.8975],[35.8285,-81.8981]
 ];
 
-// East rim / MST — Shortoff north to Table Rock (approximate from OSM MST data)
+// East rim / MST — Shortoff north to Table Rock (real OSM data: ways 240066342, 240066339, 218917692)
 const eastRimShortoffToTableRock = [
-  [35.8285,-81.8981],[35.8310,-81.8975],[35.8335,-81.8968],[35.8360,-81.8960],
-  [35.8385,-81.8952],[35.8410,-81.8945],[35.8435,-81.8940],[35.8460,-81.8935],
-  [35.8485,-81.8930],[35.8510,-81.8925],[35.8535,-81.8920],[35.8560,-81.8918],
-  [35.8585,-81.8915],[35.8610,-81.8912],[35.8635,-81.8910],[35.8660,-81.8908],
-  [35.8685,-81.8905],[35.8710,-81.8900],[35.8735,-81.8895],[35.8760,-81.8892],
-  [35.8785,-81.8890],[35.8810,-81.8888],[35.8835,-81.8886],[35.8860,-81.8883],
-  [35.8880,-81.8880],[35.8900,-81.8878],[35.8920,-81.8875]
+  [35.828385,-81.898034],[35.830374,-81.902445],[35.833067,-81.902124],
+  [35.833762,-81.898488],[35.836141,-81.897129],[35.837772,-81.896036],
+  [35.839957,-81.894293],[35.841484,-81.891313],[35.844194,-81.887056],
+  [35.846643,-81.885244],[35.848441,-81.883686],[35.850693,-81.881608],
+  [35.851245,-81.879753],[35.853109,-81.877510],[35.855347,-81.874083],
+  [35.857321,-81.875153],[35.860047,-81.879260],[35.862130,-81.880618],
+  [35.863173,-81.880430],[35.865446,-81.879098],[35.866622,-81.880310],
+  [35.867646,-81.881127],[35.868994,-81.882284],[35.870066,-81.883370],
+  [35.871601,-81.885994],[35.871772,-81.887192],[35.872884,-81.888019],
+  [35.874600,-81.888043],[35.876089,-81.888414],[35.877703,-81.889021],
+  [35.879543,-81.886651],[35.880777,-81.886047],[35.883275,-81.885899],
+  [35.885954,-81.884703],[35.887499,-81.884923],[35.890168,-81.886193]
 ];
 
 // East rim — Table Rock north to Hawksbill (OSM MST + Hawksbill trail)
@@ -659,16 +664,22 @@ const routeA = {
   days: [
     { path: shortoffTrail, label: 'Day 1: 3.5 mi' },
     { path: eastRimShortoffToTableRock, label: 'Day 2: 7.5 mi' },
-    { // Day 3: FR 210 road walk back — uses same road as nearby trails FR 210, reversed
+    { // Day 3: Road walk — FR 210 south then connecting roads to Wolf Pit Rd
+      // FR 210 goes far east; actual drive is ~20 min but road walk is long & winding
       path: [
-        [35.9035,-81.8788],[35.9000,-81.8883],[35.8960,-81.8880],[35.8920,-81.8875],
-        [35.8905,-81.8850],[35.8880,-81.8830],[35.8850,-81.8810],[35.8820,-81.8795],
-        [35.8790,-81.8780],[35.8755,-81.8765],[35.8720,-81.8755],[35.8680,-81.8750],
-        [35.8640,-81.8745],[35.8600,-81.8748],[35.8560,-81.8755],[35.8520,-81.8765],
-        [35.8480,-81.8775],[35.8440,-81.8790],[35.8400,-81.8800],[35.8360,-81.8815],
-        [35.8320,-81.8830],[35.8280,-81.8845],[35.8260,-81.8870],[35.8242,-81.8897]
+        // FR 210 south from Table Rock / Spence Ridge area (OSM way 150259791)
+        [35.903945,-81.879303],[35.901229,-81.875694],[35.899499,-81.876731],
+        [35.898480,-81.873509],[35.897105,-81.873160],[35.895703,-81.867220],
+        [35.899372,-81.863699],[35.898366,-81.860317],[35.902527,-81.859754],
+        [35.901923,-81.857408],[35.890720,-81.851873],[35.890689,-81.849848],
+        [35.888742,-81.849989],[35.888930,-81.847444],[35.886564,-81.846109],
+        [35.887828,-81.845233],[35.887294,-81.841686],[35.879588,-81.836843],
+        [35.880965,-81.834285],[35.874251,-81.827490],[35.876156,-81.821433],
+        [35.872055,-81.816810],[35.869472,-81.816650],[35.872035,-81.813234],
+        [35.869136,-81.811005],[35.867977,-81.807457],[35.868710,-81.805076],
+        [35.861147,-81.801694],[35.859380,-81.798036],[35.856790,-81.789545]
       ],
-      label: 'Day 3: 7.5 mi (road)', dashed: true
+      label: 'Day 3: road/shuttle', dashed: true
     }
   ],
   camps: [
@@ -721,7 +732,7 @@ const sharedPath = shortoffTrail;
 
 // Trailheads
 const trailheads = [
-  { ll: [35.8242, -81.8897], name: '🅿️ Wolf Pit Trailhead', info: 'End of Wolf Pit Rd (SR 1238). Rough gravel, 10-12 cars. Route A start / Route B end.' },
+  { ll: [35.8242, -81.8896], name: '🅿️ Wolf Pit Trailhead', info: 'End of Wolf Pit Rd off NC-126. Rough gravel, 10-12 cars. Route A start / Route B end.' },
   { ll: [35.8920, -81.8875], name: '🅿️ Table Rock Parking', info: 'Via Gingercake Rd (FR 210). Paved lot, pit toilets. Route B start / Route A Night 2.' }
 ];
 
@@ -827,14 +838,31 @@ const nearbyTrails = [
     path: [[35.9065,-81.9193],[35.9060,-81.9185],[35.9056,-81.9176],[35.9053,-81.9167],
            [35.9051,-81.9157],[35.9049,-81.9142],[35.9050,-81.9127],[35.9052,-81.9112],
            [35.9053,-81.9097],[35.9055,-81.9082],[35.9051,-81.9062],[35.9048,-81.9054]] },
-  // FR 210 / Gingercake Road
+  // FR 210 / FS 210 (real OSM way 150259791, 46pts downsampled from 1295)
   { name: 'FR 210 / Gingercake Rd', status: 'road',
-    path: [[35.8242,-81.8897],[35.8260,-81.8870],[35.8280,-81.8845],[35.8320,-81.8830],
-           [35.8360,-81.8815],[35.8400,-81.8800],[35.8440,-81.8790],[35.8480,-81.8775],
-           [35.8520,-81.8765],[35.8560,-81.8755],[35.8600,-81.8748],[35.8640,-81.8745],
-           [35.8680,-81.8750],[35.8720,-81.8755],[35.8755,-81.8765],[35.8790,-81.8780],
-           [35.8820,-81.8795],[35.8850,-81.8810],[35.8880,-81.8830],[35.8905,-81.8850],
-           [35.8920,-81.8875],[35.8960,-81.8880],[35.9000,-81.8883],[35.9035,-81.8788]] },
+    path: [[35.856790,-81.789545],[35.859319,-81.791328],[35.859380,-81.798036],
+           [35.861147,-81.801694],[35.868710,-81.805076],[35.867977,-81.807457],
+           [35.869136,-81.811005],[35.872035,-81.813234],[35.869472,-81.816650],
+           [35.872055,-81.816810],[35.876156,-81.821433],[35.874251,-81.827490],
+           [35.880965,-81.834285],[35.879588,-81.836843],[35.887294,-81.841686],
+           [35.887828,-81.845233],[35.886564,-81.846109],[35.888930,-81.847444],
+           [35.888742,-81.849989],[35.890689,-81.849848],[35.890720,-81.851873],
+           [35.901923,-81.857408],[35.902527,-81.859754],[35.898366,-81.860317],
+           [35.899372,-81.863699],[35.895703,-81.867220],[35.897105,-81.873160],
+           [35.898480,-81.873509],[35.899499,-81.876731],[35.901229,-81.875694],
+           [35.903945,-81.879303],[35.907423,-81.878744],[35.909118,-81.880221],
+           [35.914614,-81.878353],[35.916888,-81.880445],[35.917524,-81.883836],
+           [35.921022,-81.882169],[35.922643,-81.886775],[35.924255,-81.887188],
+           [35.929736,-81.886706],[35.939881,-81.882816]] },
+  // Wolf Pit Road (real OSM ways 16439668 + 684055102)
+  { name: 'Wolf Pit Road', status: 'road',
+    path: [[35.798339,-81.873129],[35.799196,-81.872256],[35.800181,-81.872246],
+           [35.801810,-81.870532],[35.803897,-81.872083],[35.805016,-81.872253],
+           [35.808617,-81.874279],[35.809813,-81.875074],[35.810340,-81.875492],
+           [35.811061,-81.877037],[35.811588,-81.879448],[35.813425,-81.882335],
+           [35.814671,-81.884218],[35.816198,-81.886551],[35.818074,-81.887668],
+           [35.819137,-81.886896],[35.821640,-81.886941],[35.823621,-81.888619],
+           [35.824234,-81.889578]] },
 ];
 
 const layerNearby = L.layerGroup().addTo(_lmap);
