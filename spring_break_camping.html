@@ -8,74 +8,169 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #1a1f2e; color: #e8eaf0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0f1117; color: #e8eaf0; min-height: 100vh; }
 
+  /* ── LIGHT MODE ── */
+  body.light {
+    background: #f0f4f0; color: #1a2a1a;
+  }
+  body.light header { background: linear-gradient(135deg, #c8e6a0, #a5d6a7); border-bottom-color: #8bc34a; }
+  body.light header h1 { color: #1a3a0a; }
+  body.light header p { color: #33691e; }
+  body.light .badge { background: #ff9800; }
+  body.light .back-link { color: #33691e; border-color: #8bc34a; }
+  body.light .dest-tabs { background: #e8f0e0; border-bottom-color: #c8dab0; }
+  body.light .dest-tab { color: #5a7a5a; }
+  body.light .dest-tab:hover { color: #2d5016; background: rgba(139,195,74,0.1); }
+  body.light .dest-tab.active { color: #1a3a0a; border-bottom-color: #4caf50; background: rgba(139,195,74,0.12); }
+  body.light .alert-box { background: rgba(244,67,54,0.06); border-color: rgba(244,67,54,0.25); }
+  body.light .alert-box h3 { color: #c62828; }
+  body.light .alert-box .phone { color: #e65100; }
+  body.light .alert-box ul { color: #333; }
+  body.light .route-controls { background: #e0ead0; border-bottom-color: #c8dab0; }
+  body.light .route-controls .label { color: #5a7a5a; }
+  body.light .route-toggle.a { border-color: #f44336; color: #888; }
+  body.light .route-toggle.a.on { background: rgba(244,67,54,0.1); color: #c62828; }
+  body.light .route-toggle.b { border-color: #ff9800; color: #888; }
+  body.light .route-toggle.b.on { background: rgba(255,152,0,0.1); color: #e65100; }
+  body.light .day-card.a { background: rgba(244,67,54,0.05); border-color: rgba(244,67,54,0.2); }
+  body.light .day-card.b { background: rgba(255,152,0,0.05); border-color: rgba(255,152,0,0.2); }
+  body.light .day-card.a .day-label { color: #c62828; }
+  body.light .day-card.b .day-label { color: #e65100; }
+  body.light .day-dist { color: #1a2a1a; }
+  body.light .day-route { color: #5a7a5a; }
+  body.light .day-info .camp { color: #2e7d32; }
+  body.light .day-info .water { color: #0277bd; }
+  body.light .day-info .warn { color: #e65100; }
+  body.light .day-info .danger { color: #c62828; }
+  body.light .info-box { background: #fff; border-color: #c8dab0; }
+  body.light .info-box h3 { color: #1a3a0a; }
+  body.light .info-box p, body.light .info-box li { color: #444; }
+  body.light .info-box .highlight { color: #2d5016; }
+  body.light .info-box a { color: #0277bd; }
+  body.light .backup-card { background: #fff; border-color: #c8dab0; }
+  body.light .backup-card .sub { color: #5a7a5a; }
+  body.light .backup-card .stat-value { color: #1a2a1a; }
+  body.light .backup-card .desc { color: #444; }
+  body.light .route-label .total { color: #5a7a5a; }
+  body.light .map-legend { background: rgba(255,255,255,0.92); border-color: #c8dab0; color: #333; }
+
+  /* ── HEADER ── */
   header {
     background: linear-gradient(135deg, #2d5016 0%, #1a3a0a 100%);
-    padding: 20px 28px;
-    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 24px;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
     border-bottom: 2px solid #4a7c2f;
   }
-  header h1 { font-size: 1.4rem; font-weight: 700; color: #c8e6a0; }
-  header p { font-size: 0.82rem; color: #8bc34a; margin-top: 3px; }
-  .badge {
-    background: #ff9800; color: #000; font-weight: 700;
-    padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; white-space: nowrap;
+  header h1 { font-size: 1.3rem; font-weight: 700; color: #c8e6a0; }
+  header p { font-size: 0.8rem; color: #8bc34a; margin-top: 2px; }
+  .badge { background: #ff9800; color: #000; font-weight: 700; padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; white-space: nowrap; }
+  .back-link { font-size: 0.75rem; color: #8bc34a; text-decoration: none; padding: 5px 12px; border: 1px solid #4a7c2f; border-radius: 20px; }
+  .back-link:hover { color: #c8e6a0; border-color: #8bc34a; }
+
+  /* ── DESTINATION TABS ── */
+  .dest-tabs {
+    display: flex; gap: 0; background: #13151f; border-bottom: 1px solid #2e3a50;
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
   }
-
-  .layout { display: flex; height: calc(100vh - 72px); }
-
-  #map { flex: 1; }
-
-  .sidebar {
-    width: 380px; overflow-y: auto; background: #1e2433;
-    border-left: 1px solid #2e3a50;
+  .dest-tab {
+    padding: 12px 20px; font-size: 0.8rem; font-weight: 600; cursor: pointer;
+    border: none; background: transparent; color: #546e7a;
+    border-bottom: 3px solid transparent; white-space: nowrap;
+    transition: all 0.15s;
   }
+  .dest-tab:hover { color: #8bc34a; background: rgba(139,195,74,0.05); }
+  .dest-tab.active { color: #c8e6a0; border-bottom-color: #8bc34a; background: rgba(139,195,74,0.08); }
+  .dest-tab .tab-star { color: #ffc107; margin-left: 4px; font-size: 0.7rem; }
+  .dest-content { display: none; }
+  .dest-content.active { display: block; }
 
+  /* ── ALERT BOX ── */
   .alert-box {
-    background: linear-gradient(135deg, #1a3a0a, #2d5016);
-    border: 1px solid #4a7c2f; border-radius: 10px;
-    margin: 14px; padding: 14px;
+    background: linear-gradient(135deg, rgba(244,67,54,0.08), rgba(255,152,0,0.05));
+    border: 1px solid rgba(244,67,54,0.3); border-radius: 10px;
+    margin: 16px; padding: 14px; font-size: 0.8rem; line-height: 1.6;
   }
-  .alert-box h3 { color: #c8e6a0; font-size: 0.9rem; margin-bottom: 8px; }
-  .alert-box .dates { font-size: 1.1rem; font-weight: 700; color: #8bc34a; }
-  .alert-box .sub { font-size: 0.78rem; color: #9caf88; margin-top: 6px; line-height: 1.5; }
-  .moon-row { display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
-  .moon-chip {
-    background: rgba(255,255,255,0.06); border-radius: 6px;
-    padding: 4px 10px; font-size: 0.75rem; color: #c8e6a0;
+  .alert-box h3 { color: #ef9a9a; font-size: 0.85rem; margin-bottom: 6px; }
+  .alert-box .phone { color: #ffd54f; font-weight: 700; }
+  .alert-box ul { margin: 6px 0 0 18px; color: #ccc; }
+  .alert-box li { margin-bottom: 3px; }
+  .alert-box .open { color: #8bc34a; }
+  .alert-box .closed { color: #f44336; }
+
+  /* ── ROUTE TOGGLES ── */
+  .route-controls {
+    display: flex; align-items: center; gap: 10px; padding: 12px 16px;
+    background: #13151f; border-bottom: 1px solid #1e2433; flex-wrap: wrap;
   }
-  .moon-chip.best { background: rgba(139,195,74,0.2); border: 1px solid #4a7c2f; }
-
-  .section-label {
-    font-size: 0.7rem; font-weight: 700; letter-spacing: 1.5px;
-    text-transform: uppercase; color: #546e7a;
-    padding: 12px 16px 6px; border-top: 1px solid #2e3a50;
+  .route-controls .label { font-size: 0.7rem; color: #546e7a; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+  .route-toggle {
+    padding: 5px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;
+    border: 1px solid; cursor: pointer; transition: all 0.15s; background: transparent;
   }
+  .route-toggle.a { border-color: #f44336; color: #546e7a; }
+  .route-toggle.a.on { background: rgba(244,67,54,0.2); color: #ef9a9a; }
+  .route-toggle.b { border-color: #ff9800; color: #546e7a; }
+  .route-toggle.b.on { background: rgba(255,152,0,0.2); color: #ffb74d; }
+  .route-toggle .check { margin-right: 4px; }
 
-  .card {
-    margin: 8px 14px; border-radius: 10px; overflow: hidden;
-    border: 1px solid #2e3a50; cursor: pointer;
-    transition: border-color 0.2s, transform 0.15s;
+  /* ── MAP ── */
+  #linville-map { width: 100%; height: 55vh; min-height: 350px; background: #1a1f2e; }
+
+  /* ── DAY CARDS ── */
+  .route-section { padding: 12px 16px; }
+  .route-label {
+    font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px;
+    margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
   }
-  .card:hover { border-color: #4a7c2f; transform: translateY(-1px); }
-  .card.active { border-color: #8bc34a; }
-
-  .card-header {
-    padding: 12px 14px 10px;
-    display: flex; align-items: flex-start; gap: 10px;
+  .route-label .total { font-weight: 400; color: #7a8a9a; font-size: 0.7rem; text-transform: none; letter-spacing: 0; }
+  .day-cards { display: flex; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
+  .day-card {
+    flex: 1; min-width: 200px; border-radius: 10px; padding: 12px; cursor: pointer;
+    border: 1px solid; transition: transform 0.15s, box-shadow 0.15s;
   }
-  .card-icon { font-size: 1.8rem; line-height: 1; flex-shrink: 0; }
-  .card-title { font-size: 0.95rem; font-weight: 700; }
-  .card-sub { font-size: 0.75rem; color: #7a8a9a; margin-top: 2px; }
+  .day-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
+  .day-card.active { box-shadow: 0 0 0 2px #fff inset; }
+  .day-card.a { background: rgba(244,67,54,0.07); border-color: rgba(244,67,54,0.25); }
+  .day-card.b { background: rgba(255,152,0,0.07); border-color: rgba(255,152,0,0.25); }
+  .day-label { font-size: 0.75rem; font-weight: 700; }
+  .day-card.a .day-label { color: #ef9a9a; }
+  .day-card.b .day-label { color: #ffb74d; }
+  .day-dist { font-size: 0.9rem; font-weight: 600; color: #e8eaf0; margin-top: 3px; }
+  .day-route { font-size: 0.72rem; color: #7a8a9a; margin-top: 2px; }
+  .day-info { font-size: 0.68rem; margin-top: 6px; line-height: 1.5; }
+  .day-info .camp { color: #8bc34a; }
+  .day-info .water { color: #4fc3f7; }
+  .day-info .warn { color: #ff9800; }
+  .day-info .danger { color: #f44336; }
 
-  .card-body { padding: 0 14px 12px; }
-  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 8px; }
-  .stat { background: rgba(255,255,255,0.04); border-radius: 6px; padding: 7px 10px; }
-  .stat-label { font-size: 0.65rem; color: #546e7a; text-transform: uppercase; letter-spacing: 0.8px; }
-  .stat-value { font-size: 0.85rem; font-weight: 600; margin-top: 2px; }
+  /* ── INFO SECTIONS ── */
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; padding: 12px 16px; }
+  .info-box {
+    background: #1a1f2e; border: 1px solid #2e3a50; border-radius: 10px; padding: 14px;
+  }
+  .info-box h3 { font-size: 0.82rem; font-weight: 700; margin-bottom: 8px; }
+  .info-box p, .info-box li { font-size: 0.78rem; color: #9aa0b0; line-height: 1.6; }
+  .info-box ul { margin-left: 16px; }
+  .info-box li { margin-bottom: 3px; }
+  .info-box .highlight { color: #c8e6a0; font-weight: 600; }
+  .info-box a { color: #4fc3f7; text-decoration: none; }
+  .info-box a:hover { text-decoration: underline; }
 
-  .pill-row { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+  /* ── BACKUP DESTINATION CARDS ── */
+  .backup-card {
+    background: #1a1f2e; border: 1px solid #2e3a50; border-radius: 12px;
+    margin: 12px 16px; padding: 16px; transition: border-color 0.2s;
+  }
+  .backup-card:hover { border-color: #4a7c2f; }
+  .backup-card h3 { font-size: 1rem; margin-bottom: 4px; }
+  .backup-card .sub { font-size: 0.78rem; color: #7a8a9a; margin-bottom: 10px; }
+  .backup-card .stat-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+  .backup-card .stat { font-size: 0.75rem; }
+  .backup-card .stat-label { color: #546e7a; text-transform: uppercase; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.5px; }
+  .backup-card .stat-value { color: #e8eaf0; font-weight: 600; margin-top: 1px; }
+  .backup-card .desc { font-size: 0.8rem; color: #9aa0b0; line-height: 1.6; }
+  .pill-row { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
   .pill {
     font-size: 0.7rem; padding: 3px 9px; border-radius: 12px; font-weight: 600;
   }
@@ -86,34 +181,48 @@
   .pill.purple { background: rgba(156,39,176,0.15); color: #ce93d8; border: 1px solid rgba(156,39,176,0.3); }
   .pill.orange { background: rgba(255,152,0,0.15); color: #ff9800; border: 1px solid rgba(255,152,0,0.3); }
 
-  .highlight { background: rgba(139,195,74,0.07); border-radius: 6px; padding: 8px 10px; margin-top: 8px; font-size: 0.78rem; color: #9caf88; line-height: 1.5; }
-  .highlight strong { color: #c8e6a0; }
-
-  .rec-badge {
-    background: linear-gradient(90deg, #2d5016, #1a3a0a);
-    border: 1px solid #4a7c2f; border-radius: 6px;
-    padding: 5px 10px; margin-top: 8px;
-    font-size: 0.73rem; color: #8bc34a; font-weight: 700;
+  /* ── MAP CONTROLS ── */
+  .map-bar {
+    display: flex; align-items: center; gap: 8px; padding: 8px 16px;
+    background: #13151f; border-bottom: 1px solid #1e2433; flex-wrap: wrap;
   }
-
-  /* Leaflet custom markers */
-  .dest-marker {
-    background: #8bc34a; border: 3px solid #fff;
-    border-radius: 50%; width: 18px; height: 18px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  body.light .map-bar { background: #e0ead0; border-bottom-color: #c8dab0; }
+  .map-btn {
+    padding: 4px 10px; border-radius: 14px; font-size: 0.7rem; font-weight: 600;
+    border: 1px solid #2e3a50; cursor: pointer; background: transparent; color: #7a8a9a;
+    transition: all 0.15s;
   }
-  .dest-marker.hard { background: #f44336; }
-  .dest-marker.moderate { background: #ff9800; }
-  .dest-marker.easy { background: #4caf50; }
-  .home-marker {
-    background: #2196f3; border: 3px solid #fff;
-    border-radius: 50%; width: 14px; height: 14px;
-  }
+  .map-btn:hover { color: #e8eaf0; border-color: #4a5a6a; }
+  .map-btn.on { background: rgba(139,195,74,0.15); color: #8bc34a; border-color: #4a7c2f; }
+  body.light .map-btn { border-color: #b0c8a0; color: #5a7a5a; }
+  body.light .map-btn:hover { color: #1a3a0a; border-color: #8bc34a; }
+  body.light .map-btn.on { background: rgba(76,175,80,0.15); color: #2d5016; border-color: #4caf50; }
+  .map-bar .spacer { flex: 1; }
+  .map-bar .bar-label { font-size: 0.65rem; color: #546e7a; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
 
-  @media (max-width: 700px) {
-    .layout { flex-direction: column; }
-    #map { height: 40vh; }
-    .sidebar { width: 100%; border-left: none; border-top: 1px solid #2e3a50; }
+  /* ── MODE TOGGLE ── */
+  .mode-toggle {
+    padding: 4px 10px; border-radius: 14px; font-size: 0.7rem; font-weight: 600;
+    border: 1px solid #4a7c2f; cursor: pointer; background: transparent; color: #8bc34a;
+    transition: all 0.15s;
+  }
+  .mode-toggle:hover { background: rgba(139,195,74,0.1); }
+  body.light .mode-toggle { border-color: #8bc34a; color: #2d5016; }
+
+  /* ── LEGEND ── */
+  .map-legend {
+    position: absolute; bottom: 16px; left: 16px; z-index: 500;
+    background: rgba(15,17,23,0.9); border: 1px solid #2e3a50; border-radius: 8px;
+    padding: 8px 12px; font-size: 0.7rem; line-height: 1.8;
+  }
+  body.light .map-legend { background: rgba(255,255,255,0.92); border-color: #c8dab0; color: #333; }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-line { width: 20px; height: 3px; border-radius: 2px; }
+
+  @media (max-width: 600px) {
+    .day-cards { flex-direction: column; }
+    .info-grid { grid-template-columns: 1fr; }
+    header h1 { font-size: 1.1rem; }
   }
 </style>
 </head>
@@ -121,267 +230,741 @@
 
 <header>
   <div>
-    <h1>🏕️ Arbor Family Spring Break 2026 — Backpacking</h1>
-    <p>3 nights · 4 days · Dark sky loops drivable from Charlotte</p>
+    <h1>🏕️ Spring Break Backpacking 2026</h1>
+    <p>Fri–Sun Apr 10–12 · 2 nights · Dark sky loop · Family of 4 + 2 dogs</p>
   </div>
-  <div class="badge">⚠️ Verify Linville conditions before going</div>
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+    <div class="badge">⚠️ Call ranger before going</div>
+    <button class="mode-toggle" onclick="toggleDarkLight()">☀️ Light Mode</button>
+    <a href="index.html" class="back-link">← All Plans</a>
+  </div>
 </header>
 
-<div class="layout">
-  <div id="map"></div>
-  <div class="sidebar">
+<!-- ── DESTINATION TABS ── -->
+<div class="dest-tabs">
+  <button class="dest-tab active" onclick="showDest('linville')">🏔️ Linville Gorge<span class="tab-star">★</span></button>
+  <button class="dest-tab" onclick="showDest('grayson')">🐴 Grayson Highlands</button>
+  <button class="dest-tab" onclick="showDest('shining')">🪨 Shining Rock</button>
+  <button class="dest-tab" onclick="showDest('uwharrie')">🌲 Uwharrie</button>
+</div>
 
-    <div class="alert-box">
-      <h3>🗓️ Recommended Window</h3>
-      <div class="dates">April 3–7, 2026</div>
-      <div class="sub">Sunday–Thursday, April 3–7. Full family, depart Sunday.</div>
-      <div class="moon-row">
-        <div class="moon-chip">🌕 Full Moon Apr 2 (3 days before)</div>
-        <div class="moon-chip best">🌗 Last Quarter Apr 10 ★ Best nights Apr 6–7</div>
-        <div class="moon-chip">🌑 New Moon Apr 17 (after trip)</div>
-      </div>
+<!-- ═══════════════════════════════════════════ -->
+<!-- LINVILLE GORGE (primary)                    -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="dest-content active" id="dest-linville">
+
+  <!-- Trail Status Alert -->
+  <div class="alert-box">
+    <h3>⚠️ Trail Status — Post-Hurricane Helene (updated ~Sep 2025)</h3>
+    <ul>
+      <li><span class="open">✅ OPEN:</span> Shortoff Mtn, Table Rock (road reopened Apr 1), Hawksbill, Spence Ridge, Devils Hole</li>
+      <li><span class="open">✅ OPEN (rough):</span> Gorge Trail south of Spence Ridge — reopened Nov 2025, heavy blowdown</li>
+      <li><span class="closed">❌ CLOSED:</span> Gorge Trail: Daffodil Flats→Pinch In, Spence Ridge→Conley Cove, Cabin→Bynum Bluff</li>
+      <li><span class="closed">❌ CLOSED:</span> West rim trailheads (Babel Tower, Conley Cove, Bynum Bluff) — uncertain</li>
+      <li>⚠️ Spence Ridge bridge <strong>washed out since 2014</strong> — wet river crossing required</li>
+    </ul>
+    <p style="margin-top:8px;">
+      <span class="phone">📞 Call first: Grandfather Ranger District (828) 652-2144</span><br>
+      <span style="color:#7a8a9a;">Check river levels: </span>
+      <a href="https://waterdata.usgs.gov/monitoring-location/USGS-02138500/" target="_blank" style="color:#4fc3f7;">USGS Gauge</a>
+      <span style="color:#7a8a9a;"> · No permits needed in April · Dogs OK (6ft leash)</span>
+    </p>
+  </div>
+
+  <!-- Route Toggle Controls -->
+  <div class="route-controls">
+    <span class="label">Show Routes:</span>
+    <button class="route-toggle a on" onclick="toggleRoute('a')"><span class="check">✓</span>Route A: East Rim Skyline (no river crossing)</button>
+    <button class="route-toggle b on" onclick="toggleRoute('b')"><span class="check">✓</span>Route B: Hawksbill → Gorge Floor (river crossing)</button>
+  </div>
+
+  <!-- Map Controls -->
+  <div class="map-bar">
+    <span class="bar-label">Map:</span>
+    <button class="map-btn on" id="btn-dark" onclick="setTile('dark')">Dark</button>
+    <button class="map-btn" id="btn-satellite" onclick="setTile('satellite')">Satellite</button>
+    <button class="map-btn" id="btn-terrain" onclick="setTile('terrain')">Terrain</button>
+    <button class="map-btn" id="btn-topo" onclick="setTile('topo')">Topo</button>
+    <div class="spacer"></div>
+    <span class="bar-label">Trails:</span>
+    <button class="map-btn on" id="btn-nearby" onclick="toggleNearby()">Nearby Trails</button>
+    <button class="map-btn" id="btn-thick" onclick="toggleThick()">Thick Lines</button>
+  </div>
+
+  <!-- Map -->
+  <div style="position:relative;">
+    <div id="linville-map"></div>
+    <div class="map-legend">
+      <div class="legend-item"><div class="legend-line" style="background:#f44336;"></div> Route A — East Rim</div>
+      <div class="legend-item"><div class="legend-line" style="background:#ff9800;"></div> Route B — Hawksbill/Gorge</div>
+      <div class="legend-item"><div class="legend-line" style="background:#b39ddb;border:1px dashed #7e57c2;height:1px;"></div> Shared segment</div>
+      <div class="legend-item"><div class="legend-line" style="background:#78909c;border:1px dashed #546e7a;height:1px;"></div> Road walk (Rte A Day 3)</div>
+      <div class="legend-item"><div class="legend-line" style="background:#4fc3f7;height:1px;border:1px dashed #4fc3f7;"></div> Nearby trail (open)</div>
+      <div class="legend-item"><div class="legend-line" style="background:#f44336;height:1px;border:1px dashed #f44336;opacity:0.5;"></div> Nearby trail (closed)</div>
+      <div class="legend-item">⛺ Camp &nbsp; 💧 Water &nbsp; 🅿️ Trailhead</div>
     </div>
+  </div>
 
-    <div class="section-label">Pick Your Adventure — Ranked</div>
-
-    <!-- Option 1: Linville Gorge -->
-    <div class="card" id="card-4" onclick="focusMap(4)">
-      <div class="card-header" style="background: linear-gradient(135deg, rgba(244,67,54,0.15), transparent);">
-        <div class="card-icon">🏔️</div>
-        <div>
-          <div class="card-title"><span style="background:#f44336;color:#fff;font-size:0.65rem;font-weight:800;padding:2px 7px;border-radius:10px;margin-right:6px;vertical-align:middle;">#1</span>Linville Gorge, NC</div>
-          <div class="card-sub">Pisgah NF · ~1.5h from Charlotte · Sage's Original Plan</div>
-        </div>
-      </div>
-      <div class="card-body">
-        <div class="stat-grid">
-          <div class="stat"><div class="stat-label">Distance</div><div class="stat-value">~18 miles</div></div>
-          <div class="stat"><div class="stat-label">Elev. Gain</div><div class="stat-value">~5,500 ft</div></div>
-          <div class="stat"><div class="stat-label">Dark Sky</div><div class="stat-value">⭐⭐⭐⭐⭐ Best East</div></div>
-          <div class="stat"><div class="stat-label">Permit</div><div class="stat-value">✅ None in April</div></div>
-        </div>
-        <div class="pill-row">
-          <span class="pill red">Strenuous</span>
-          <span class="pill purple">Best Skies East</span>
-          <span class="pill yellow">Unmaintained</span>
-          <span class="pill orange">⚠️ Helene Damage</span>
-        </div>
-        <div style="background:rgba(244,67,54,0.1);border:1px solid rgba(244,67,54,0.3);border-radius:6px;padding:8px 10px;margin-top:8px;font-size:0.75rem;color:#ef9a9a;line-height:1.6;">
-          <strong style="color:#f44336;">⚠️ Hurricane Helene (Sep 2024) — Route Modified</strong><br>
-          West rim trailheads <strong>CLOSED</strong>: Babel Tower, Conley Cove, Bynum Bluff.<br>
-          Spence Ridge bridge <strong>WASHED OUT</strong> — wet crossing required.<br>
-          East rim (Wolf Pit Rd / Shortoff) ✅ Open · Gorge Trail south of Spence Ridge ✅ Reopened Nov 2025.<br>
-          <strong style="color:#ffd54f;">Call first: Grandfather Ranger District (828) 652-2144</strong>
-        </div>
-        <div class="highlight" style="margin-top:8px;">
-          <strong>Revised 3-night route:</strong><br>
-          Day 1: Wolf Pit Trailhead → Shortoff summit camp (~5mi)<br>
-          Day 2: East rim → Spence Ridge → wet cross river → gorge floor camp (~7mi)<br>
-          Day 3: River hiking along Linville Gorge Trail → camp by river (~4mi)<br>
-          Day 4: Ascend Spence Ridge → out (~4mi)
-        </div>
-        <div class="rec-badge" style="background:linear-gradient(90deg,#3a0a0a,#1a0a0a);border-color:#f44336;color:#f44336;">
-          #1 PICK — Best dark skies East Coast. Verify Helene conditions before committing.
-        </div>
-      </div>
+  <!-- Route A Day Cards -->
+  <div class="route-section" id="route-a-section">
+    <div class="route-label" style="color:#ef9a9a;">
+      Route A — East Rim Skyline <span class="total">~18 mi total · ~4,300 ft gain · No river crossing</span>
     </div>
-
-    <!-- Option 2: Grayson Highlands -->
-    <div class="card" id="card-1" onclick="focusMap(1)">
-      <div class="card-header" style="background: linear-gradient(135deg, rgba(139,195,74,0.12), transparent);">
-        <div class="card-icon">🐴</div>
-        <div>
-          <div class="card-title"><span style="background:#8bc34a;color:#000;font-size:0.65rem;font-weight:800;padding:2px 7px;border-radius:10px;margin-right:6px;vertical-align:middle;">#2</span>Grayson Highlands / Mt. Rogers, VA</div>
-          <div class="card-sub">Jefferson National Forest · ~4h from Charlotte</div>
+    <div class="day-cards">
+      <div class="day-card a" onclick="zoomDay('a',1)">
+        <div class="day-label">Fri · Day 1</div>
+        <div class="day-dist">3.5 mi · ↑1,300 ft</div>
+        <div class="day-route">Wolf Pit TH → Shortoff summit camp</div>
+        <div class="day-info">
+          <span class="camp">⛺ Shortoff summit — open plateau, 180° gorge views</span><br>
+          <span class="water">💧 Fill at Gully Pipe Spring (mi 1.5) — carry 3L/person to camp</span><br>
+          <span class="camp">🌌 Premier Milky Way spot — unobstructed SE horizon</span>
         </div>
       </div>
-      <div class="card-body">
-        <div class="stat-grid">
-          <div class="stat">
-            <div class="stat-label">Distance</div>
-            <div class="stat-value">~21 miles</div>
-          </div>
-          <div class="stat">
-            <div class="stat-label">Elev. Gain</div>
-            <div class="stat-value">~3,900 ft</div>
-          </div>
-          <div class="stat">
-            <div class="stat-label">Dark Sky</div>
-            <div class="stat-value">⭐⭐⭐⭐ Bortle 3</div>
-          </div>
-          <div class="stat">
-            <div class="stat-label">Permit</div>
-            <div class="stat-value">None needed</div>
-          </div>
-        </div>
-        <div class="pill-row">
-          <span class="pill green">Moderate</span>
-          <span class="pill green">Best for Family</span>
-          <span class="pill blue">Well-marked</span>
-          <span class="pill purple">Wild Ponies</span>
-          <span class="pill green">Verity ✓</span>
-        </div>
-        <div class="highlight">
-          <strong>The move:</strong> Massie Gap trailhead → AT north through open balds → Pine Mountain loop.
-          Ponies roam free on the ridgeline. Open meadows = perfect Milky Way views. Best beginner backpacking scenery in the East.
-        </div>
-        <div class="rec-badge">Solid backup if Linville conditions don't clear</div>
-      </div>
-    </div>
-
-    <!-- Option 2: Shining Rock -->
-    <div class="card" id="card-2" onclick="focusMap(2)">
-      <div class="card-header" style="background: linear-gradient(135deg, rgba(255,152,0,0.1), transparent);">
-        <div class="card-icon">🪨</div>
-        <div>
-          <div class="card-title"><span style="background:#ff9800;color:#000;font-size:0.65rem;font-weight:800;padding:2px 7px;border-radius:10px;margin-right:6px;vertical-align:middle;">#3</span>Shining Rock Wilderness, NC</div>
-          <div class="card-sub">Pisgah National Forest · ~2.5h from Charlotte</div>
+      <div class="day-card a" onclick="zoomDay('a',2)">
+        <div class="day-label">Sat · Day 2</div>
+        <div class="day-dist">7.5 mi · ↑2,200 ft</div>
+        <div class="day-route">Shortoff → Chimneys → Table Rock summit → Table Rock parking</div>
+        <div class="day-info">
+          <span class="camp">⛺ Table Rock Gap — established sites near parking</span><br>
+          <span class="water">💧 Chimney Gap seep (seasonal) + Table Rock Gap spring</span><br>
+          <span class="warn">⚠️ Chimneys have scrambling — tricky with leashed dogs</span>
         </div>
       </div>
-      <div class="card-body">
-        <div class="stat-grid">
-          <div class="stat">
-            <div class="stat-label">Distance</div>
-            <div class="stat-value">9–16 miles</div>
-          </div>
-          <div class="stat">
-            <div class="stat-label">Elev. Gain</div>
-            <div class="stat-value">1,400–4,400 ft</div>
-          </div>
-          <div class="stat">
-            <div class="stat-label">Dark Sky</div>
-            <div class="stat-value">⭐⭐⭐⭐ Bortle ~3</div>
-          </div>
-          <div class="stat">
-            <div class="stat-label">Permit</div>
-            <div class="stat-value">None needed</div>
-          </div>
-        </div>
-        <div class="pill-row">
-          <span class="pill yellow">Mod–Hard</span>
-          <span class="pill yellow">Short loop option</span>
-          <span class="pill orange">Bear canister req.</span>
-          <span class="pill red">No campfires</span>
-        </div>
-        <div class="highlight">
-          <strong>The move:</strong> Black Balsam trailhead → Shining Rock loop (9.4mi, moderate).
-          White quartz summit glows at dawn. Views of Cold Mountain. Closest mountain dark sky option.
-          Pick the shorter loop for Verity; Asher + Sage can branch off on harder segments.
+      <div class="day-card a" onclick="zoomDay('a',3)">
+        <div class="day-label">Sun · Day 3</div>
+        <div class="day-dist">7.5 mi (gravel road) or shuttle</div>
+        <div class="day-route">FR 210 road walk → Wolf Pit TH</div>
+        <div class="day-info">
+          <span class="warn">🏃 Option: jog ~7 mi on FR 210 to grab the car (~1 hr)</span><br>
+          <span class="warn">🚐 Or shuttle a 2nd car to Table Rock on Friday (20-min drive)</span><br>
+          <span class="water">Easy gravel road, no obstacles — fine for dogs</span>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Option 3: Uwharrie -->
-    <div class="card" id="card-3" onclick="focusMap(3)">
-      <div class="card-header" style="background: linear-gradient(135deg, rgba(33,150,243,0.1), transparent);">
-        <div class="card-icon">🌲</div>
-        <div>
-          <div class="card-title"><span style="background:#2196f3;color:#fff;font-size:0.65rem;font-weight:800;padding:2px 7px;border-radius:10px;margin-right:6px;vertical-align:middle;">#4</span>Uwharrie National Forest, NC</div>
-          <div class="card-sub">Uwharrie NF · ~1.5h from Charlotte</div>
+  <!-- Route B Day Cards -->
+  <div class="route-section" id="route-b-section">
+    <div class="route-label" style="color:#ffb74d;">
+      Route B — Hawksbill → Gorge Floor <span class="total">~18 mi total · ~4,300 ft gain · Requires river crossing</span>
+    </div>
+    <div class="day-cards">
+      <div class="day-card b" onclick="zoomDay('b',1)">
+        <div class="day-label">Fri · Day 1</div>
+        <div class="day-dist">5.5 mi · ↑1,800 ft</div>
+        <div class="day-route">Table Rock TH → Table Rock summit → Hawksbill summit camp</div>
+        <div class="day-info">
+          <span class="camp">⛺ Hawksbill summit — 360° open granite dome, best dark sky in gorge</span><br>
+          <span class="danger">⚠️ NO WATER on summit — must carry ALL water up (3L/person)</span><br>
+          <span class="camp">🌌 Bortle 2 — world-class Milky Way viewing</span>
         </div>
       </div>
-      <div class="card-body">
-        <div class="stat-grid">
-          <div class="stat">
-            <div class="stat-label">Distance</div>
-            <div class="stat-value">15–20 miles</div>
-          </div>
-          <div class="stat">
-            <div class="stat-label">Elev. Gain</div>
-            <div class="stat-value">Minimal</div>
-          </div>
-          <div class="stat">
-            <div class="stat-label">Dark Sky</div>
-            <div class="stat-value">⭐⭐⭐ IDA Recognized</div>
-          </div>
-          <div class="stat">
-            <div class="stat-label">Permit</div>
-            <div class="stat-value">None needed</div>
-          </div>
+      <div class="day-card b" onclick="zoomDay('b',2)">
+        <div class="day-label">Sat · Day 2</div>
+        <div class="day-dist">6.5 mi · ↓2,200 ft</div>
+        <div class="day-route">Spence Ridge → river crossing → gorge floor south</div>
+        <div class="day-info">
+          <span class="danger">⚠️ RIVER CROSSING — check USGS gauge &lt;100 CFS, no rain 48hrs</span><br>
+          <span class="camp">⛺ Riverside camp — flat sandy benches among hardwoods</span><br>
+          <span class="water">💧 Linville River + tributaries — unlimited filtered water</span>
         </div>
-        <div class="pill-row">
-          <span class="pill green">Easy</span>
-          <span class="pill green">Most family-friendly</span>
-          <span class="pill blue">Dispersed camping</span>
-          <span class="pill green">Closest</span>
-        </div>
-        <div class="highlight">
-          <strong>The move:</strong> Uwharrie Trail + Dutchman's Creek loop (~15mi).
-          Rolling hills, gentle terrain, great intro backpacking trip for Verity.
-          Skies are good — not as dramatic as mountains but solid Milky Way views on a dark night.
+      </div>
+      <div class="day-card b" onclick="zoomDay('b',3)">
+        <div class="day-label">Sun · Day 3</div>
+        <div class="day-dist">6 mi · ↑2,000 ft</div>
+        <div class="day-route">Gorge trail south → climb Shortoff → Wolf Pit TH</div>
+        <div class="day-info">
+          <span class="warn">⚠️ Gorge trail has heavy Helene blowdown — expect ~1 mph pace</span><br>
+          <span class="water">💧 Gully Pipe Spring on Shortoff descent</span><br>
+          <span class="camp">🚗 Need shuttle car at Wolf Pit (drop off Friday)</span>
         </div>
       </div>
     </div>
+  </div>
 
-    <div style="padding: 16px 14px; font-size: 0.72rem; color: #546e7a; line-height: 1.6; border-top: 1px solid #2e3a50;">
-      🎒 All options: bring bear hang kit or canister, water filter, layers for cold nights (40s–50s in April at elevation). Red headlamp to preserve night vision for stargazing.
+  <!-- Info Grid -->
+  <div class="info-grid">
+
+    <div class="info-box">
+      <h3>🚐 Day 3 Shuttle Options</h3>
+      <ul>
+        <li><span class="highlight">2-car shuttle (free):</span> Drop a car at Table Rock (Rte A) or Wolf Pit (Rte B) on Friday before starting. Drive ~20 min between trailheads via FR 210 / NC-181 / NC-126.</li>
+        <li><span class="highlight">Jog for the car (Rte A):</span> One person runs ~7 mi on FR 210 gravel road back to Wolf Pit. Mostly downhill, ~1 hr for a runner. Bring trail runners or sneakers in your pack.</li>
+        <li><span class="highlight">Paid shuttle (~$30-50):</span> No dedicated shuttle service. Post in the <strong>Linville Gorge Wilderness Area Facebook group</strong> a few days before — locals offer informal rides. Also try <strong>r/NCTrails</strong> on Reddit. Call ranger station (828) 652-2144 for current recommendations.</li>
+        <li><span class="highlight">Bike stash:</span> Lock a bike at one trailhead, hike through, bike back to car. ~20 min ride on forest roads.</li>
+        <li>Uber/Lyft: <span style="color:#f44336;">Unreliable</span> — very rural, no cell service in the gorge. Don't count on it.</li>
+      </ul>
+    </div>
+
+    <div class="info-box">
+      <h3>💧 Water Strategy</h3>
+      <ul>
+        <li><span class="highlight">East rim is DRY.</span> The #1 issue. Carry 3L/person + 2L/dog minimum.</li>
+        <li><strong>Gully Pipe Spring</strong> (mi 1.5 on Shortoff trail) — most reliable east rim source. Fill everything here.</li>
+        <li>Chimney Gap seep — seasonal, don't rely on it.</li>
+        <li>Table Rock Gap spring — check when you arrive.</li>
+        <li>Gorge floor (Rte B only) — unlimited river water, filter required.</li>
+        <li>April rains improve odds but <strong>never assume a source is flowing</strong>.</li>
+        <li>Bring backup purification tablets.</li>
+      </ul>
+    </div>
+
+    <div class="info-box">
+      <h3>🌌 Milky Way Conditions — Apr 10-12</h3>
+      <ul>
+        <li><span class="highlight">Last Quarter Moon Apr 10</span> — waning crescent by Sat/Sun, sets earlier each night.</li>
+        <li>Best window: <strong>midnight–5 AM</strong> after moonset.</li>
+        <li>Galactic core rises SE around midnight, climbs through pre-dawn.</li>
+        <li>Linville Gorge is <strong>Bortle 2-3</strong> — among darkest skies on East Coast.</li>
+        <li><strong>Night 1 camp matters most:</strong> Shortoff (Rte A) and Hawksbill (Rte B) both have open summit exposure facing SE. Hawksbill has full 360°.</li>
+        <li>Bring red headlamp to preserve night vision.</li>
+      </ul>
+    </div>
+
+    <div class="info-box">
+      <h3>🐕 Dogs on the Trail</h3>
+      <ul>
+        <li>Dogs allowed — <strong>6ft leash required</strong> at all times. Pack out waste.</li>
+        <li>Shortoff ascent (Rte A Day 1): Good for dogs, steady climb.</li>
+        <li>Chimneys (Rte A Day 2): Some scrambling — may need to lift dogs over rocks. Keep leash short near cliffs.</li>
+        <li>River crossing (Rte B Day 2): Cold water (~50°F), rocky bottom. One adult per dog. Be ready to release leash if dog panics.</li>
+        <li>Gorge floor (Rte B): Heavy blowdown — repeated leash clip/unclip over logs.</li>
+        <li>Budget <strong>2L extra water/dog/day</strong> on the dry east rim.</li>
+        <li>April = snake season (copperheads, timber rattlers). Leash helps.</li>
+      </ul>
+    </div>
+
+    <div class="info-box">
+      <h3>⚠️ River Crossing (Route B only)</h3>
+      <ul>
+        <li><span class="highlight">GO conditions (all must be true):</span></li>
+        <li>USGS gauge below 100 CFS (<a href="https://waterdata.usgs.gov/monitoring-location/USGS-02138500/" target="_blank">check here</a>)</li>
+        <li>No rain in prior 48 hours</li>
+        <li>Water below adult knee-depth, bottom visible</li>
+        <li style="margin-top:6px;"><span style="color:#f44336;font-weight:700;">NO-GO → default to Route A</span> if gauge >150 CFS, murky water, or recent rain.</li>
+        <li style="margin-top:6px;"><strong>Protocol:</strong> Unbuckle hip belts. Adults scout first. One adult per child, angled upstream. River shoes required (not barefoot). Dry layers ready on far bank.</li>
+      </ul>
+    </div>
+
+    <div class="info-box">
+      <h3>🎒 Gear Checklist</h3>
+      <ul>
+        <li>2 tents (family of 4) + ground tarps for rock camping</li>
+        <li>30°F sleeping bags — nights will be 35-45°F at elevation</li>
+        <li>Water filter + backup purification tablets</li>
+        <li>3-4L water capacity per person + dog bowls</li>
+        <li>Bear hang kit (rope + carabiner + stuff sack)</li>
+        <li>Red headlamp for stargazing</li>
+        <li>Trail runners/sneakers (for road jog option or river crossing)</li>
+        <li>Rain gear — April showers possible any day</li>
+        <li>Trekking poles — essential for Chimneys scrambling + river crossing</li>
+        <li>Offline map: Gaia GPS or AllTrails with Linville Gorge topo</li>
+        <li><strong>No cell service</strong> in the gorge</li>
+      </ul>
     </div>
 
   </div>
 </div>
 
+<!-- ═══════════════════════════════════════════ -->
+<!-- BACKUP DESTINATIONS                        -->
+<!-- ═══════════════════════════════════════════ -->
+
+<!-- Grayson Highlands -->
+<div class="dest-content" id="dest-grayson">
+  <div class="backup-card">
+    <h3>🐴 Grayson Highlands / Mt. Rogers, VA</h3>
+    <div class="sub">Jefferson National Forest · ~4h from Charlotte · Best family-friendly option</div>
+    <div class="stat-row">
+      <div class="stat"><div class="stat-label">Distance</div><div class="stat-value">~21 miles</div></div>
+      <div class="stat"><div class="stat-label">Elev. Gain</div><div class="stat-value">~3,900 ft</div></div>
+      <div class="stat"><div class="stat-label">Dark Sky</div><div class="stat-value">⭐⭐⭐⭐ Bortle 3</div></div>
+      <div class="stat"><div class="stat-label">Permit</div><div class="stat-value">None needed</div></div>
+    </div>
+    <div class="pill-row">
+      <span class="pill green">Moderate</span>
+      <span class="pill green">Best for Family</span>
+      <span class="pill blue">Well-marked AT</span>
+      <span class="pill purple">Wild Ponies</span>
+    </div>
+    <p class="desc" style="margin-top:10px;">
+      <strong>The route:</strong> Massie Gap trailhead → AT north through open balds → Pine Mountain loop.
+      Wild ponies roam free on the ridgeline. Open meadows = perfect Milky Way views. Best beginner backpacking scenery in the East.
+    </p>
+    <p class="desc" style="margin-top:6px;color:#8bc34a;">Solid backup if Linville conditions don't clear.</p>
+  </div>
+</div>
+
+<!-- Shining Rock -->
+<div class="dest-content" id="dest-shining">
+  <div class="backup-card">
+    <h3>🪨 Shining Rock Wilderness, NC</h3>
+    <div class="sub">Pisgah National Forest · ~2.5h from Charlotte</div>
+    <div class="stat-row">
+      <div class="stat"><div class="stat-label">Distance</div><div class="stat-value">9–16 miles</div></div>
+      <div class="stat"><div class="stat-label">Elev. Gain</div><div class="stat-value">1,400–4,400 ft</div></div>
+      <div class="stat"><div class="stat-label">Dark Sky</div><div class="stat-value">⭐⭐⭐⭐ Bortle ~3</div></div>
+      <div class="stat"><div class="stat-label">Permit</div><div class="stat-value">None needed</div></div>
+    </div>
+    <div class="pill-row">
+      <span class="pill yellow">Mod–Hard</span>
+      <span class="pill yellow">Short loop option</span>
+      <span class="pill orange">Bear canister req.</span>
+      <span class="pill red">No campfires</span>
+    </div>
+    <p class="desc" style="margin-top:10px;">
+      <strong>The route:</strong> Black Balsam trailhead → Shining Rock loop (9.4mi, moderate).
+      White quartz summit glows at dawn. Views of Cold Mountain. Closest mountain dark sky option.
+      Pick the shorter loop for Verity; Asher + Sage can branch off on harder segments.
+    </p>
+  </div>
+</div>
+
+<!-- Uwharrie -->
+<div class="dest-content" id="dest-uwharrie">
+  <div class="backup-card">
+    <h3>🌲 Uwharrie National Forest, NC</h3>
+    <div class="sub">Uwharrie NF · ~1.5h from Charlotte · Closest & easiest option</div>
+    <div class="stat-row">
+      <div class="stat"><div class="stat-label">Distance</div><div class="stat-value">15–20 miles</div></div>
+      <div class="stat"><div class="stat-label">Elev. Gain</div><div class="stat-value">Minimal</div></div>
+      <div class="stat"><div class="stat-label">Dark Sky</div><div class="stat-value">⭐⭐⭐ IDA Recognized</div></div>
+      <div class="stat"><div class="stat-label">Permit</div><div class="stat-value">None needed</div></div>
+    </div>
+    <div class="pill-row">
+      <span class="pill green">Easy</span>
+      <span class="pill green">Most family-friendly</span>
+      <span class="pill blue">Dispersed camping</span>
+      <span class="pill green">Closest to CLT</span>
+    </div>
+    <p class="desc" style="margin-top:10px;">
+      <strong>The route:</strong> Uwharrie Trail + Dutchman's Creek loop (~15mi).
+      Rolling hills, gentle terrain, great intro backpacking trip for Verity.
+      Skies are good — not as dramatic as mountains but solid Milky Way views on a dark night.
+    </p>
+  </div>
+</div>
+
+<div style="padding:16px;font-size:0.72rem;color:#546e7a;text-align:center;border-top:1px solid #1e2433;margin-top:8px;">
+  🎒 All options: bring bear hang kit or canister, water filter, layers for cold nights (35–50°F in April at elevation). Red headlamp for stargazing.
+</div>
+
 <script>
-const map = L.map('map', { zoomControl: true }).setView([36.2, -81.5], 7);
+// ── TAB SWITCHING ──
+function showDest(id) {
+  document.querySelectorAll('.dest-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.dest-content').forEach(c => c.classList.remove('active'));
+  document.getElementById('dest-' + id).classList.add('active');
+  // find the tab button
+  document.querySelectorAll('.dest-tab').forEach(t => {
+    if (t.textContent.toLowerCase().includes(id.substring(0, 4))) t.classList.add('active');
+  });
+  // resize map if switching to linville
+  if (id === 'linville' && window._lmap) setTimeout(() => window._lmap.invalidateSize(), 100);
+}
 
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-  attribution: '© OpenStreetMap contributors © CARTO',
-  maxZoom: 18
-}).addTo(map);
+// ── ROUTE TOGGLE ──
+const routeState = { a: true, b: true };
 
-const destinations = [
-  {
-    id: 1, name: 'Grayson Highlands / Mt. Rogers', lat: 36.659, lng: -81.545,
-    color: '#8bc34a', difficulty: 'Moderate',
-    desc: '🐴 Wild ponies · Bortle 3 · ~21mi loop<br>Best all-around family pick'
-  },
-  {
-    id: 2, name: 'Shining Rock Wilderness', lat: 35.376, lng: -82.888,
-    color: '#ff9800', difficulty: 'Mod–Hard',
-    desc: '🪨 White quartz summit · Bortle ~3<br>9–16mi loop · No campfires'
-  },
-  {
-    id: 3, name: 'Uwharrie National Forest', lat: 35.386, lng: -80.068,
-    color: '#2196f3', difficulty: 'Easy',
-    desc: '🌲 IDA dark sky · 15–20mi · Easiest<br>Best for first-time family backpacking'
-  },
-  {
-    id: 4, name: 'Linville Gorge', lat: 35.889, lng: -81.924,
-    color: '#f44336', difficulty: 'Very Hard',
-    desc: '🏔️ Sage\'s pick · Best skies East Coast<br>⚠️ Helene damage — verify before going<br>Call (828) 652-2144'
-  }
+function toggleRoute(r) {
+  routeState[r] = !routeState[r];
+  const btn = document.querySelector('.route-toggle.' + r);
+  btn.classList.toggle('on', routeState[r]);
+  btn.querySelector('.check').textContent = routeState[r] ? '✓' : '';
+  // Show/hide map layers
+  updateMapLayers();
+  // Show/hide day cards
+  document.getElementById('route-' + r + '-section').style.display = routeState[r] ? '' : 'none';
+}
+
+// ── MAP DATA — Real GPS coordinates from OpenStreetMap ──
+// East rim trails: lon ~-81.88 to -81.90 (EAST of river)
+// Linville River: lon ~-81.89 to -81.92 (center of gorge)
+// West rim trails: lon ~-81.91 to -81.92 (WEST of river)
+
+// Shortoff Mountain Trail (OSM Way 684055111) — Wolf Pit TH to Shortoff summit
+const shortoffTrail = [
+  [35.8242,-81.8897],[35.8241,-81.8901],[35.8240,-81.8905],[35.8238,-81.8908],
+  [35.8237,-81.8912],[35.8235,-81.8915],[35.8233,-81.8917],[35.8231,-81.8920],
+  [35.8234,-81.8922],[35.8239,-81.8923],[35.8242,-81.8923],[35.8248,-81.8924],
+  [35.8252,-81.8926],[35.8258,-81.8930],[35.8259,-81.8938],[35.8255,-81.8940],
+  [35.8255,-81.8949],[35.8258,-81.8955],[35.8266,-81.8958],[35.8271,-81.8950],
+  [35.8276,-81.8947],[35.8278,-81.8953],[35.8280,-81.8958],[35.8283,-81.8965],
+  [35.8284,-81.8975],[35.8285,-81.8981]
 ];
 
-// Home marker
-L.circleMarker([35.2271, -80.8431], {
-  radius: 8, color: '#fff', fillColor: '#2196f3',
-  fillOpacity: 1, weight: 2
-}).addTo(map).bindPopup('<b>🏠 Charlotte, NC</b><br>Home base');
+// East rim / MST — Shortoff north to Table Rock (approximate from OSM MST data)
+const eastRimShortoffToTableRock = [
+  [35.8285,-81.8981],[35.8310,-81.8975],[35.8335,-81.8968],[35.8360,-81.8960],
+  [35.8385,-81.8952],[35.8410,-81.8945],[35.8435,-81.8940],[35.8460,-81.8935],
+  [35.8485,-81.8930],[35.8510,-81.8925],[35.8535,-81.8920],[35.8560,-81.8918],
+  [35.8585,-81.8915],[35.8610,-81.8912],[35.8635,-81.8910],[35.8660,-81.8908],
+  [35.8685,-81.8905],[35.8710,-81.8900],[35.8735,-81.8895],[35.8760,-81.8892],
+  [35.8785,-81.8890],[35.8810,-81.8888],[35.8835,-81.8886],[35.8860,-81.8883],
+  [35.8880,-81.8880],[35.8900,-81.8878],[35.8920,-81.8875]
+];
 
-const markers = {};
-destinations.forEach(d => {
-  const marker = L.circleMarker([d.lat, d.lng], {
-    radius: 14, color: '#fff', fillColor: d.color,
-    fillOpacity: 0.9, weight: 2.5
-  }).addTo(map);
+// East rim — Table Rock north to Hawksbill (OSM MST + Hawksbill trail)
+const eastRimTableRockToHawksbill = [
+  [35.8920,-81.8875],[35.8940,-81.8878],[35.8960,-81.8880],[35.8980,-81.8882],
+  [35.9000,-81.8883],[35.9020,-81.8850],[35.9035,-81.8788],
+  // Hawksbill spur from OSM
+  [35.9035,-81.8788],[35.9038,-81.8794],[35.9042,-81.8806],[35.9046,-81.8810],
+  [35.9053,-81.8807],[35.9058,-81.8813],[35.9058,-81.8819],[35.9059,-81.8828],
+  [35.9058,-81.8835],[35.9058,-81.8841],[35.9056,-81.8850],[35.9057,-81.8859],
+  [35.9052,-81.8856],[35.9045,-81.8853],[35.9037,-81.8852],[35.9035,-81.8862]
+];
 
-  // Draw line from Charlotte
-  L.polyline([[35.2271, -80.8431], [d.lat, d.lng]], {
-    color: d.color, weight: 1.5, opacity: 0.4, dashArray: '6, 6'
-  }).addTo(map);
+// Spence Ridge Trail (OSM Ways 874141554+) — east rim down to river
+const spenceRidgeTrail = [
+  [35.9035,-81.8788],[35.9034,-81.8794],[35.9031,-81.8806],[35.9029,-81.8814],
+  [35.9028,-81.8820],[35.9027,-81.8826],[35.9024,-81.8831],[35.9024,-81.8837],
+  [35.9022,-81.8842],[35.9019,-81.8845],[35.9015,-81.8849],[35.9013,-81.8854],
+  [35.9021,-81.8850],[35.9027,-81.8847],[35.9032,-81.8843],[35.9032,-81.8848],
+  [35.9030,-81.8855],[35.9027,-81.8860],[35.9029,-81.8865],[35.9032,-81.8868],
+  [35.9032,-81.8872],[35.9031,-81.8876],[35.9032,-81.8883],[35.9032,-81.8891],
+  [35.9033,-81.8895],[35.9031,-81.8898],[35.9030,-81.8904],[35.9029,-81.8911],
+  [35.9029,-81.8917],[35.9030,-81.8924],[35.9032,-81.8930],[35.9032,-81.8940],
+  [35.9031,-81.8945],[35.9029,-81.8951],[35.9025,-81.8963],[35.9022,-81.8970],
+  [35.9020,-81.8974]
+];
 
-  marker.bindPopup(`<b>${d.name}</b><br><small>${d.difficulty}</small><br><br>${d.desc}`, {
-    maxWidth: 220
-  });
-  markers[d.id] = marker;
-});
+// Gorge floor trail south of Spence Ridge crossing — follows near river
+const gorgeFloorSouth = [
+  [35.9020,-81.8974],[35.9010,-81.8979],[35.9004,-81.8981],[35.8997,-81.8993],
+  [35.8990,-81.9002],[35.8978,-81.8999],[35.8968,-81.8993],[35.8951,-81.8983],
+  [35.8933,-81.8979],[35.8920,-81.8976],[35.8912,-81.8968],[35.8889,-81.8967],
+  [35.8870,-81.8971],[35.8852,-81.8974],[35.8832,-81.8972],[35.8807,-81.8975],
+  [35.8782,-81.8981],[35.8757,-81.8989],[35.8731,-81.8987],[35.8710,-81.8996],
+  [35.8692,-81.8992],[35.8677,-81.8990],[35.8650,-81.8985],[35.8619,-81.8977],
+  [35.8585,-81.9001],[35.8546,-81.9005],[35.8513,-81.8972],[35.8468,-81.9030],
+  [35.8448,-81.9048],[35.8434,-81.9053],[35.8411,-81.9074],[35.8392,-81.9094],
+  [35.8372,-81.9101],[35.8359,-81.9138],[35.8337,-81.9137],[35.8316,-81.9143]
+];
 
-function focusMap(id) {
-  document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
-  document.getElementById('card-' + id).classList.add('active');
-  const d = destinations.find(x => x.id === id);
-  map.flyTo([d.lat, d.lng], 10, { animate: true, duration: 1 });
-  markers[id].openPopup();
+// Route A: Wolf Pit → Shortoff → east rim north → Table Rock → FR 210 road walk back
+const routeA = {
+  color: '#f44336',
+  days: [
+    { path: shortoffTrail, label: 'Day 1: 3.5 mi' },
+    { path: eastRimShortoffToTableRock, label: 'Day 2: 7.5 mi' },
+    { // Day 3: FR 210 road walk back
+      path: [
+        [35.8920,-81.8875],[35.8905,-81.8850],[35.8880,-81.8830],[35.8850,-81.8810],
+        [35.8820,-81.8795],[35.8790,-81.8780],[35.8755,-81.8765],[35.8720,-81.8755],
+        [35.8680,-81.8750],[35.8640,-81.8745],[35.8600,-81.8748],[35.8560,-81.8755],
+        [35.8520,-81.8765],[35.8480,-81.8775],[35.8440,-81.8790],[35.8400,-81.8800],
+        [35.8360,-81.8815],[35.8320,-81.8830],[35.8280,-81.8845],[35.8260,-81.8870],
+        [35.8242,-81.8897]
+      ],
+      label: 'Day 3: 7.5 mi (road)', dashed: true
+    }
+  ],
+  camps: [
+    { ll: [35.8285, -81.8981], name: 'Night 1: Shortoff Summit Camp', info: '⛺ Open plateau · 🌌 Best Milky Way — unobstructed SE horizon · 💧 Carry from Gully Pipe Spring (1.5 mi back)' },
+    { ll: [35.8920, -81.8875], name: 'Night 2: Table Rock Gap', info: '⛺ Established sites near parking · 💧 Gap spring (check flow) · 🌌 Summit spur 0.2mi for stargazing' }
+  ],
+  pois: [
+    { ll: [35.8255, -81.8940], name: '💧 Gully Pipe Spring', info: 'Most reliable east rim water source. Piped spring — fill everything here (3L/person).' },
+    { ll: [35.8635, -81.8910], name: '🪨 The Chimneys', info: 'Dramatic rock pinnacles along ridgeline. Some scrambling — tricky with dogs. 360° views.' },
+    { ll: [35.8930, -81.8910], name: '⛰️ Table Rock Summit (3,930 ft)', info: '0.2 mi spur to summit. 360° panorama. Drop packs first.' }
+  ]
+};
+
+// Route B: Table Rock → Hawksbill → Spence Ridge down to river → gorge floor south → climb Shortoff → Wolf Pit
+const routeB = {
+  color: '#ff9800',
+  days: [
+    { path: eastRimTableRockToHawksbill, label: 'Day 1: 5.5 mi' },
+    { // Day 2: Hawksbill → back south → Spence Ridge descent → river crossing → gorge floor south
+      path: [
+        // Retrace east rim south to Spence Ridge TH
+        ...eastRimTableRockToHawksbill.slice().reverse().slice(0, 7),
+        // Spence Ridge descent to river (real OSM coords)
+        ...spenceRidgeTrail,
+        // Continue south on gorge floor
+        ...gorgeFloorSouth.slice(0, 12)
+      ],
+      label: 'Day 2: 6.5 mi'
+    },
+    { // Day 3: Continue south on gorge floor → climb east to Shortoff → Wolf Pit
+      path: [
+        ...gorgeFloorSouth.slice(11, 25),
+        // Climb back east to Shortoff ridge then down
+        ...shortoffTrail.slice().reverse()
+      ],
+      label: 'Day 3: 6 mi'
+    }
+  ],
+  camps: [
+    { ll: [35.9035, -81.8862], name: 'Night 1: Hawksbill Summit (4,009 ft)', info: '⛺ 360° open granite dome — the best dark sky camp in the gorge · 🌌 Bortle 2 · ⚠️ NO WATER on summit — carry all up (3L/person)' },
+    { ll: [35.8889, -81.8967], name: 'Night 2: Gorge Floor Riverside', info: '⛺ Flat riverside benches south of Spence Ridge · 💧 Linville River — unlimited filtered water · 🌌 Partial sky along river corridor' }
+  ],
+  pois: [
+    { ll: [35.9020, -81.8974], name: '⚠️ River Crossing (Spence Ridge)', info: 'Bridge washed out since 2014. Wet crossing at river level.\nGO: USGS gauge <100 CFS, no rain 48hrs, water below knee.\nNO-GO: Abort Route B → do Route A instead.' }
+  ]
+};
+
+// Shared segment: Shortoff Trail (used ascending in Route A Day 1, descending in Route B Day 3)
+const sharedPath = shortoffTrail;
+
+// Trailheads
+const trailheads = [
+  { ll: [35.8242, -81.8897], name: '🅿️ Wolf Pit Trailhead', info: 'End of Wolf Pit Rd (SR 1238). Rough gravel, 10-12 cars. Route A start / Route B end.' },
+  { ll: [35.8920, -81.8875], name: '🅿️ Table Rock Parking', info: 'Via Gingercake Rd (FR 210). Paved lot, pit toilets. Route B start / Route A Night 2.' }
+];
+
+// ── DARK / LIGHT MODE ──
+let isDark = true;
+function toggleDarkLight() {
+  isDark = !isDark;
+  document.body.classList.toggle('light', !isDark);
+  const btn = document.querySelector('.mode-toggle');
+  btn.textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
+  // Auto-switch map tile to match
+  if (isDark && currentTile === 'terrain') setTile('dark');
+  if (!isDark && currentTile === 'dark') setTile('terrain');
+  localStorage.setItem('campingDarkMode', isDark ? 'dark' : 'light');
 }
+// Restore preference
+if (localStorage.getItem('campingDarkMode') === 'light') toggleDarkLight();
+
+// ── MAP INIT ──
+const _lmap = L.map('linville-map', { zoomControl: true }).setView([35.865, -81.900], 13);
+window._lmap = _lmap;
+
+// ── TILE LAYERS ──
+const tiles = {
+  dark: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '© OpenStreetMap © CARTO', maxZoom: 18
+  }),
+  satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: '© Esri', maxZoom: 18
+  }),
+  terrain: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenTopoMap', maxZoom: 17
+  }),
+  topo: L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer/tile/{z}/{y}/{x}', {
+    attribution: '© USGS', maxZoom: 16
+  })
+};
+let currentTile = 'dark';
+tiles.dark.addTo(_lmap);
+
+function setTile(name) {
+  if (tiles[currentTile]) _lmap.removeLayer(tiles[currentTile]);
+  currentTile = name;
+  tiles[name].addTo(_lmap);
+  // Update buttons
+  document.querySelectorAll('.map-bar .map-btn[id^="btn-"]').forEach(b => {
+    if (b.id === 'btn-nearby') return;
+    b.classList.toggle('on', b.id === 'btn-' + name);
+  });
+}
+
+// ── NEARBY TRAILS (for exploring loop possibilities) ──
+const nearbyTrails = [
+  // OPEN trails — real OSM coordinates
+  { name: "Devil's Hole Trail (open)", status: 'open',
+    path: [[35.9241,-81.8888],[35.9242,-81.8895],[35.9242,-81.8905],[35.9240,-81.8907],
+           [35.9239,-81.8913],[35.9238,-81.8918],[35.9236,-81.8927],[35.9231,-81.8935],
+           [35.9225,-81.8934],[35.9219,-81.8949],[35.9215,-81.8960],[35.9212,-81.8970],
+           [35.9210,-81.8981],[35.9207,-81.8992],[35.9201,-81.8999],[35.9191,-81.9005],
+           [35.9183,-81.9012],[35.9178,-81.9022],[35.9178,-81.9036]] },
+  { name: 'Spence Ridge Trail (open — to river)', status: 'open', path: spenceRidgeTrail },
+  { name: 'MST south of Shortoff (open)', status: 'open',
+    path: [[35.8285,-81.8981],[35.8270,-81.8990],[35.8255,-81.9000],[35.8240,-81.9010],
+           [35.8225,-81.9020],[35.8210,-81.9030],[35.8195,-81.9040]] },
+  // Linville River — real OSM data (4 combined ways)
+  { name: 'Linville River', status: 'river',
+    path: [[35.9392,-81.9180],[35.9399,-81.9167],[35.9383,-81.9170],[35.9367,-81.9189],
+           [35.9343,-81.9240],[35.9327,-81.9251],[35.9308,-81.9204],[35.9330,-81.9090],
+           [35.9317,-81.9086],[35.9286,-81.9089],[35.9250,-81.9082],[35.9228,-81.9069],
+           [35.9214,-81.9038],[35.9195,-81.9025],[35.9171,-81.9027],[35.9151,-81.9021],
+           [35.9133,-81.9017],[35.9113,-81.9001],[35.9097,-81.9000],[35.9064,-81.8991],
+           [35.9045,-81.8972],[35.9029,-81.8972],[35.9010,-81.8979],[35.8997,-81.8993],
+           [35.8985,-81.9003],[35.8968,-81.8993],[35.8951,-81.8983],[35.8933,-81.8979],
+           [35.8912,-81.8968],[35.8889,-81.8967],[35.8870,-81.8971],[35.8852,-81.8974],
+           [35.8832,-81.8972],[35.8807,-81.8975],[35.8782,-81.8981],[35.8757,-81.8989],
+           [35.8731,-81.8987],[35.8710,-81.8996],[35.8692,-81.8992],[35.8663,-81.8984],
+           [35.8641,-81.8985],[35.8619,-81.8977],[35.8585,-81.9001],[35.8546,-81.9005],
+           [35.8513,-81.8972],[35.8468,-81.9030],[35.8448,-81.9048],[35.8434,-81.9053],
+           [35.8411,-81.9074],[35.8392,-81.9094],[35.8372,-81.9101],[35.8359,-81.9138],
+           [35.8337,-81.9137],[35.8316,-81.9143]] },
+  // Gorge Trail — CLOSED sections (follows near river)
+  { name: 'Gorge Trail: Spence Ridge → Conley Cove (CLOSED)', status: 'closed',
+    path: [[35.9020,-81.8974],[35.9038,-81.8970],[35.9055,-81.8982],[35.9064,-81.8991],
+           [35.9084,-81.8997],[35.9097,-81.9000],[35.8902,-81.9064]] },
+  { name: 'Gorge Trail: Daffodil Flats → Pinch In (CLOSED)', status: 'closed',
+    path: [[35.9113,-81.9001],[35.9126,-81.9012],[35.9139,-81.9022],[35.9151,-81.9021],
+           [35.9163,-81.9019],[35.9178,-81.9028],[35.9195,-81.9025]] },
+  { name: 'Gorge Trail: Cabin → Bynum Bluff (CLOSED)', status: 'closed',
+    path: [[35.8513,-81.8972],[35.8468,-81.9030],[35.8448,-81.9048],[35.8434,-81.9053],
+           [35.8411,-81.9074],[35.8392,-81.9094],[35.8372,-81.9101]] },
+  // West rim trails — real OSM coordinates
+  { name: 'Babel Tower Trail (west rim — uncertain)', status: 'closed',
+    path: [[35.9304,-81.9106],[35.9294,-81.9112],[35.9277,-81.9120],[35.9264,-81.9124],
+           [35.9244,-81.9127],[35.9238,-81.9134],[35.9231,-81.9145],[35.9229,-81.9156],
+           [35.9220,-81.9167],[35.9220,-81.9175],[35.9225,-81.9187],[35.9219,-81.9195],
+           [35.9210,-81.9191],[35.9198,-81.9194],[35.9185,-81.9195]] },
+  { name: 'Conley Cove Trail (west rim — closed)', status: 'closed',
+    path: [[35.8902,-81.9064],[35.8898,-81.9054],[35.8893,-81.9050],[35.8886,-81.9049],
+           [35.8880,-81.9045],[35.8885,-81.9041],[35.8885,-81.9033],[35.8891,-81.9026],
+           [35.8897,-81.9020],[35.8900,-81.9011],[35.8912,-81.9001],[35.8920,-81.8986],
+           [35.8932,-81.8982]] },
+  { name: 'Pine Gap Trail (west rim — approximate)', status: 'closed',
+    path: [[35.9065,-81.9193],[35.9060,-81.9185],[35.9056,-81.9176],[35.9053,-81.9167],
+           [35.9051,-81.9157],[35.9049,-81.9142],[35.9050,-81.9127],[35.9052,-81.9112],
+           [35.9053,-81.9097],[35.9055,-81.9082],[35.9051,-81.9062],[35.9048,-81.9054]] },
+  // FR 210 / Gingercake Road
+  { name: 'FR 210 / Gingercake Rd', status: 'road',
+    path: [[35.8242,-81.8897],[35.8260,-81.8870],[35.8280,-81.8845],[35.8320,-81.8830],
+           [35.8360,-81.8815],[35.8400,-81.8800],[35.8440,-81.8790],[35.8480,-81.8775],
+           [35.8520,-81.8765],[35.8560,-81.8755],[35.8600,-81.8748],[35.8640,-81.8745],
+           [35.8680,-81.8750],[35.8720,-81.8755],[35.8755,-81.8765],[35.8790,-81.8780],
+           [35.8820,-81.8795],[35.8850,-81.8810],[35.8880,-81.8830],[35.8905,-81.8850],
+           [35.8920,-81.8875],[35.8960,-81.8880],[35.9000,-81.8883],[35.9035,-81.8788]] },
+];
+
+const layerNearby = L.layerGroup().addTo(_lmap);
+let nearbyVisible = true;
+
+function buildNearbyTrails() {
+  layerNearby.clearLayers();
+  nearbyTrails.forEach(t => {
+    let opts;
+    if (t.status === 'open') {
+      opts = { color: '#4fc3f7', weight: tw(2), opacity: 0.5, dashArray: '6, 4' };
+    } else if (t.status === 'closed') {
+      opts = { color: '#f44336', weight: tw(2), opacity: 0.35, dashArray: '4, 6' };
+    } else if (t.status === 'river') {
+      opts = { color: '#1e88e5', weight: tw(3), opacity: 0.55 };
+    } else if (t.status === 'road') {
+      opts = { color: '#78909c', weight: tw(2), opacity: 0.35, dashArray: '8, 6' };
+    }
+    const line = L.polyline(t.path, opts).addTo(layerNearby);
+    const mid = t.path[Math.floor(t.path.length / 2)];
+    let labelColor = t.status === 'closed' ? '#f44336' : t.status === 'river' ? '#1e88e5' : t.status === 'road' ? '#78909c' : '#4fc3f7';
+    let statusTag = t.status === 'closed' ? ' ❌' : t.status === 'open' ? ' ✅' : '';
+    line.bindTooltip(t.name + statusTag, { sticky: true, opacity: 0.85, className: '' });
+  });
+}
+buildNearbyTrails();
+
+function toggleNearby() {
+  nearbyVisible = !nearbyVisible;
+  document.getElementById('btn-nearby').classList.toggle('on', nearbyVisible);
+  if (nearbyVisible) { if (!_lmap.hasLayer(layerNearby)) _lmap.addLayer(layerNearby); }
+  else { _lmap.removeLayer(layerNearby); }
+}
+
+// Layer groups
+const layerA = L.layerGroup().addTo(_lmap);
+const layerB = L.layerGroup().addTo(_lmap);
+const layerShared = L.layerGroup().addTo(_lmap);
+const layerTH = L.layerGroup().addTo(_lmap);
+
+function buildRouteLayers() {
+  layerA.clearLayers();
+  layerB.clearLayers();
+  layerShared.clearLayers();
+  layerTH.clearLayers();
+
+  // Route A trails
+  routeA.days.forEach((d, i) => {
+    const opts = { color: routeA.color, weight: tw(4), opacity: 0.8 };
+    if (d.dashed) { opts.dashArray = '8, 8'; opts.opacity = 0.5; opts.color = '#78909c'; }
+    L.polyline(d.path, opts).addTo(layerA);
+    // Day number at midpoint
+    const mid = d.path[Math.floor(d.path.length / 2)];
+    L.marker(mid, { icon: L.divIcon({ className: '', html: '<div style="background:#f44336;color:#fff;width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;text-align:center;line-height:22px;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.5);">' + (i+1) + '</div>', iconSize: [22,22], iconAnchor: [11,11] }) }).bindTooltip(d.label, {direction:'top'}).addTo(layerA);
+  });
+  // Route A camps
+  routeA.camps.forEach(c => {
+    L.marker(c.ll, { icon: L.divIcon({ className: '', html: '<div style="font-size:18px;text-shadow:0 0 4px #000;">⛺</div>', iconSize: [20,20], iconAnchor: [10,10] }) })
+      .bindPopup('<b style="color:#f44336;">' + c.name + '</b><br><span style="font-size:12px;">' + c.info + '</span>', {maxWidth:250})
+      .addTo(layerA);
+  });
+  // Route A POIs
+  routeA.pois.forEach(p => {
+    L.circleMarker(p.ll, { radius: 6, fillColor: '#4fc3f7', color: '#fff', weight: 1.5, fillOpacity: 0.9 })
+      .bindPopup('<b>' + p.name + '</b><br><span style="font-size:12px;">' + p.info + '</span>', {maxWidth:250})
+      .addTo(layerA);
+  });
+
+  // Route B trails
+  routeB.days.forEach((d, i) => {
+    L.polyline(d.path, { color: routeB.color, weight: tw(4), opacity: 0.8 }).addTo(layerB);
+    const mid = d.path[Math.floor(d.path.length / 2)];
+    L.marker(mid, { icon: L.divIcon({ className: '', html: '<div style="background:#ff9800;color:#000;width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;text-align:center;line-height:22px;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.5);">' + (i+1) + '</div>', iconSize: [22,22], iconAnchor: [11,11] }) }).bindTooltip(d.label, {direction:'top'}).addTo(layerB);
+  });
+  // Route B camps
+  routeB.camps.forEach(c => {
+    L.marker(c.ll, { icon: L.divIcon({ className: '', html: '<div style="font-size:18px;text-shadow:0 0 4px #000;">⛺</div>', iconSize: [20,20], iconAnchor: [10,10] }) })
+      .bindPopup('<b style="color:#ff9800;">' + c.name + '</b><br><span style="font-size:12px;">' + c.info.replace(/\n/g,'<br>') + '</span>', {maxWidth:250})
+      .addTo(layerB);
+  });
+  // Route B POIs
+  routeB.pois.forEach(p => {
+    L.circleMarker(p.ll, { radius: 8, fillColor: '#f44336', color: '#fff', weight: 2, fillOpacity: 0.9 })
+      .bindPopup('<b>' + p.name + '</b><br><span style="font-size:12px;">' + p.info.replace(/\n/g,'<br>') + '</span>', {maxWidth:280})
+      .addTo(layerB);
+  });
+
+  // Shared segment (Shortoff → Wolf Pit, used by both on Day 3 of B / Day 1 of A)
+  L.polyline(sharedPath, { color: '#b39ddb', weight: tw(3), opacity: 0.6, dashArray: '6, 6' }).addTo(layerShared);
+
+  // Trailheads
+  trailheads.forEach(t => {
+    L.marker(t.ll, { icon: L.divIcon({ className: '', html: '<div style="background:#2196f3;color:#fff;width:20px;height:20px;border-radius:50%;font-size:10px;text-align:center;line-height:20px;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.5);">P</div>', iconSize: [20,20], iconAnchor: [10,10] }) })
+      .bindPopup('<b>' + t.name + '</b><br><span style="font-size:12px;">' + t.info + '</span>')
+      .addTo(layerTH);
+  });
+}
+
+function updateMapLayers() {
+  if (routeState.a) { if (!_lmap.hasLayer(layerA)) _lmap.addLayer(layerA); }
+  else { _lmap.removeLayer(layerA); }
+  if (routeState.b) { if (!_lmap.hasLayer(layerB)) _lmap.addLayer(layerB); }
+  else { _lmap.removeLayer(layerB); }
+  // Show shared only if both routes visible
+  if (routeState.a && routeState.b) { if (!_lmap.hasLayer(layerShared)) _lmap.addLayer(layerShared); }
+  else { _lmap.removeLayer(layerShared); }
+}
+
+buildRouteLayers();
+
+// ── THICK LINE TOGGLE ──
+let thickMode = false;
+function toggleThick() {
+  thickMode = !thickMode;
+  document.getElementById('btn-thick').classList.toggle('on', thickMode);
+  // Rebuild everything with new weight
+  buildRouteLayers();
+  buildNearbyTrails();
+}
+function tw(base) { return thickMode ? base * 2.5 : base; } // thickness multiplier
+
+// ── ZOOM TO DAY ──
+function zoomDay(route, day) {
+  // Deselect all day cards, select clicked
+  document.querySelectorAll('.day-card').forEach(c => c.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+
+  const data = route === 'a' ? routeA : routeB;
+  const dayData = data.days[day - 1];
+  if (!dayData) return;
+  const bounds = L.latLngBounds(dayData.path);
+  _lmap.flyToBounds(bounds.pad(0.3), { animate: true, duration: 0.8 });
+}
+
+// Fit map to show both routes on load
+const allPoints = [
+  ...routeA.days.flatMap(d => d.path),
+  ...routeB.days.flatMap(d => d.path)
+];
+_lmap.fitBounds(L.latLngBounds(allPoints).pad(0.1));
 </script>
 </body>
 </html>
