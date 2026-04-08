@@ -394,37 +394,39 @@
   <!-- Route C Day Cards -->
   <div class="route-section" id="route-c-section">
     <div class="route-label" style="color:#80deea;">
-      Route C — Spence Ridge Loop <span class="total">~25 mi total · ~6,500 ft gain · River crossing required · NO CAR SHUTTLE · ⚠️ Hard</span>
+      Route C — Spence Ridge Loop <span class="total">~22 mi total · ~6,000 ft gain · River crossing · NO CAR SHUTTLE</span>
     </div>
     <div class="day-cards">
       <div class="day-card c" onclick="zoomDay('c',1)">
         <div class="day-label">Fri · Day 1</div>
-        <div class="day-dist">3.5 mi · ↑1,300 ft</div>
-        <div class="day-route">Wolf Pit TH → Shortoff summit camp</div>
+        <div class="day-dist">~5 mi · ↑1,800 ft</div>
+        <div class="day-route">Wolf Pit TH → Shortoff summit → north to Chimney Gap camp</div>
         <div class="day-info">
-          <span class="camp">⛺ Shortoff summit — open plateau, best Milky Way spot</span><br>
-          <span class="water">💧 Fill at Gully Pipe Spring (mi 1.5) — carry 3L/person</span><br>
-          <span class="camp">🌌 Unobstructed SE horizon — Bortle 2-3</span>
+          <span class="camp">⛺ Chimney Gap — sheltered saddle, warmer, wind-protected</span><br>
+          <span class="water">💧 Fill at Gully Pipe Spring (mi 1.5) — carry 3L/person to camp</span><br>
+          <span class="camp">🌌 Partial sky through canopy · Seasonal seep (unreliable)</span><br>
+          <span class="warn">Audible: camp at Shortoff summit (~2.4 mi) if behind schedule — best Milky Way spot</span><br>
+          <span class="warn">Audible: push to Chimneys ridge (~6.5 mi) if fast — open sky but long water carry</span>
         </div>
       </div>
       <div class="day-card c" onclick="zoomDay('c',2)">
         <div class="day-label">Sat · Day 2</div>
-        <div class="day-dist">~12 mi · ↑2,200 ft ↓2,500 ft · LONG DAY</div>
-        <div class="day-route">Shortoff → east rim → Chimneys → Table Rock → Spence Ridge → river → gorge floor camp</div>
+        <div class="day-dist">~9.5 mi · ↑1,200 ft ↓2,500 ft</div>
+        <div class="day-route">Chimney Gap → Chimneys → Table Rock → Spence Ridge → river crossing → gorge floor camp</div>
         <div class="day-info">
-          <span class="danger">⚠️ Biggest day — full ridgeline traverse + descent + river crossing</span><br>
+          <span class="warn">Big day — Chimneys scrambling + ridgeline + descent to river</span><br>
           <span class="danger">⚠️ RIVER CROSSING at Spence Ridge — check USGS gauge &lt;100 CFS</span><br>
           <span class="camp">⛺ Riverside camp south of Spence Ridge · 💧 Unlimited river water</span><br>
-          <span class="warn">Start early. Chimneys scrambling slows pace with dogs.</span>
+          <span class="warn">Start early. Mostly net downhill after Chimneys.</span>
         </div>
       </div>
       <div class="day-card c" onclick="zoomDay('c',3)">
         <div class="day-label">Sun · Day 3</div>
-        <div class="day-dist">~10 mi · ↑2,500 ft · TOUGH CLIMB</div>
-        <div class="day-route">Gorge floor south → MST south to river → MST climbs 1,700ft north to Shortoff → Wolf Pit TH</div>
+        <div class="day-dist">~8 mi · ↑2,500 ft</div>
+        <div class="day-route">Gorge floor south → MST U-turn at river → 1,700ft climb to Shortoff → Wolf Pit TH</div>
         <div class="day-info">
-          <span class="warn">⚠️ Gorge trail has Helene blowdown — expect ~1 mph pace</span><br>
-          <span class="danger">⚠️ U-turn: MST goes SOUTH to river then climbs NORTH 1,700ft to Shortoff (no switchbacks)</span><br>
+          <span class="warn">⚠️ Gorge trail has Helene blowdown — expect ~1 mph in bad sections</span><br>
+          <span class="danger">⚠️ MST goes SOUTH to river crossing then climbs NORTH 1,700ft (no switchbacks — hardest section)</span><br>
           <span class="water">💧 River along gorge floor, Gully Pipe Spring on Shortoff descent</span><br>
           <span class="camp">🚗 Back to your car at Wolf Pit — NO SHUTTLE NEEDED</span>
         </div>
@@ -642,16 +644,26 @@ function toggleRoute(r) {
 // Linville River: lon ~-81.89 to -81.92 (center of gorge)
 // West rim trails: lon ~-81.91 to -81.92 (WEST of river)
 
-// Shortoff Mountain Trail (OSM Way 684055111) — Wolf Pit TH to Shortoff summit
+// Shortoff Mountain Trail — Wolf Pit TH to trail junction to actual summit
+// Way 684055111 (TH to junction) + continuation on Way 240066342 (junction to summit)
 const shortoffTrail = [
+  // Wolf Pit TH to trail junction (OSM Way 684055111, ~1 mi)
   [35.8242,-81.8897],[35.8241,-81.8901],[35.8240,-81.8905],[35.8238,-81.8908],
   [35.8237,-81.8912],[35.8235,-81.8915],[35.8233,-81.8917],[35.8231,-81.8920],
   [35.8234,-81.8922],[35.8239,-81.8923],[35.8242,-81.8923],[35.8248,-81.8924],
   [35.8252,-81.8926],[35.8258,-81.8930],[35.8259,-81.8938],[35.8255,-81.8940],
   [35.8255,-81.8949],[35.8258,-81.8955],[35.8266,-81.8958],[35.8271,-81.8950],
   [35.8276,-81.8947],[35.8278,-81.8953],[35.8280,-81.8958],[35.8283,-81.8965],
-  [35.8284,-81.8975],[35.8285,-81.8981]
+  [35.8284,-81.8975],[35.8285,-81.8981],
+  // Junction to actual Shortoff summit (Way 240066342 first segment, ~1.3 mi)
+  [35.8287,-81.9008],[35.8304,-81.9024],[35.8331,-81.9021],
+  [35.8331,-81.8987],[35.8348,-81.8982],[35.8361,-81.8971],
+  [35.8374,-81.8963],[35.8387,-81.8961],[35.8398,-81.8946]
 ];
+
+// Chimney Gap is the saddle between Shortoff and the Chimneys — approx halfway through eastRimShortoffToTableRock
+// Index ~8-10 in eastRimShortoffToTableRock (around 35.846, -81.885) is the low point
+const chimneyGapCoords = [35.8464, -81.8870];
 
 // East rim / MST — Shortoff north to Table Rock (real OSM data: ways 240066342, 240066339, 218917692)
 const eastRimShortoffToTableRock = [
@@ -827,47 +839,48 @@ const routeB = {
   ]
 };
 
-// Route C: Spence Ridge Loop — Wolf Pit → Shortoff → east rim → Spence Ridge → river → gorge floor south → back to Shortoff → Wolf Pit
+// Route C: Spence Ridge Loop — Wolf Pit → Shortoff → Chimney Gap → east rim → Spence Ridge → river → gorge floor → back to Wolf Pit
+// Total ~22 mi (per AllTrails). Day 1 camps at Chimney Gap (~5 mi), Day 2 is the big day, Day 3 climbs out.
 const routeC = {
   color: '#00bcd4',
   days: [
-    { // Day 1: Wolf Pit → Shortoff (same as Route A Day 1)
-      path: shortoffTrail,
-      label: 'Day 1: 3.5 mi'
-    },
-    { // Day 2: Shortoff → east rim north → Spence Ridge → descend to river → gorge floor south to camp
+    { // Day 1: Wolf Pit → Shortoff summit → north to Chimney Gap camp (~5 mi)
       path: [
-        ...eastRimShortoffToTableRock,
-        // Continue north from Table Rock to Spence Ridge junction (first part of Table Rock to Hawksbill)
+        ...shortoffTrail,
+        // Continue north from Shortoff summit into Chimney Gap saddle
+        ...eastRimShortoffToTableRock.slice(0, 10)
+      ],
+      label: 'Day 1: ~5 mi'
+    },
+    { // Day 2: Chimney Gap → Chimneys → Table Rock → Spence Ridge → river → gorge floor camp (~9.5 mi)
+      path: [
+        ...eastRimShortoffToTableRock.slice(9),
         ...eastRimTableRockToHawksbill.slice(0, 12),
-        // Spence Ridge descent to river
         ...spenceRidgeTrail,
-        // South on gorge floor to camp
         ...gorgeFloorSouth.slice(0, 12)
       ],
-      label: 'Day 2: ~12 mi'
+      label: 'Day 2: ~9.5 mi'
     },
-    { // Day 3: Gorge floor south → LGT to end → MST south to river → MST north 1,700ft climb to Shortoff → Wolf Pit
+    { // Day 3: Gorge floor south → MST south to river → MST climbs 1,700ft to Shortoff → Wolf Pit (~8 mi)
       path: [
         ...gorgeFloorSouth.slice(11),
-        // LGT south end connects to MST gorge floor, then east to river crossing
         ...mstGorgeFloor.slice().reverse(),
-        // MST climbs north from river crossing up 1,700ft to Shortoff summit
         ...mstShortoffToRiver.slice().reverse(),
-        // Shortoff Trail east to Wolf Pit TH
         ...shortoffTrail.slice().reverse()
       ],
-      label: 'Day 3: ~10 mi'
+      label: 'Day 3: ~8 mi'
     }
   ],
   camps: [
-    { ll: [35.8285, -81.8981], name: 'Night 1: Shortoff Summit Camp', info: '⛺ Open plateau · 🌌 Best Milky Way — unobstructed SE · 💧 Carry from Gully Pipe Spring' },
-    { ll: [35.8889, -81.8967], name: 'Night 2: Gorge Floor Riverside', info: '⛺ Sandy riverside benches · 💧 Linville River — unlimited filtered water · 🌌 Partial sky along corridor' }
+    { ll: chimneyGapCoords, name: 'Night 1: Chimney Gap (default)', info: '⛺ Sheltered saddle between Shortoff & Chimneys · Warmer than summit · Seasonal seep nearby (unreliable)\n💧 Carry water from Gully Pipe Spring · 🌌 Partial sky through canopy gaps' },
+    { ll: [35.8889, -81.8967], name: 'Night 2: Gorge Floor Riverside', info: '⛺ Sandy riverside benches · 💧 Linville River — unlimited filtered water · 🌌 Limited sky (deep gorge walls)' }
   ],
   pois: [
-    { ll: [35.8255, -81.8940], name: '💧 Gully Pipe Spring', info: 'Most reliable east rim water. Fill everything here.' },
-    { ll: [35.8635, -81.8910], name: '🪨 The Chimneys', info: 'Rock pinnacles with scrambling. Great views.' },
-    { ll: [35.9020, -81.8974], name: '⚠️ River Crossing (Spence Ridge)', info: 'Bridge washed out. Wet crossing required.\nGO: USGS <100 CFS, no rain 48hrs.\nNO-GO: Do Route A instead.' }
+    { ll: [35.8255, -81.8940], name: '💧 Gully Pipe Spring', info: 'Most reliable east rim water. Fill everything here (3L/person). Last water until gorge floor.' },
+    { ll: [35.8398, -81.8946], name: '⛺ Audible: Shortoff Summit Camp (~2.4 mi)', info: 'BEST Milky Way spot — open plateau, 360° unobstructed SE horizon, Bortle 2-3.\nTrade-off: shorter Day 1, exposed to wind (gusts 20-30 mph), colder at night.\nGood if running behind schedule.' },
+    { ll: [35.8560, -81.8918], name: '⛺ Audible: Chimneys Ridgeline (~6.5 mi)', info: 'Open sky among rock pinnacles. Great stargazing.\nTrade-off: longer Day 1, must carry water 5+ dry miles from Gully Pipe Spring.\nGood if making fast time and want open sky.' },
+    { ll: [35.8635, -81.8910], name: '🪨 The Chimneys', info: 'Dramatic rock pinnacles. Scrambling required — tricky with leashed dogs. 360° views.' },
+    { ll: [35.9020, -81.8974], name: '⚠️ River Crossing (Spence Ridge)', info: 'Bridge washed out since 2014. Wet crossing.\nGO: USGS <100 CFS, no rain 48hrs, water below knee.\nNO-GO: Do Route A instead.' }
   ]
 };
 
