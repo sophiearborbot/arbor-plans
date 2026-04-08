@@ -35,8 +35,6 @@
   body.light .route-toggle.b.on { background: rgba(255,152,0,0.1); color: #e65100; }
   body.light .route-toggle.c { border-color: #00838f; color: #888; }
   body.light .route-toggle.c.on { background: rgba(0,188,212,0.1); color: #00695c; }
-  body.light .route-toggle.d { border-color: #9c27b0; color: #888; }
-  body.light .route-toggle.d.on { background: rgba(156,39,176,0.1); color: #7b1fa2; }
   body.light .day-card.a { background: rgba(244,67,54,0.05); border-color: rgba(244,67,54,0.2); }
   body.light .day-card.b { background: rgba(255,152,0,0.05); border-color: rgba(255,152,0,0.2); }
   body.light .day-card.a .day-label { color: #c62828; }
@@ -118,8 +116,6 @@
   .route-toggle.b.on { background: rgba(255,152,0,0.2); color: #ffb74d; }
   .route-toggle.c { border-color: #00bcd4; color: #546e7a; }
   .route-toggle.c.on { background: rgba(0,188,212,0.2); color: #80deea; }
-  .route-toggle.d { border-color: #ab47bc; color: #546e7a; }
-  .route-toggle.d.on { background: rgba(171,71,188,0.2); color: #ce93d8; }
   .route-toggle .check { margin-right: 4px; }
 
   /* ── MAP ── */
@@ -143,8 +139,6 @@
   .day-card.b { background: rgba(255,152,0,0.07); border-color: rgba(255,152,0,0.25); }
   .day-card.c { background: rgba(0,188,212,0.07); border-color: rgba(0,188,212,0.25); }
   .day-card.c .day-label { color: #80deea; }
-  .day-card.d { background: rgba(171,71,188,0.07); border-color: rgba(171,71,188,0.25); }
-  .day-card.d .day-label { color: #ce93d8; }
   .day-label { font-size: 0.75rem; font-weight: 700; }
   .day-card.a .day-label { color: #ef9a9a; }
   .day-card.b .day-label { color: #ffb74d; }
@@ -289,7 +283,6 @@
     <button class="route-toggle a" onclick="toggleRoute('a')"><span class="check"></span>Route A: East Rim Skyline (no river crossing)</button>
     <button class="route-toggle b" onclick="toggleRoute('b')"><span class="check"></span>Route B: Hawksbill → Gorge Floor (river crossing)</button>
     <button class="route-toggle c on" onclick="toggleRoute('c')"><span class="check">✓</span>Route C: Spence Ridge Loop (no shuttle!)</button>
-    <button class="route-toggle d" onclick="toggleRoute('d')"><span class="check"></span>Route D: North to Brushy Ridge (out &amp; back)</button>
   </div>
 
   <!-- Map Controls -->
@@ -312,7 +305,6 @@
       <div class="legend-item"><div class="legend-line" style="background:#f44336;"></div> Route A — East Rim</div>
       <div class="legend-item"><div class="legend-line" style="background:#ff9800;"></div> Route B — Hawksbill/Gorge</div>
       <div class="legend-item"><div class="legend-line" style="background:#00bcd4;"></div> Route C — Spence Ridge Loop</div>
-      <div class="legend-item"><div class="legend-line" style="background:#ab47bc;"></div> Route D — North to Brushy Ridge</div>
       <div class="legend-item"><div class="legend-line" style="background:#b39ddb;border:1px dashed #7e57c2;height:1px;"></div> Shared segment</div>
       <div class="legend-item"><div class="legend-line" style="background:#78909c;border:1px dashed #546e7a;height:1px;"></div> Road walk (Rte A Day 3)</div>
       <div class="legend-item"><div class="legend-line" style="background:#4fc3f7;height:1px;border:1px dashed #4fc3f7;"></div> Nearby trail (open)</div>
@@ -433,44 +425,6 @@
           <span class="warn">⚠️ Gorge trail has Helene blowdown — expect ~1 mph pace</span><br>
           <span class="water">💧 River at start, Gully Pipe Spring near end</span><br>
           <span class="camp">🚗 Back to your car at Wolf Pit — NO SHUTTLE NEEDED</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Route D Day Cards -->
-  <div class="route-section" id="route-d-section" style="display:none;">
-    <div class="route-label" style="color:#ce93d8;">
-      Route D — North to Brushy Ridge <span class="total">~16-18 mi out &amp; back · No river crossing · Starts at Table Rock (needs shuttle)</span>
-    </div>
-    <div class="day-cards">
-      <div class="day-card d" onclick="zoomDay('d',1)">
-        <div class="day-label">Fri · Day 1</div>
-        <div class="day-dist">5 mi · ↑1,600 ft</div>
-        <div class="day-route">Table Rock parking → east rim north → Hawksbill → Jonas Ridge</div>
-        <div class="day-info">
-          <span class="camp">⛺ Hawksbill summit area — 360° granite dome, best dark sky</span><br>
-          <span class="danger">⚠️ NO WATER on ridge — must carry all from car (3L/person + dogs)</span><br>
-          <span class="camp">🌌 Bortle 2 — world-class Milky Way</span>
-        </div>
-      </div>
-      <div class="day-card d" onclick="zoomDay('d',2)">
-        <div class="day-label">Sat · Day 2</div>
-        <div class="day-dist">6 mi · rolling</div>
-        <div class="day-route">Jonas Ridge north → Sitting Bear → Brushy Ridge overlook → camp</div>
-        <div class="day-info">
-          <span class="warn">⚠️ Brushy Ridge may have Helene blowdown — call USFS to confirm</span><br>
-          <span class="water">💧 Descend Brushy Ridge ~0.5mi for creek drainage water</span><br>
-          <span class="camp">⛺ Northern gorge rim — views toward Linville Falls area</span>
-        </div>
-      </div>
-      <div class="day-card d" onclick="zoomDay('d',3)">
-        <div class="day-label">Sun · Day 3</div>
-        <div class="day-dist">5-6 mi · mostly downhill</div>
-        <div class="day-route">Retrace south → Jonas Ridge → Hawksbill → Table Rock parking</div>
-        <div class="day-info">
-          <span class="water">Familiar trail, all downhill trending</span><br>
-          <span class="warn">🚗 Car at Table Rock — need shuttle from Wolf Pit or 2nd car</span>
         </div>
       </div>
     </div>
@@ -668,7 +622,7 @@ function toggleThick() {
 }
 
 // ── ROUTE TOGGLE (deferred — updateMapLayers called after layers exist) ──
-const routeState = { a: false, b: false, c: true, d: false };
+const routeState = { a: false, b: false, c: true };
 
 function toggleRoute(r) {
   routeState[r] = !routeState[r];
@@ -883,67 +837,6 @@ const routeC = {
   ]
 };
 
-// Jonas Ridge Trail (OSM data, south to north)
-const jonasRidgeTrail = [
-  [35.91566,-81.88587],[35.91635,-81.88648],[35.91728,-81.88718],[35.91789,-81.88769],
-  [35.91887,-81.88810],[35.91940,-81.88917],[35.92001,-81.88980],[35.92057,-81.89003],
-  [35.92137,-81.88882],[35.92325,-81.88842],[35.92411,-81.88882],[35.92600,-81.88872],
-  [35.92675,-81.88925],[35.92763,-81.88916],[35.92796,-81.88969],[35.92860,-81.88965],
-  [35.92892,-81.89007],[35.92929,-81.89042],[35.93002,-81.88973],[35.93116,-81.88991],
-  [35.93211,-81.89103],[35.93328,-81.89233],[35.93440,-81.89237],[35.93636,-81.89158],
-  [35.93867,-81.89055],[35.93971,-81.88965],[35.94017,-81.88856],[35.94037,-81.88784],
-  [35.94005,-81.88719]
-];
-
-// Brushy Ridge Trail (OSM data, east to west/northwest)
-const brushyRidgeTrail = [
-  [35.94349,-81.89638],[35.94322,-81.89764],[35.94310,-81.89855],[35.94333,-81.89921],
-  [35.94391,-81.89936],[35.94367,-81.90014],[35.94476,-81.90191],[35.94366,-81.90224],
-  [35.94350,-81.90291],[35.94365,-81.90405],[35.94330,-81.90493],[35.94218,-81.90682],
-  [35.94146,-81.90829],[35.94038,-81.91020],[35.93932,-81.91284],[35.93827,-81.91381],
-  [35.93651,-81.91482],[35.93609,-81.91610],[35.93531,-81.91862],[35.93444,-81.92066],
-  [35.93339,-81.92202],[35.93327,-81.92509]
-];
-
-// Route D: Table Rock → Hawksbill → Jonas Ridge north → Brushy Ridge overlook → retrace
-const routeD = {
-  color: '#ab47bc',
-  days: [
-    { // Day 1: Table Rock north to Hawksbill / Jonas Ridge junction
-      path: [
-        ...eastRimTableRockToHawksbill,
-        ...jonasRidgeTrail.slice(0, 5)
-      ],
-      label: 'Day 1: 5 mi'
-    },
-    { // Day 2: Jonas Ridge north to Brushy Ridge overlook
-      path: [
-        ...jonasRidgeTrail.slice(4),
-        [35.94338,-81.89628], // Huckleberry junction
-        ...brushyRidgeTrail.slice(0, 12) // Out to overlook, ~1.5 mi
-      ],
-      label: 'Day 2: 6 mi'
-    },
-    { // Day 3: Retrace south back to Table Rock
-      path: [
-        ...brushyRidgeTrail.slice(0, 12).reverse(),
-        [35.94338,-81.89628],
-        ...jonasRidgeTrail.slice().reverse(),
-        ...eastRimTableRockToHawksbill.slice().reverse()
-      ],
-      label: 'Day 3: 5-6 mi'
-    }
-  ],
-  camps: [
-    { ll: [35.9160, -81.8860], name: 'Night 1: Hawksbill / Jonas Ridge', info: '⛺ Near Hawksbill summit — 360° granite dome · 🌌 Bortle 2 · ⚠️ NO WATER — carry all from car' },
-    { ll: [35.9430, -81.8965], name: 'Night 2: Brushy Ridge Junction', info: '⛺ Northern gorge overlook · 💧 Descend ~0.5mi west for creek water · 🌌 Good exposure north/east' }
-  ],
-  pois: [
-    { ll: [35.9241, -81.8888], name: "Devil's Hole Trail junction", info: 'Trail descends west to gorge floor. Open but steep.' },
-    { ll: [35.94349, -81.89638], name: '🔭 Brushy Ridge — Northern Gorge Overlook', info: 'Views toward Linville Falls area. Cannot reach falls (gorge trail closed).' }
-  ]
-};
-
 // Shared segment: Shortoff Trail (used ascending in Route A Day 1, descending in Route B Day 3)
 const sharedPath = shortoffTrail;
 
@@ -1118,7 +1011,6 @@ function toggleNearby() {
 const layerA = L.layerGroup();
 const layerB = L.layerGroup();
 const layerC = L.layerGroup().addTo(_lmap);
-const layerD = L.layerGroup();
 const layerShared = L.layerGroup().addTo(_lmap);
 const layerTH = L.layerGroup().addTo(_lmap);
 
@@ -1187,26 +1079,6 @@ function buildRouteLayers() {
       .addTo(layerC);
   });
 
-  // Route D trails (purple)
-  layerD.clearLayers();
-  routeD.days.forEach((d, i) => {
-    const opts = { color: routeD.color, weight: tw(4), opacity: 0.8 };
-    if (i === 2) { opts.dashArray = '6, 4'; opts.opacity = 0.5; } // Day 3 retrace is dashed
-    L.polyline(d.path, opts).addTo(layerD);
-    const mid = d.path[Math.floor(d.path.length / 2)];
-    L.marker(mid, { icon: L.divIcon({ className: '', html: '<div style="background:#ab47bc;color:#fff;width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;text-align:center;line-height:22px;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.5);">' + (i+1) + '</div>', iconSize: [22,22], iconAnchor: [11,11] }) }).bindTooltip(d.label, {direction:'top'}).addTo(layerD);
-  });
-  routeD.camps.forEach(c => {
-    L.marker(c.ll, { icon: L.divIcon({ className: '', html: '<div style="font-size:18px;text-shadow:0 0 4px #000;">⛺</div>', iconSize: [20,20], iconAnchor: [10,10] }) })
-      .bindPopup('<b style="color:#ab47bc;">' + c.name + '</b><br><span style="font-size:12px;">' + c.info + '</span>', {maxWidth:250})
-      .addTo(layerD);
-  });
-  routeD.pois.forEach(p => {
-    L.circleMarker(p.ll, { radius: 7, fillColor: '#ab47bc', color: '#fff', weight: 1.5, fillOpacity: 0.9 })
-      .bindPopup('<b>' + p.name + '</b><br><span style="font-size:12px;">' + p.info.replace(/\n/g,'<br>') + '</span>', {maxWidth:280})
-      .addTo(layerD);
-  });
-
   // Shared segment (Shortoff → Wolf Pit, used by both on Day 3 of B / Day 1 of A)
   L.polyline(sharedPath, { color: '#b39ddb', weight: tw(3), opacity: 0.6, dashArray: '6, 6' }).addTo(layerShared);
 
@@ -1225,8 +1097,6 @@ function updateMapLayers() {
   else { _lmap.removeLayer(layerB); }
   if (routeState.c) { if (!_lmap.hasLayer(layerC)) _lmap.addLayer(layerC); }
   else { _lmap.removeLayer(layerC); }
-  if (routeState.d) { if (!_lmap.hasLayer(layerD)) _lmap.addLayer(layerD); }
-  else { _lmap.removeLayer(layerD); }
   // Show shared if any two routes that share the segment are visible
   const sharedVisible = (routeState.a && routeState.b) || (routeState.a && routeState.c) || (routeState.b && routeState.c);
   if (sharedVisible) { if (!_lmap.hasLayer(layerShared)) _lmap.addLayer(layerShared); }
@@ -1241,7 +1111,7 @@ function zoomDay(route, day) {
   document.querySelectorAll('.day-card').forEach(c => c.classList.remove('active'));
   event.currentTarget.classList.add('active');
 
-  const data = route === 'a' ? routeA : route === 'b' ? routeB : route === 'c' ? routeC : routeD;
+  const data = route === 'a' ? routeA : route === 'b' ? routeB : routeC;
   const dayData = data.days[day - 1];
   if (!dayData) return;
   const bounds = L.latLngBounds(dayData.path);
