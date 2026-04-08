@@ -319,7 +319,7 @@
       Route A — East Rim Skyline <span class="total">~21 mi total · ~4,300 ft gain · No river crossing</span>
     </div>
     <div class="day-cards">
-      <div class="day-card a" onclick="zoomDay('a',1)">
+      <div class="day-card a" data-route="a" data-day="1" onclick="zoomDay('a',1)">
         <div class="day-label">Fri · Day 1</div>
         <div class="day-dist">3.5 mi · ↑1,300 ft</div>
         <div class="day-route">Wolf Pit TH → Shortoff summit camp</div>
@@ -329,7 +329,7 @@
           <span class="camp">🌌 Premier Milky Way spot — unobstructed SE horizon</span>
         </div>
       </div>
-      <div class="day-card a" onclick="zoomDay('a',2)">
+      <div class="day-card a" data-route="a" data-day="2" onclick="zoomDay('a',2)">
         <div class="day-label">Sat · Day 2</div>
         <div class="day-dist">7.5 mi · ↑2,200 ft</div>
         <div class="day-route">Shortoff → Chimneys → Table Rock summit → Table Rock parking</div>
@@ -339,7 +339,7 @@
           <span class="warn">⚠️ Chimneys have scrambling — tricky with leashed dogs</span>
         </div>
       </div>
-      <div class="day-card a" onclick="zoomDay('a',3)">
+      <div class="day-card a" data-route="a" data-day="3" onclick="zoomDay('a',3)">
         <div class="day-label">Sun · Day 3</div>
         <div class="day-dist">~20 min drive or shuttle</div>
         <div class="day-route">FR 210 winds far east — drive/shuttle between trailheads</div>
@@ -358,7 +358,7 @@
       Route B — Hawksbill → Gorge Floor <span class="total">~18 mi total · ~4,300 ft gain · Requires river crossing</span>
     </div>
     <div class="day-cards">
-      <div class="day-card b" onclick="zoomDay('b',1)">
+      <div class="day-card b" data-route="b" data-day="1" onclick="zoomDay('b',1)">
         <div class="day-label">Fri · Day 1</div>
         <div class="day-dist">5.5 mi · ↑1,800 ft</div>
         <div class="day-route">Table Rock TH → Table Rock summit → Hawksbill summit camp</div>
@@ -368,7 +368,7 @@
           <span class="camp">🌌 Bortle 2 — world-class Milky Way viewing</span>
         </div>
       </div>
-      <div class="day-card b" onclick="zoomDay('b',2)">
+      <div class="day-card b" data-route="b" data-day="2" onclick="zoomDay('b',2)">
         <div class="day-label">Sat · Day 2</div>
         <div class="day-dist">6.5 mi · ↓2,200 ft</div>
         <div class="day-route">Spence Ridge → river crossing → gorge floor south</div>
@@ -378,7 +378,7 @@
           <span class="water">💧 Linville River + tributaries — unlimited filtered water</span>
         </div>
       </div>
-      <div class="day-card b" onclick="zoomDay('b',3)">
+      <div class="day-card b" data-route="b" data-day="3" onclick="zoomDay('b',3)">
         <div class="day-label">Sun · Day 3</div>
         <div class="day-dist">6 mi · ↑2,000 ft</div>
         <div class="day-route">Gorge trail south → climb Shortoff → Wolf Pit TH</div>
@@ -397,7 +397,7 @@
       Route C — Spence Ridge Loop <span class="total">~22 mi total · ~6,000 ft gain · River crossing · NO CAR SHUTTLE</span>
     </div>
     <div class="day-cards">
-      <div class="day-card c" onclick="zoomDay('c',1)">
+      <div class="day-card c" data-route="c" data-day="1" onclick="zoomDay('c',1)">
         <div class="day-label">Fri · Day 1</div>
         <div class="day-dist">~5 mi · ↑1,800 ft</div>
         <div class="day-route">Wolf Pit TH → Shortoff summit → north to Chimney Gap camp</div>
@@ -409,7 +409,7 @@
           <span class="warn">Audible: push to Chimneys ridge (~6.5 mi) if fast — open sky but long water carry</span>
         </div>
       </div>
-      <div class="day-card c" onclick="zoomDay('c',2)">
+      <div class="day-card c" data-route="c" data-day="2" onclick="zoomDay('c',2)">
         <div class="day-label">Sat · Day 2</div>
         <div class="day-dist">~9.5 mi · ↑1,200 ft ↓2,500 ft</div>
         <div class="day-route">Chimney Gap → Chimneys → Table Rock → Spence Ridge → river crossing → gorge floor camp</div>
@@ -420,7 +420,7 @@
           <span class="warn">Start early. Mostly net downhill after Chimneys.</span>
         </div>
       </div>
-      <div class="day-card c" onclick="zoomDay('c',3)">
+      <div class="day-card c" data-route="c" data-day="3" onclick="zoomDay('c',3)">
         <div class="day-label">Sun · Day 3</div>
         <div class="day-dist">~8 mi · ↑2,500 ft</div>
         <div class="day-route">Gorge floor south → MST U-turn at river → 1,700ft climb to Shortoff → Wolf Pit TH</div>
@@ -820,12 +820,13 @@ const routeB = {
       ],
       label: 'Day 2: 6.5 mi'
     },
-    { // Day 3: Gorge floor south → LGT south end → MST to river → MST climbs to Shortoff → Wolf Pit
+    { // Day 3: Gorge floor south → LGT south end → MST to river → MST climbs to junction → Wolf Pit
       path: [
         ...gorgeFloorSouth.slice(11),
         ...mstGorgeFloor.slice().reverse(),
         ...mstShortoffToRiver.slice().reverse(),
-        ...shortoffTrail.slice().reverse()
+        // Only descend from junction to Wolf Pit — don't go back up to Shortoff summit
+        ...shortoffTrail.slice(0, 26).reverse()
       ],
       label: 'Day 3: 6 mi'
     }
@@ -847,8 +848,8 @@ const routeC = {
     { // Day 1: Wolf Pit → Shortoff summit → north to Chimney Gap camp (~5 mi)
       path: [
         ...shortoffTrail,
-        // Continue north from Shortoff summit into Chimney Gap saddle
-        ...eastRimShortoffToTableRock.slice(0, 10)
+        // Continue north from Shortoff summit — skip overlapping junction-to-summit segment
+        ...eastRimShortoffToTableRock.slice(6, 10)
       ],
       label: 'Day 1: ~5 mi'
     },
@@ -861,12 +862,13 @@ const routeC = {
       ],
       label: 'Day 2: ~9.5 mi'
     },
-    { // Day 3: Gorge floor south → MST south to river → MST climbs 1,700ft to Shortoff → Wolf Pit (~8 mi)
+    { // Day 3: Gorge floor south → MST south to river → MST climbs 1,700ft to junction → Wolf Pit (~8 mi)
       path: [
         ...gorgeFloorSouth.slice(11),
         ...mstGorgeFloor.slice().reverse(),
         ...mstShortoffToRiver.slice().reverse(),
-        ...shortoffTrail.slice().reverse()
+        // Only descend from junction to Wolf Pit — don't go back up to Shortoff summit
+        ...shortoffTrail.slice(0, 26).reverse()
       ],
       label: 'Day 3: ~8 mi'
     }
@@ -1061,17 +1063,25 @@ const layerC = L.layerGroup().addTo(_lmap);
 const layerShared = L.layerGroup().addTo(_lmap);
 const layerTH = L.layerGroup().addTo(_lmap);
 
+// Store polyline refs per route+day for highlight on click
+const dayPolylines = { a: [], b: [], c: [] };
+
 function buildRouteLayers() {
   layerA.clearLayers();
   layerB.clearLayers();
   layerShared.clearLayers();
   layerTH.clearLayers();
+  dayPolylines.a = [];
+  dayPolylines.b = [];
+  dayPolylines.c = [];
 
   // Route A trails
   routeA.days.forEach((d, i) => {
     const opts = { color: routeA.color, weight: tw(4), opacity: 0.8 };
     if (d.dashed) { opts.dashArray = '8, 8'; opts.opacity = 0.5; opts.color = '#78909c'; }
-    L.polyline(d.path, opts).addTo(layerA);
+    const line = L.polyline(d.path, opts).addTo(layerA);
+    line.on('click', () => highlightDay('a', i));
+    dayPolylines.a.push({ line, baseWeight: tw(4), dashed: !!d.dashed });
     // Day number at midpoint
     const mid = d.path[Math.floor(d.path.length / 2)];
     L.marker(mid, { icon: L.divIcon({ className: '', html: '<div style="background:#f44336;color:#fff;width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;text-align:center;line-height:22px;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.5);">' + (i+1) + '</div>', iconSize: [22,22], iconAnchor: [11,11] }) }).bindTooltip(d.label, {direction:'top'}).addTo(layerA);
@@ -1091,7 +1101,9 @@ function buildRouteLayers() {
 
   // Route B trails
   routeB.days.forEach((d, i) => {
-    L.polyline(d.path, { color: routeB.color, weight: tw(4), opacity: 0.8 }).addTo(layerB);
+    const line = L.polyline(d.path, { color: routeB.color, weight: tw(4), opacity: 0.8 }).addTo(layerB);
+    line.on('click', () => highlightDay('b', i));
+    dayPolylines.b.push({ line, baseWeight: tw(4) });
     const mid = d.path[Math.floor(d.path.length / 2)];
     L.marker(mid, { icon: L.divIcon({ className: '', html: '<div style="background:#ff9800;color:#000;width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;text-align:center;line-height:22px;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.5);">' + (i+1) + '</div>', iconSize: [22,22], iconAnchor: [11,11] }) }).bindTooltip(d.label, {direction:'top'}).addTo(layerB);
   });
@@ -1108,10 +1120,13 @@ function buildRouteLayers() {
       .addTo(layerB);
   });
 
-  // Route C trails (green)
+  // Route C trails (teal)
   layerC.clearLayers();
+  dayPolylines.c = [];
   routeC.days.forEach((d, i) => {
-    L.polyline(d.path, { color: routeC.color, weight: tw(4), opacity: 0.8 }).addTo(layerC);
+    const line = L.polyline(d.path, { color: routeC.color, weight: tw(4), opacity: 0.8 }).addTo(layerC);
+    line.on('click', () => highlightDay('c', i));
+    dayPolylines.c.push({ line, baseWeight: tw(4) });
     const mid = d.path[Math.floor(d.path.length / 2)];
     L.marker(mid, { icon: L.divIcon({ className: '', html: '<div style="background:#00bcd4;color:#fff;width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;text-align:center;line-height:22px;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.5);">' + (i+1) + '</div>', iconSize: [22,22], iconAnchor: [11,11] }) }).bindTooltip(d.label, {direction:'top'}).addTo(layerC);
   });
@@ -1152,17 +1167,51 @@ function updateMapLayers() {
 
 buildRouteLayers();
 
-// ── ZOOM TO DAY ──
-function zoomDay(route, day) {
-  // Deselect all day cards, select clicked
-  document.querySelectorAll('.day-card').forEach(c => c.classList.remove('active'));
-  event.currentTarget.classList.add('active');
+// ── DAY HIGHLIGHT (card click + map click) ──
+let activeHighlight = null; // { route, dayIndex } or null
 
-  const data = route === 'a' ? routeA : route === 'b' ? routeB : routeC;
-  const dayData = data.days[day - 1];
-  if (!dayData) return;
-  const bounds = L.latLngBounds(dayData.path);
-  _lmap.flyToBounds(bounds.pad(0.3), { animate: true, duration: 0.8 });
+function resetDayHighlights() {
+  const routeColors = { a: routeA.color, b: routeB.color, c: routeC.color };
+  Object.keys(dayPolylines).forEach(r => {
+    dayPolylines[r].forEach(p => {
+      const color = p.dashed ? '#78909c' : routeColors[r];
+      p.line.setStyle({ weight: p.baseWeight, opacity: p.dashed ? 0.5 : 0.8, color });
+    });
+  });
+  document.querySelectorAll('.day-card').forEach(c => c.classList.remove('active'));
+  activeHighlight = null;
+}
+
+function highlightDay(route, dayIndex) {
+  const same = activeHighlight && activeHighlight.route === route && activeHighlight.dayIndex === dayIndex;
+
+  // Reset everything first
+  resetDayHighlights();
+
+  if (same) return; // toggle off
+
+  activeHighlight = { route, dayIndex };
+
+  // Highlight selected in purple + 3x thick, dim others
+  const routeLines = dayPolylines[route];
+  if (routeLines) {
+    routeLines.forEach((p, i) => {
+      if (i === dayIndex) {
+        p.line.setStyle({ weight: p.baseWeight * 3, opacity: 1, color: '#ce93d8' });
+        p.line.bringToFront();
+      } else {
+        p.line.setStyle({ opacity: 0.3 });
+      }
+    });
+  }
+
+  // Sync the day card highlight
+  const card = document.querySelector('.day-card[data-route="' + route + '"][data-day="' + (dayIndex + 1) + '"]');
+  if (card) card.classList.add('active');
+}
+
+function zoomDay(route, day) {
+  highlightDay(route, day - 1);
 }
 
 // Fit map to show active routes on load
