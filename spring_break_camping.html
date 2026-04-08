@@ -394,7 +394,7 @@
   <!-- Route C Day Cards -->
   <div class="route-section" id="route-c-section">
     <div class="route-label" style="color:#80deea;">
-      Route C — Spence Ridge Loop <span class="total">~17-20 mi total · ~5,500 ft gain · River crossing required · NO CAR SHUTTLE</span>
+      Route C — Spence Ridge Loop <span class="total">~25 mi total · ~6,500 ft gain · River crossing required · NO CAR SHUTTLE · ⚠️ Hard</span>
     </div>
     <div class="day-cards">
       <div class="day-card c" onclick="zoomDay('c',1)">
@@ -409,21 +409,23 @@
       </div>
       <div class="day-card c" onclick="zoomDay('c',2)">
         <div class="day-label">Sat · Day 2</div>
-        <div class="day-dist">8-9 mi · ↑2,200 ft ↓2,500 ft</div>
-        <div class="day-route">Shortoff → east rim → Chimneys → Spence Ridge → river → gorge floor camp</div>
+        <div class="day-dist">~12 mi · ↑2,200 ft ↓2,500 ft · LONG DAY</div>
+        <div class="day-route">Shortoff → east rim → Chimneys → Table Rock → Spence Ridge → river → gorge floor camp</div>
         <div class="day-info">
-          <span class="warn">⚠️ Big day — ridgeline traverse + descent to river</span><br>
+          <span class="danger">⚠️ Biggest day — full ridgeline traverse + descent + river crossing</span><br>
           <span class="danger">⚠️ RIVER CROSSING at Spence Ridge — check USGS gauge &lt;100 CFS</span><br>
-          <span class="camp">⛺ Riverside camp south of Spence Ridge · 💧 Unlimited river water</span>
+          <span class="camp">⛺ Riverside camp south of Spence Ridge · 💧 Unlimited river water</span><br>
+          <span class="warn">Start early. Chimneys scrambling slows pace with dogs.</span>
         </div>
       </div>
       <div class="day-card c" onclick="zoomDay('c',3)">
         <div class="day-label">Sun · Day 3</div>
-        <div class="day-dist">6-7 mi · ↑2,000 ft</div>
-        <div class="day-route">Gorge floor south → climb back to Shortoff → Wolf Pit TH</div>
+        <div class="day-dist">~10 mi · ↑2,500 ft · TOUGH CLIMB</div>
+        <div class="day-route">Gorge floor south → MST south to river → MST climbs 1,700ft north to Shortoff → Wolf Pit TH</div>
         <div class="day-info">
           <span class="warn">⚠️ Gorge trail has Helene blowdown — expect ~1 mph pace</span><br>
-          <span class="water">💧 River at start, Gully Pipe Spring near end</span><br>
+          <span class="danger">⚠️ U-turn: MST goes SOUTH to river then climbs NORTH 1,700ft to Shortoff (no switchbacks)</span><br>
+          <span class="water">💧 River along gorge floor, Gully Pipe Spring on Shortoff descent</span><br>
           <span class="camp">🚗 Back to your car at Wolf Pit — NO SHUTTLE NEEDED</span>
         </div>
       </div>
@@ -843,7 +845,7 @@ const routeC = {
         // South on gorge floor to camp
         ...gorgeFloorSouth.slice(0, 12)
       ],
-      label: 'Day 2: 8-9 mi'
+      label: 'Day 2: ~12 mi'
     },
     { // Day 3: Gorge floor south → LGT to end → MST south to river → MST north 1,700ft climb to Shortoff → Wolf Pit
       path: [
@@ -855,7 +857,7 @@ const routeC = {
         // Shortoff Trail east to Wolf Pit TH
         ...shortoffTrail.slice().reverse()
       ],
-      label: 'Day 3: 6-7 mi'
+      label: 'Day 3: ~10 mi'
     }
   ],
   camps: [
