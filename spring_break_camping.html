@@ -705,11 +705,40 @@ const spenceRidgeTrail = [
   [35.9020,-81.8974]
 ];
 
-// Connection from gorge floor back east to Shortoff/MST junction (OSM way 376396668 Olson Trail reversed)
-const gorgeToShortoffConnection = [
-  [35.8306,-81.9024],[35.8303,-81.9028],[35.8299,-81.9025],[35.8295,-81.9018],
-  [35.8291,-81.9015],[35.8281,-81.9011],[35.8276,-81.9009],[35.8272,-81.9002],
-  [35.8273,-81.8996],[35.8275,-81.8990],[35.8280,-81.8984],[35.8283,-81.8982]
+// MST south from "The Hub" (Shortoff summit) down to river crossing area (OSM ways 807265900 + 684055118)
+// This is the steep 1,700ft descent/ascent on the back side of Shortoff
+const mstShortoffToRiver = [
+  [35.828385,-81.898034],[35.826858,-81.898197],[35.825730,-81.898523],
+  [35.824536,-81.899173],[35.822962,-81.899393],[35.821564,-81.899596],
+  [35.820464,-81.899825],[35.819702,-81.900225],[35.818739,-81.900826],
+  [35.818266,-81.901195],[35.817535,-81.901787],[35.816988,-81.901942],
+  [35.816270,-81.902294],[35.815675,-81.902584],[35.815118,-81.902696],
+  [35.814613,-81.902585],[35.814106,-81.902119],[35.813468,-81.902268],
+  [35.813106,-81.902539],[35.812490,-81.903006],[35.812337,-81.903185],
+  // Continues south to river crossing (way 684055118)
+  [35.812355,-81.903308],[35.812378,-81.903489],[35.812222,-81.903588],
+  [35.811537,-81.903900],[35.811249,-81.904195],[35.810571,-81.904661],
+  [35.810219,-81.904326],[35.809750,-81.903409],[35.809210,-81.903542],
+  [35.808848,-81.903084],[35.808164,-81.902274],[35.807808,-81.902121],
+  [35.807198,-81.902678]
+];
+
+// MST gorge floor — from river crossing west along gorge floor to LGT junction (OSM way 539714523)
+const mstGorgeFloor = [
+  [35.807263,-81.902827],[35.806864,-81.903706],[35.806809,-81.904690],
+  [35.807262,-81.906452],[35.808472,-81.906933],[35.809553,-81.908722],
+  [35.809392,-81.910349],[35.811215,-81.909968],[35.812694,-81.911403],
+  [35.812931,-81.913040],[35.814585,-81.913504],[35.817000,-81.914412],
+  [35.818960,-81.914631],[35.819871,-81.915882],[35.820610,-81.915777]
+];
+
+// Linville Gorge Trail — southern section connecting to MST (OSM way 539830852, southern end)
+const gorgeTrailSouthToMST = [
+  [35.820266,-81.915032],[35.819871,-81.915882],[35.818960,-81.914631],
+  [35.817000,-81.914412],[35.814585,-81.913504],[35.812931,-81.913040],
+  [35.812694,-81.911403],[35.811215,-81.909968],[35.809392,-81.910349],
+  [35.809553,-81.908722],[35.808472,-81.906933],[35.807262,-81.906452],
+  [35.806809,-81.904690],[35.806864,-81.903706],[35.807263,-81.902827]
 ];
 
 // Gorge floor trail south of Spence Ridge crossing — follows near river
@@ -777,12 +806,11 @@ const routeB = {
       ],
       label: 'Day 2: 6.5 mi'
     },
-    { // Day 3: Continue south on gorge floor → Olson Trail east to river crossing → Shortoff ridge → Wolf Pit
+    { // Day 3: Gorge floor south → LGT south end → MST to river → MST climbs to Shortoff → Wolf Pit
       path: [
         ...gorgeFloorSouth.slice(11),
-        // Olson Trail: cross river east from gorge floor to MST/Shortoff junction (way 376396668 reversed)
-        ...gorgeToShortoffConnection,
-        // Shortoff Trail south to Wolf Pit TH
+        ...mstGorgeFloor.slice().reverse(),
+        ...mstShortoffToRiver.slice().reverse(),
         ...shortoffTrail.slice().reverse()
       ],
       label: 'Day 3: 6 mi'
@@ -817,10 +845,14 @@ const routeC = {
       ],
       label: 'Day 2: 8-9 mi'
     },
-    { // Day 3: Gorge floor south → Olson Trail east to Shortoff ridge → Wolf Pit
+    { // Day 3: Gorge floor south → LGT to end → MST south to river → MST north 1,700ft climb to Shortoff → Wolf Pit
       path: [
         ...gorgeFloorSouth.slice(11),
-        ...gorgeToShortoffConnection,
+        // LGT south end connects to MST gorge floor, then east to river crossing
+        ...mstGorgeFloor.slice().reverse(),
+        // MST climbs north from river crossing up 1,700ft to Shortoff summit
+        ...mstShortoffToRiver.slice().reverse(),
+        // Shortoff Trail east to Wolf Pit TH
         ...shortoffTrail.slice().reverse()
       ],
       label: 'Day 3: 6-7 mi'
