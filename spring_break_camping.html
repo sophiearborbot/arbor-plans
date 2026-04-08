@@ -33,8 +33,8 @@
   body.light .route-toggle.a.on { background: rgba(244,67,54,0.1); color: #c62828; }
   body.light .route-toggle.b { border-color: #ff9800; color: #888; }
   body.light .route-toggle.b.on { background: rgba(255,152,0,0.1); color: #e65100; }
-  body.light .route-toggle.c { border-color: #4caf50; color: #888; }
-  body.light .route-toggle.c.on { background: rgba(76,175,80,0.1); color: #2e7d32; }
+  body.light .route-toggle.c { border-color: #00838f; color: #888; }
+  body.light .route-toggle.c.on { background: rgba(0,188,212,0.1); color: #00695c; }
   body.light .day-card.a { background: rgba(244,67,54,0.05); border-color: rgba(244,67,54,0.2); }
   body.light .day-card.b { background: rgba(255,152,0,0.05); border-color: rgba(255,152,0,0.2); }
   body.light .day-card.a .day-label { color: #c62828; }
@@ -114,8 +114,8 @@
   .route-toggle.a.on { background: rgba(244,67,54,0.2); color: #ef9a9a; }
   .route-toggle.b { border-color: #ff9800; color: #546e7a; }
   .route-toggle.b.on { background: rgba(255,152,0,0.2); color: #ffb74d; }
-  .route-toggle.c { border-color: #4caf50; color: #546e7a; }
-  .route-toggle.c.on { background: rgba(76,175,80,0.2); color: #81c784; }
+  .route-toggle.c { border-color: #00bcd4; color: #546e7a; }
+  .route-toggle.c.on { background: rgba(0,188,212,0.2); color: #80deea; }
   .route-toggle .check { margin-right: 4px; }
 
   /* ── MAP ── */
@@ -137,8 +137,8 @@
   .day-card.active { box-shadow: 0 0 0 2px #fff inset; }
   .day-card.a { background: rgba(244,67,54,0.07); border-color: rgba(244,67,54,0.25); }
   .day-card.b { background: rgba(255,152,0,0.07); border-color: rgba(255,152,0,0.25); }
-  .day-card.c { background: rgba(76,175,80,0.07); border-color: rgba(76,175,80,0.25); }
-  .day-card.c .day-label { color: #81c784; }
+  .day-card.c { background: rgba(0,188,212,0.07); border-color: rgba(0,188,212,0.25); }
+  .day-card.c .day-label { color: #80deea; }
   .day-label { font-size: 0.75rem; font-weight: 700; }
   .day-card.a .day-label { color: #ef9a9a; }
   .day-card.b .day-label { color: #ffb74d; }
@@ -280,9 +280,9 @@
   <!-- Route Toggle Controls -->
   <div class="route-controls">
     <span class="label">Show Routes:</span>
-    <button class="route-toggle a on" onclick="toggleRoute('a')"><span class="check">✓</span>Route A: East Rim Skyline (no river crossing)</button>
-    <button class="route-toggle b on" onclick="toggleRoute('b')"><span class="check">✓</span>Route B: Hawksbill → Gorge Floor (river crossing)</button>
-    <button class="route-toggle c" onclick="toggleRoute('c')"><span class="check"></span>Route C: Spence Ridge Loop (no shuttle!)</button>
+    <button class="route-toggle a" onclick="toggleRoute('a')"><span class="check"></span>Route A: East Rim Skyline (no river crossing)</button>
+    <button class="route-toggle b" onclick="toggleRoute('b')"><span class="check"></span>Route B: Hawksbill → Gorge Floor (river crossing)</button>
+    <button class="route-toggle c on" onclick="toggleRoute('c')"><span class="check">✓</span>Route C: Spence Ridge Loop (no shuttle!)</button>
   </div>
 
   <!-- Map Controls -->
@@ -304,7 +304,7 @@
     <div class="map-legend">
       <div class="legend-item"><div class="legend-line" style="background:#f44336;"></div> Route A — East Rim</div>
       <div class="legend-item"><div class="legend-line" style="background:#ff9800;"></div> Route B — Hawksbill/Gorge</div>
-      <div class="legend-item"><div class="legend-line" style="background:#4caf50;"></div> Route C — Spence Ridge Loop</div>
+      <div class="legend-item"><div class="legend-line" style="background:#00bcd4;"></div> Route C — Spence Ridge Loop</div>
       <div class="legend-item"><div class="legend-line" style="background:#b39ddb;border:1px dashed #7e57c2;height:1px;"></div> Shared segment</div>
       <div class="legend-item"><div class="legend-line" style="background:#78909c;border:1px dashed #546e7a;height:1px;"></div> Road walk (Rte A Day 3)</div>
       <div class="legend-item"><div class="legend-line" style="background:#4fc3f7;height:1px;border:1px dashed #4fc3f7;"></div> Nearby trail (open)</div>
@@ -314,7 +314,7 @@
   </div>
 
   <!-- Route A Day Cards -->
-  <div class="route-section" id="route-a-section">
+  <div class="route-section" id="route-a-section" style="display:none;">
     <div class="route-label" style="color:#ef9a9a;">
       Route A — East Rim Skyline <span class="total">~21 mi total · ~4,300 ft gain · No river crossing</span>
     </div>
@@ -353,7 +353,7 @@
   </div>
 
   <!-- Route B Day Cards -->
-  <div class="route-section" id="route-b-section">
+  <div class="route-section" id="route-b-section" style="display:none;">
     <div class="route-label" style="color:#ffb74d;">
       Route B — Hawksbill → Gorge Floor <span class="total">~18 mi total · ~4,300 ft gain · Requires river crossing</span>
     </div>
@@ -392,8 +392,8 @@
   </div>
 
   <!-- Route C Day Cards -->
-  <div class="route-section" id="route-c-section" style="display:none;">
-    <div class="route-label" style="color:#81c784;">
+  <div class="route-section" id="route-c-section">
+    <div class="route-label" style="color:#80deea;">
       Route C — Spence Ridge Loop <span class="total">~17-20 mi total · ~5,500 ft gain · River crossing required · NO CAR SHUTTLE</span>
     </div>
     <div class="day-cards">
@@ -622,7 +622,7 @@ function toggleThick() {
 }
 
 // ── ROUTE TOGGLE (deferred — updateMapLayers called after layers exist) ──
-const routeState = { a: true, b: true, c: false };
+const routeState = { a: false, b: false, c: true };
 
 function toggleRoute(r) {
   routeState[r] = !routeState[r];
@@ -799,7 +799,7 @@ const routeB = {
 
 // Route C: Spence Ridge Loop — Wolf Pit → Shortoff → east rim → Spence Ridge → river → gorge floor south → back to Shortoff → Wolf Pit
 const routeC = {
-  color: '#4caf50',
+  color: '#00bcd4',
   days: [
     { // Day 1: Wolf Pit → Shortoff (same as Route A Day 1)
       path: shortoffTrail,
@@ -1008,9 +1008,9 @@ function toggleNearby() {
 }
 
 // Layer groups
-const layerA = L.layerGroup().addTo(_lmap);
-const layerB = L.layerGroup().addTo(_lmap);
-const layerC = L.layerGroup();
+const layerA = L.layerGroup();
+const layerB = L.layerGroup();
+const layerC = L.layerGroup().addTo(_lmap);
 const layerShared = L.layerGroup().addTo(_lmap);
 const layerTH = L.layerGroup().addTo(_lmap);
 
@@ -1066,15 +1066,15 @@ function buildRouteLayers() {
   routeC.days.forEach((d, i) => {
     L.polyline(d.path, { color: routeC.color, weight: tw(4), opacity: 0.8 }).addTo(layerC);
     const mid = d.path[Math.floor(d.path.length / 2)];
-    L.marker(mid, { icon: L.divIcon({ className: '', html: '<div style="background:#4caf50;color:#fff;width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;text-align:center;line-height:22px;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.5);">' + (i+1) + '</div>', iconSize: [22,22], iconAnchor: [11,11] }) }).bindTooltip(d.label, {direction:'top'}).addTo(layerC);
+    L.marker(mid, { icon: L.divIcon({ className: '', html: '<div style="background:#00bcd4;color:#fff;width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;text-align:center;line-height:22px;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.5);">' + (i+1) + '</div>', iconSize: [22,22], iconAnchor: [11,11] }) }).bindTooltip(d.label, {direction:'top'}).addTo(layerC);
   });
   routeC.camps.forEach(c => {
     L.marker(c.ll, { icon: L.divIcon({ className: '', html: '<div style="font-size:18px;text-shadow:0 0 4px #000;">⛺</div>', iconSize: [20,20], iconAnchor: [10,10] }) })
-      .bindPopup('<b style="color:#4caf50;">' + c.name + '</b><br><span style="font-size:12px;">' + c.info + '</span>', {maxWidth:250})
+      .bindPopup('<b style="color:#00bcd4;">' + c.name + '</b><br><span style="font-size:12px;">' + c.info + '</span>', {maxWidth:250})
       .addTo(layerC);
   });
   routeC.pois.forEach(p => {
-    L.circleMarker(p.ll, { radius: 7, fillColor: '#4caf50', color: '#fff', weight: 1.5, fillOpacity: 0.9 })
+    L.circleMarker(p.ll, { radius: 7, fillColor: '#00bcd4', color: '#fff', weight: 1.5, fillOpacity: 0.9 })
       .bindPopup('<b>' + p.name + '</b><br><span style="font-size:12px;">' + p.info.replace(/\n/g,'<br>') + '</span>', {maxWidth:280})
       .addTo(layerC);
   });
@@ -1118,10 +1118,9 @@ function zoomDay(route, day) {
   _lmap.flyToBounds(bounds.pad(0.3), { animate: true, duration: 0.8 });
 }
 
-// Fit map to show both routes on load
+// Fit map to show active routes on load
 const allPoints = [
-  ...routeA.days.flatMap(d => d.path),
-  ...routeB.days.flatMap(d => d.path)
+  ...routeC.days.flatMap(d => d.path)
 ];
 _lmap.fitBounds(L.latLngBounds(allPoints).pad(0.1));
 </script>
