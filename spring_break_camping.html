@@ -33,6 +33,8 @@
   body.light .route-toggle.a.on { background: rgba(244,67,54,0.1); color: #c62828; }
   body.light .route-toggle.b { border-color: #ff9800; color: #888; }
   body.light .route-toggle.b.on { background: rgba(255,152,0,0.1); color: #e65100; }
+  body.light .route-toggle.c { border-color: #4caf50; color: #888; }
+  body.light .route-toggle.c.on { background: rgba(76,175,80,0.1); color: #2e7d32; }
   body.light .day-card.a { background: rgba(244,67,54,0.05); border-color: rgba(244,67,54,0.2); }
   body.light .day-card.b { background: rgba(255,152,0,0.05); border-color: rgba(255,152,0,0.2); }
   body.light .day-card.a .day-label { color: #c62828; }
@@ -112,6 +114,8 @@
   .route-toggle.a.on { background: rgba(244,67,54,0.2); color: #ef9a9a; }
   .route-toggle.b { border-color: #ff9800; color: #546e7a; }
   .route-toggle.b.on { background: rgba(255,152,0,0.2); color: #ffb74d; }
+  .route-toggle.c { border-color: #4caf50; color: #546e7a; }
+  .route-toggle.c.on { background: rgba(76,175,80,0.2); color: #81c784; }
   .route-toggle .check { margin-right: 4px; }
 
   /* ── MAP ── */
@@ -133,6 +137,8 @@
   .day-card.active { box-shadow: 0 0 0 2px #fff inset; }
   .day-card.a { background: rgba(244,67,54,0.07); border-color: rgba(244,67,54,0.25); }
   .day-card.b { background: rgba(255,152,0,0.07); border-color: rgba(255,152,0,0.25); }
+  .day-card.c { background: rgba(76,175,80,0.07); border-color: rgba(76,175,80,0.25); }
+  .day-card.c .day-label { color: #81c784; }
   .day-label { font-size: 0.75rem; font-weight: 700; }
   .day-card.a .day-label { color: #ef9a9a; }
   .day-card.b .day-label { color: #ffb74d; }
@@ -276,6 +282,7 @@
     <span class="label">Show Routes:</span>
     <button class="route-toggle a on" onclick="toggleRoute('a')"><span class="check">✓</span>Route A: East Rim Skyline (no river crossing)</button>
     <button class="route-toggle b on" onclick="toggleRoute('b')"><span class="check">✓</span>Route B: Hawksbill → Gorge Floor (river crossing)</button>
+    <button class="route-toggle c" onclick="toggleRoute('c')"><span class="check"></span>Route C: Spence Ridge Loop (no shuttle!)</button>
   </div>
 
   <!-- Map Controls -->
@@ -297,6 +304,7 @@
     <div class="map-legend">
       <div class="legend-item"><div class="legend-line" style="background:#f44336;"></div> Route A — East Rim</div>
       <div class="legend-item"><div class="legend-line" style="background:#ff9800;"></div> Route B — Hawksbill/Gorge</div>
+      <div class="legend-item"><div class="legend-line" style="background:#4caf50;"></div> Route C — Spence Ridge Loop</div>
       <div class="legend-item"><div class="legend-line" style="background:#b39ddb;border:1px dashed #7e57c2;height:1px;"></div> Shared segment</div>
       <div class="legend-item"><div class="legend-line" style="background:#78909c;border:1px dashed #546e7a;height:1px;"></div> Road walk (Rte A Day 3)</div>
       <div class="legend-item"><div class="legend-line" style="background:#4fc3f7;height:1px;border:1px dashed #4fc3f7;"></div> Nearby trail (open)</div>
@@ -378,6 +386,45 @@
           <span class="warn">⚠️ Gorge trail has heavy Helene blowdown — expect ~1 mph pace</span><br>
           <span class="water">💧 Gully Pipe Spring on Shortoff descent</span><br>
           <span class="camp">🚗 Need shuttle car at Wolf Pit (drop off Friday)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Route C Day Cards -->
+  <div class="route-section" id="route-c-section" style="display:none;">
+    <div class="route-label" style="color:#81c784;">
+      Route C — Spence Ridge Loop <span class="total">~17-20 mi total · ~5,500 ft gain · River crossing required · NO CAR SHUTTLE</span>
+    </div>
+    <div class="day-cards">
+      <div class="day-card c" onclick="zoomDay('c',1)">
+        <div class="day-label">Fri · Day 1</div>
+        <div class="day-dist">3.5 mi · ↑1,300 ft</div>
+        <div class="day-route">Wolf Pit TH → Shortoff summit camp</div>
+        <div class="day-info">
+          <span class="camp">⛺ Shortoff summit — open plateau, best Milky Way spot</span><br>
+          <span class="water">💧 Fill at Gully Pipe Spring (mi 1.5) — carry 3L/person</span><br>
+          <span class="camp">🌌 Unobstructed SE horizon — Bortle 2-3</span>
+        </div>
+      </div>
+      <div class="day-card c" onclick="zoomDay('c',2)">
+        <div class="day-label">Sat · Day 2</div>
+        <div class="day-dist">8-9 mi · ↑2,200 ft ↓2,500 ft</div>
+        <div class="day-route">Shortoff → east rim → Chimneys → Spence Ridge → river → gorge floor camp</div>
+        <div class="day-info">
+          <span class="warn">⚠️ Big day — ridgeline traverse + descent to river</span><br>
+          <span class="danger">⚠️ RIVER CROSSING at Spence Ridge — check USGS gauge &lt;100 CFS</span><br>
+          <span class="camp">⛺ Riverside camp south of Spence Ridge · 💧 Unlimited river water</span>
+        </div>
+      </div>
+      <div class="day-card c" onclick="zoomDay('c',3)">
+        <div class="day-label">Sun · Day 3</div>
+        <div class="day-dist">6-7 mi · ↑2,000 ft</div>
+        <div class="day-route">Gorge floor south → climb back to Shortoff → Wolf Pit TH</div>
+        <div class="day-info">
+          <span class="warn">⚠️ Gorge trail has Helene blowdown — expect ~1 mph pace</span><br>
+          <span class="water">💧 River at start, Gully Pipe Spring near end</span><br>
+          <span class="camp">🚗 Back to your car at Wolf Pit — NO SHUTTLE NEEDED</span>
         </div>
       </div>
     </div>
@@ -575,7 +622,7 @@ function toggleThick() {
 }
 
 // ── ROUTE TOGGLE (deferred — updateMapLayers called after layers exist) ──
-const routeState = { a: true, b: true };
+const routeState = { a: true, b: true, c: false };
 
 function toggleRoute(r) {
   routeState[r] = !routeState[r];
@@ -620,15 +667,28 @@ const eastRimShortoffToTableRock = [
   [35.885954,-81.884703],[35.887499,-81.884923],[35.890168,-81.886193]
 ];
 
-// East rim — Table Rock north to Hawksbill (OSM MST + Hawksbill trail)
+// East rim — Table Rock north to Hawksbill (OSM ways: 218917692, 452887345, 874141554, 808824716, 808824717, 539830863)
 const eastRimTableRockToHawksbill = [
-  [35.8920,-81.8875],[35.8940,-81.8878],[35.8960,-81.8880],[35.8980,-81.8882],
-  [35.9000,-81.8883],[35.9020,-81.8850],[35.9035,-81.8788],
-  // Hawksbill spur from OSM
-  [35.9035,-81.8788],[35.9038,-81.8794],[35.9042,-81.8806],[35.9046,-81.8810],
-  [35.9053,-81.8807],[35.9058,-81.8813],[35.9058,-81.8819],[35.9059,-81.8828],
-  [35.9058,-81.8835],[35.9058,-81.8841],[35.9056,-81.8850],[35.9057,-81.8859],
-  [35.9052,-81.8856],[35.9045,-81.8853],[35.9037,-81.8852],[35.9035,-81.8862]
+  // Table Rock Parking → MST north along east rim (way 218917692)
+  [35.8920,-81.8875],[35.8931,-81.8826],[35.8942,-81.8817],[35.8952,-81.8803],
+  [35.8959,-81.8811],[35.8971,-81.8800],[35.8979,-81.8789],[35.8983,-81.8804],
+  [35.8991,-81.8802],
+  // Table Rock Gap Trail north (way 452887345)
+  [35.8997,-81.8808],[35.9012,-81.8795],[35.9021,-81.8787],[35.9035,-81.8789],
+  // West through Table Rock Gap along ridge (way 874141554 start)
+  [35.9034,-81.8794],[35.9031,-81.8803],[35.9028,-81.8817],[35.9025,-81.8828],
+  // North along east rim (way 808824716)
+  [35.9033,-81.8842],[35.9042,-81.8850],[35.9051,-81.8850],[35.9061,-81.8849],
+  [35.9065,-81.8844],[35.9061,-81.8834],[35.9066,-81.8826],
+  // Hawksbill Ledge north along rim (way 808824717)
+  [35.9072,-81.8827],[35.9076,-81.8813],[35.9075,-81.8840],[35.9078,-81.8852],
+  [35.9077,-81.8864],[35.9079,-81.8873],[35.9082,-81.8882],[35.9090,-81.8889],
+  [35.9097,-81.8899],[35.9110,-81.8895],[35.9122,-81.8886],[35.9131,-81.8877],
+  [35.9138,-81.8866],[35.9138,-81.8858],
+  // Hawksbill Trail to summit (way 539830863 reversed)
+  [35.9136,-81.8854],[35.9137,-81.8852],[35.9148,-81.8855],[35.9156,-81.8859],
+  [35.9156,-81.8847],[35.9158,-81.8832],[35.9158,-81.8816],[35.9153,-81.8807],
+  [35.9144,-81.8806],[35.9136,-81.8811],[35.9138,-81.8790],[35.9146,-81.8784]
 ];
 
 // Spence Ridge Trail (OSM Ways 874141554+) — east rim down to river
@@ -643,6 +703,13 @@ const spenceRidgeTrail = [
   [35.9029,-81.8917],[35.9030,-81.8924],[35.9032,-81.8930],[35.9032,-81.8940],
   [35.9031,-81.8945],[35.9029,-81.8951],[35.9025,-81.8963],[35.9022,-81.8970],
   [35.9020,-81.8974]
+];
+
+// Connection from gorge floor back east to Shortoff/MST junction (OSM way 376396668 Olson Trail reversed)
+const gorgeToShortoffConnection = [
+  [35.8306,-81.9024],[35.8303,-81.9028],[35.8299,-81.9025],[35.8295,-81.9018],
+  [35.8291,-81.9015],[35.8281,-81.9011],[35.8276,-81.9009],[35.8272,-81.9002],
+  [35.8273,-81.8996],[35.8275,-81.8990],[35.8280,-81.8984],[35.8283,-81.8982]
 ];
 
 // Gorge floor trail south of Spence Ridge crossing — follows near river
@@ -664,10 +731,11 @@ const routeA = {
   days: [
     { path: shortoffTrail, label: 'Day 1: 3.5 mi' },
     { path: eastRimShortoffToTableRock, label: 'Day 2: 7.5 mi' },
-    { // Day 3: Road walk — FR 210 south then connecting roads to Wolf Pit Rd
-      // FR 210 goes far east; actual drive is ~20 min but road walk is long & winding
+    { // Day 3: Drive/shuttle — FR 210 goes far east, ~20 min drive between trailheads
+      // Show the actual road path starting from Table Rock parking
       path: [
-        // FR 210 south from Table Rock / Spence Ridge area (OSM way 150259791)
+        [35.8920,-81.8875], // Table Rock parking (end of Day 2)
+        [35.8960,-81.8880],[35.9000,-81.8883],[35.9035,-81.8788], // north to FR 210 junction
         [35.903945,-81.879303],[35.901229,-81.875694],[35.899499,-81.876731],
         [35.898480,-81.873509],[35.897105,-81.873160],[35.895703,-81.867220],
         [35.899372,-81.863699],[35.898366,-81.860317],[35.902527,-81.859754],
@@ -679,7 +747,7 @@ const routeA = {
         [35.869136,-81.811005],[35.867977,-81.807457],[35.868710,-81.805076],
         [35.861147,-81.801694],[35.859380,-81.798036],[35.856790,-81.789545]
       ],
-      label: 'Day 3: road/shuttle', dashed: true
+      label: 'Day 3: drive/shuttle', dashed: true
     }
   ],
   camps: [
@@ -700,8 +768,8 @@ const routeB = {
     { path: eastRimTableRockToHawksbill, label: 'Day 1: 5.5 mi' },
     { // Day 2: Hawksbill → back south → Spence Ridge descent → river crossing → gorge floor south
       path: [
-        // Retrace east rim south to Spence Ridge TH
-        ...eastRimTableRockToHawksbill.slice().reverse().slice(0, 7),
+        // Retrace east rim south to Spence Ridge TH (reverse from Hawksbill back to Table Rock Gap)
+        ...eastRimTableRockToHawksbill.slice().reverse().slice(0, 38),
         // Spence Ridge descent to river (real OSM coords)
         ...spenceRidgeTrail,
         // Continue south on gorge floor
@@ -709,10 +777,12 @@ const routeB = {
       ],
       label: 'Day 2: 6.5 mi'
     },
-    { // Day 3: Continue south on gorge floor → climb east to Shortoff → Wolf Pit
+    { // Day 3: Continue south on gorge floor → Olson Trail east to river crossing → Shortoff ridge → Wolf Pit
       path: [
-        ...gorgeFloorSouth.slice(11, 25),
-        // Climb back east to Shortoff ridge then down
+        ...gorgeFloorSouth.slice(11),
+        // Olson Trail: cross river east from gorge floor to MST/Shortoff junction (way 376396668 reversed)
+        ...gorgeToShortoffConnection,
+        // Shortoff Trail south to Wolf Pit TH
         ...shortoffTrail.slice().reverse()
       ],
       label: 'Day 3: 6 mi'
@@ -724,6 +794,46 @@ const routeB = {
   ],
   pois: [
     { ll: [35.9020, -81.8974], name: '⚠️ River Crossing (Spence Ridge)', info: 'Bridge washed out since 2014. Wet crossing at river level.\nGO: USGS gauge <100 CFS, no rain 48hrs, water below knee.\nNO-GO: Abort Route B → do Route A instead.' }
+  ]
+};
+
+// Route C: Spence Ridge Loop — Wolf Pit → Shortoff → east rim → Spence Ridge → river → gorge floor south → back to Shortoff → Wolf Pit
+const routeC = {
+  color: '#4caf50',
+  days: [
+    { // Day 1: Wolf Pit → Shortoff (same as Route A Day 1)
+      path: shortoffTrail,
+      label: 'Day 1: 3.5 mi'
+    },
+    { // Day 2: Shortoff → east rim north → Spence Ridge → descend to river → gorge floor south to camp
+      path: [
+        ...eastRimShortoffToTableRock,
+        // Continue north from Table Rock to Spence Ridge junction (first part of Table Rock to Hawksbill)
+        ...eastRimTableRockToHawksbill.slice(0, 12),
+        // Spence Ridge descent to river
+        ...spenceRidgeTrail,
+        // South on gorge floor to camp
+        ...gorgeFloorSouth.slice(0, 12)
+      ],
+      label: 'Day 2: 8-9 mi'
+    },
+    { // Day 3: Gorge floor south → Olson Trail east to Shortoff ridge → Wolf Pit
+      path: [
+        ...gorgeFloorSouth.slice(11),
+        ...gorgeToShortoffConnection,
+        ...shortoffTrail.slice().reverse()
+      ],
+      label: 'Day 3: 6-7 mi'
+    }
+  ],
+  camps: [
+    { ll: [35.8285, -81.8981], name: 'Night 1: Shortoff Summit Camp', info: '⛺ Open plateau · 🌌 Best Milky Way — unobstructed SE · 💧 Carry from Gully Pipe Spring' },
+    { ll: [35.8889, -81.8967], name: 'Night 2: Gorge Floor Riverside', info: '⛺ Sandy riverside benches · 💧 Linville River — unlimited filtered water · 🌌 Partial sky along corridor' }
+  ],
+  pois: [
+    { ll: [35.8255, -81.8940], name: '💧 Gully Pipe Spring', info: 'Most reliable east rim water. Fill everything here.' },
+    { ll: [35.8635, -81.8910], name: '🪨 The Chimneys', info: 'Rock pinnacles with scrambling. Great views.' },
+    { ll: [35.9020, -81.8974], name: '⚠️ River Crossing (Spence Ridge)', info: 'Bridge washed out. Wet crossing required.\nGO: USGS <100 CFS, no rain 48hrs.\nNO-GO: Do Route A instead.' }
   ]
 };
 
@@ -900,6 +1010,7 @@ function toggleNearby() {
 // Layer groups
 const layerA = L.layerGroup().addTo(_lmap);
 const layerB = L.layerGroup().addTo(_lmap);
+const layerC = L.layerGroup();
 const layerShared = L.layerGroup().addTo(_lmap);
 const layerTH = L.layerGroup().addTo(_lmap);
 
@@ -950,6 +1061,24 @@ function buildRouteLayers() {
       .addTo(layerB);
   });
 
+  // Route C trails (green)
+  layerC.clearLayers();
+  routeC.days.forEach((d, i) => {
+    L.polyline(d.path, { color: routeC.color, weight: tw(4), opacity: 0.8 }).addTo(layerC);
+    const mid = d.path[Math.floor(d.path.length / 2)];
+    L.marker(mid, { icon: L.divIcon({ className: '', html: '<div style="background:#4caf50;color:#fff;width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;text-align:center;line-height:22px;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.5);">' + (i+1) + '</div>', iconSize: [22,22], iconAnchor: [11,11] }) }).bindTooltip(d.label, {direction:'top'}).addTo(layerC);
+  });
+  routeC.camps.forEach(c => {
+    L.marker(c.ll, { icon: L.divIcon({ className: '', html: '<div style="font-size:18px;text-shadow:0 0 4px #000;">⛺</div>', iconSize: [20,20], iconAnchor: [10,10] }) })
+      .bindPopup('<b style="color:#4caf50;">' + c.name + '</b><br><span style="font-size:12px;">' + c.info + '</span>', {maxWidth:250})
+      .addTo(layerC);
+  });
+  routeC.pois.forEach(p => {
+    L.circleMarker(p.ll, { radius: 7, fillColor: '#4caf50', color: '#fff', weight: 1.5, fillOpacity: 0.9 })
+      .bindPopup('<b>' + p.name + '</b><br><span style="font-size:12px;">' + p.info.replace(/\n/g,'<br>') + '</span>', {maxWidth:280})
+      .addTo(layerC);
+  });
+
   // Shared segment (Shortoff → Wolf Pit, used by both on Day 3 of B / Day 1 of A)
   L.polyline(sharedPath, { color: '#b39ddb', weight: tw(3), opacity: 0.6, dashArray: '6, 6' }).addTo(layerShared);
 
@@ -966,8 +1095,11 @@ function updateMapLayers() {
   else { _lmap.removeLayer(layerA); }
   if (routeState.b) { if (!_lmap.hasLayer(layerB)) _lmap.addLayer(layerB); }
   else { _lmap.removeLayer(layerB); }
-  // Show shared only if both routes visible
-  if (routeState.a && routeState.b) { if (!_lmap.hasLayer(layerShared)) _lmap.addLayer(layerShared); }
+  if (routeState.c) { if (!_lmap.hasLayer(layerC)) _lmap.addLayer(layerC); }
+  else { _lmap.removeLayer(layerC); }
+  // Show shared if any two routes that share the segment are visible
+  const sharedVisible = (routeState.a && routeState.b) || (routeState.a && routeState.c) || (routeState.b && routeState.c);
+  if (sharedVisible) { if (!_lmap.hasLayer(layerShared)) _lmap.addLayer(layerShared); }
   else { _lmap.removeLayer(layerShared); }
 }
 
@@ -979,7 +1111,7 @@ function zoomDay(route, day) {
   document.querySelectorAll('.day-card').forEach(c => c.classList.remove('active'));
   event.currentTarget.classList.add('active');
 
-  const data = route === 'a' ? routeA : routeB;
+  const data = route === 'a' ? routeA : route === 'b' ? routeB : routeC;
   const dayData = data.days[day - 1];
   if (!dayData) return;
   const bounds = L.latLngBounds(dayData.path);
