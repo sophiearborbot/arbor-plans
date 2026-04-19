@@ -90,6 +90,47 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     <div class="stat"><div class="stat-val">🌌</div><div class="stat-lbl">Dark Sky</div></div>
   </div>
 </div>
+
+<!-- MAP SECTION -->
+<div style="background:var(--bg2);border-bottom:1px solid var(--border);padding:20px 24px;">
+  <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:12px;">📍 Route Options — Mid-Atlantic Mountains</div>
+  <div id="trip-map" style="height:340px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);"></div>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;">
+    <span style="font-size:0.75rem;color:#94a3b8;display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:50%;background:#fbbf24;display:inline-block;"></span>🥇 Dolly Sods, WV — Best overall</span>
+    <span style="font-size:0.75rem;color:#94a3b8;display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:50%;background:#94a3b8;display:inline-block;"></span>🥈 Spruce Knob, WV — Highest point</span>
+    <span style="font-size:0.75rem;color:#94a3b8;display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:50%;background:#d97706;display:inline-block;"></span>🥉 Delaware Water Gap, NJ/PA — Easiest drive</span>
+    <span style="font-size:0.75rem;color:#94a3b8;display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:50%;background:#a78bfa;display:inline-block;"></span>🌌 Cherry Springs, PA — Best dark sky</span>
+  </div>
+</div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+(function(){
+  var map = L.map('trip-map',{zoomControl:true,scrollWheelZoom:false}).setView([39.4,-79.2],7);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
+    attribution:'&copy; OpenStreetMap &copy; CARTO',maxZoom:18
+  }).addTo(map);
+
+  function pin(lat,lng,color,label,tab){
+    var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 36" width="24" height="36"><path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 24 12 24s12-15 12-24C24 5.4 18.6 0 12 0z" fill="'+color+'" stroke="rgba(0,0,0,0.4)" stroke-width="1"/><circle cx="12" cy="12" r="5" fill="rgba(0,0,0,0.3)"/></svg>';
+    var icon=L.divIcon({html:svg,iconSize:[24,36],iconAnchor:[12,36],popupAnchor:[0,-36],className:''});
+    var mk=L.marker([lat,lng],{icon:icon}).addTo(map);
+    mk.bindPopup('<div style="font-family:system-ui;min-width:160px"><strong style="color:'+color+'">'+label+'</strong><br><span style="font-size:0.8rem;color:#666;">Click tab for full details</span><br><a href="#" onclick="showTab(''+tab+'',document.querySelector('[onclick*=\''+tab+'\']'));return false;" style="font-size:0.78rem;color:'+color+';">View route →</a></div>');
+    return mk;
+  }
+
+  pin(39.0018,-79.3981,'#fbbf24','🥇 Dolly Sods, WV','dolly');
+  pin(38.6995,-79.5338,'#94a3b8','🥈 Spruce Knob, WV','spruce');
+  pin(40.9787,-75.1160,'#d97706','🥉 Delaware Water Gap, NJ/PA','dwg');
+  pin(41.6629,-77.8258,'#a78bfa','🌌 Cherry Springs, PA','cherry');
+
+  // Charlotte marker (home)
+  var homeSvg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="18" height="18"><circle cx="10" cy="10" r="9" fill="rgba(34,197,94,0.3)" stroke="#22c55e" stroke-width="1.5"/><circle cx="10" cy="10" r="4" fill="#22c55e"/></svg>';
+  L.marker([35.2271,-80.8431],{icon:L.divIcon({html:homeSvg,iconSize:[18,18],iconAnchor:[9,9],className:''})}).addTo(map).bindPopup('<strong style="color:#22c55e">🏠 Charlotte, NC</strong>');
+})();
+</script>
+
 <div class="tab-bar">
   <div class="tab active" onclick="showTab('dolly',this)">🥇 Dolly Sods</div>
   <div class="tab" onclick="showTab('spruce',this)">🥈 Spruce Knob</div>
