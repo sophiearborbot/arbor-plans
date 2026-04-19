@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-04-02",
+  "updated": "2026-04-19",
   "trips": [
     {
       "id": "spring-break-2026",
@@ -151,6 +151,35 @@
       "desc": "North Myrtle Beach spring break. Cherry Grove Beach, Alligator Adventure, jet skis, mini golf, Broadway Grand Prix. Dogs welcome. Rain Sun 5pm only.",
       "statusLabel": "Happening Now \ud83c\udfd6\ufe0f",
       "cardLink": "View plan \u2192"
+    },
+    {
+      "id": "duke-guys-fall-2026",
+      "title": "Duke Guys \u2014 Fall Backpacking",
+      "subtitle": "Sage + Duke Friends \u00b7 Fall 2026",
+      "emoji": "\ud83c\udf82",
+      "dates": "Fall 2026",
+      "startDate": "2026-10-15",
+      "endDate": "2026-10-18",
+      "who": [
+        "Sage"
+      ],
+      "whoTags": [
+        "sage"
+      ],
+      "status": "planning",
+      "color": "#f97316",
+      "accentColor2": "#ea580c",
+      "planPage": "./duke_guys_fall_2026.html",
+      "category": "Friends \u00b7 Backpacking \u00b7 Dark Sky",
+      "desc": "50th birthday trip. 2 nights backpacking + 1 night resort. 4 route options: Dolly Sods (\ud83e\udd47), Spruce Knob, Delaware Water Gap, Cherry Springs. Dark sky, fishing, fall foliage.",
+      "cardLink": "View routes \u2192",
+      "extraStatus": [
+        "\ud83c\udfa3 Fishing",
+        "\ud83c\udf0c Dark Sky",
+        "\ud83c\udf82 50th Birthday"
+      ],
+      "dateLabel": "Fall 2026 \u00b7 TBD",
+      "statusLabel": "Planning"
     }
   ]
 }
