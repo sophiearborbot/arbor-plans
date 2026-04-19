@@ -81,12 +81,12 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   <a class="back-link" href="./index.html">← Arbor Plans</a>
   <div class="hero-badge">🎂 50th Birthday Trip · Fall 2026</div>
   <h1>Duke Guys — <span>Fall Backpacking</span></h1>
-  <div class="hero-sub">2 nights backpacking · 1 night resort · Mountains between DC &amp; Philly · Dark skies · Fishing</div>
+  <div class="hero-sub">Sage · Mike · Chuck · Adam &nbsp;|&nbsp; 2 nights backpacking + 1 night resort · Dark skies · Fishing</div>
   <div class="hero-stats">
-    <div class="stat"><div class="stat-val">~4–6</div><div class="stat-lbl">Guys</div></div>
+    <div class="stat"><div class="stat-val">4</div><div class="stat-lbl">Guys</div></div>
     <div class="stat"><div class="stat-val">3</div><div class="stat-lbl">Nights</div></div>
     <div class="stat"><div class="stat-val">14–20mi</div><div class="stat-lbl">Loop</div></div>
-    <div class="stat"><div class="stat-val">Oct</div><div class="stat-lbl">Best Window</div></div>
+    <div class="stat"><div class="stat-val">Sep/Oct</div><div class="stat-lbl">Best Window</div></div>
     <div class="stat"><div class="stat-val">🎣</div><div class="stat-lbl">Fishing</div></div>
     <div class="stat"><div class="stat-val">🌌</div><div class="stat-lbl">Dark Sky</div></div>
   </div>
@@ -106,7 +106,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded",function(){
+window.addEventListener("load",function(){
   var map = L.map('trip-map',{zoomControl:true,scrollWheelZoom:false}).setView([39.4,-79.2],7);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
     attribution:'&copy; OpenStreetMap &copy; CARTO',maxZoom:18
@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded",function(){
     <div class="route-rank rank-1">1</div>
     <div><div class="route-title">Dolly Sods Wilderness, WV</div><div class="route-sub">Monongahela NF · ~5hr from DC, ~5.5hr from Philly · BEST overall pick</div></div>
   </div>
-  <div class="best-time"><h4>🍂 Best Window: Oct 10–20, 2026</h4><p>Peak foliage at 4,000ft+. New moon Oct 20 = darkest possible sky. Avoid Columbus Day weekend (busy). Nights 30–45°F — pack warm.</p></div>
+  <div class="best-time"><h4>🍂 Two Windows — Pick Your Priority</h4><p><strong style="color:#fb923c;">September (Sep 15–22):</strong> New moon Sep 20. Nights 45–55°F — comfortable, no 30°F risk. Foliage not peak but still green/gold. Best if warmth matters.<br><br><strong style="color:#fbbf24;">October (Oct 15–22):</strong> New moon Oct 20 + peak fall foliage. Spectacular but nights can hit 30°F — need 20°F bags and full winter layers.</p></div>
   <div class="stats-grid">
     <div class="sg"><div class="sg-val">~20mi</div><div class="sg-lbl">Loop Distance</div></div>
     <div class="sg"><div class="sg-val">~3,200ft</div><div class="sg-lbl">Elevation Gain</div></div>
@@ -245,7 +245,7 @@ document.addEventListener("DOMContentLoaded",function(){
     <div class="route-rank rank-3">3</div>
     <div><div class="route-title">Delaware Water Gap NRA</div><div class="route-sub">NJ/PA border · ~1.5hr from Philly · ~3hr from DC · Easiest logistics</div></div>
   </div>
-  <div class="best-time"><h4>🍂 Best Window: Oct 10–20, 2026</h4><p>Lower elevation (1,500ft) = foliage peaks mid-Oct. Milder temps (40–60°F nights). Shortest drive for the group — easy meetup point between DC and Philly.</p></div>
+  <div class="best-time"><h4>🍂 Best Window: Sep or Oct — most flexible option</h4><p>Lower elevation (1,500ft) means warmer nights (50–65°F in Sep, 40–55°F in Oct). Either month works well. Best for the group if temperature is a concern.</p></div>
   <div class="stats-grid">
     <div class="sg"><div class="sg-val">~15mi</div><div class="sg-lbl">Loop</div></div>
     <div class="sg"><div class="sg-val">~2,200ft</div><div class="sg-lbl">Elevation Gain</div></div>
