@@ -97,10 +97,13 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:12px;">📍 Route Options — Mid-Atlantic Mountains</div>
   <div id="trip-map" style="height:340px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);"></div>
   <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;">
-    <span style="font-size:0.75rem;color:#94a3b8;display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:50%;background:#fbbf24;display:inline-block;"></span>🥇 Dolly Sods, WV — Best overall</span>
-    <span style="font-size:0.75rem;color:#94a3b8;display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:50%;background:#94a3b8;display:inline-block;"></span>🥈 Spruce Knob, WV — Highest point</span>
-    <span style="font-size:0.75rem;color:#94a3b8;display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:50%;background:#d97706;display:inline-block;"></span>🥉 Delaware Water Gap, NJ/PA — Easiest drive</span>
-    <span style="font-size:0.75rem;color:#94a3b8;display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:50%;background:#a78bfa;display:inline-block;"></span>🌌 Cherry Springs, PA — Best dark sky</span>
+    <span style="font-size:0.75rem;color:#94a3b8;display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:50%;background:#fbbf24;display:inline-block;"></span>🥇 Dolly Sods, WV</span>
+    <span style="font-size:0.75rem;color:#94a3b8;display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:50%;background:#94a3b8;display:inline-block;"></span>🥈 Spruce Knob, WV</span>
+    <span style="font-size:0.75rem;color:#f472b6;display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:50%;background:#f472b6;display:inline-block;"></span>⭐ Savage River, MD — Geographically centered</span>
+    <span style="font-size:0.75rem;color:#34d399;display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:50%;background:#34d399;display:inline-block;"></span>⭐ Laurel Highlands, PA — Legendary trout fishing</span>
+    <span style="font-size:0.75rem;color:#a78bfa;display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:50%;background:#a78bfa;display:inline-block;"></span>🌌 Cherry Springs, PA — Best dark sky</span>
+    <span style="font-size:0.75rem;color:#60a5fa;display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:50%;background:#60a5fa;display:inline-block;"></span>⭐ Allegheny NF, PA — Northern anchor</span>
+    <span style="font-size:0.75rem;color:#d97706;display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:50%;background:#d97706;display:inline-block;"></span>⚠️ Delaware Water Gap — Philly-skewed</span>
   </div>
 </div>
 
@@ -136,6 +139,9 @@ window.addEventListener("load",function(){
   <div class="tab" onclick="showTab('spruce',this)">🥈 Spruce Knob</div>
   <div class="tab" onclick="showTab('dwg',this)">🥉 Delaware Water Gap</div>
   <div class="tab" onclick="showTab('cherry',this)">🌌 Cherry Springs</div>
+  <div class="tab" onclick="showTab('savage',this)">⭐ Savage River</div>
+  <div class="tab" onclick="showTab('laurel',this)">⭐ Laurel Highlands</div>
+  <div class="tab" onclick="showTab('allegheny',this)">⭐ Allegheny NF</div>
   <div class="tab" onclick="showTab('logistics',this)">📋 Logistics</div>
   <div class="tab" onclick="showTab('gear',this)">🎒 Gear</div>
 </div>
@@ -311,6 +317,132 @@ window.addEventListener("load",function(){
 </div>
 
 <!-- LOGISTICS -->
+
+<!-- SAVAGE RIVER -->
+<div class="panel" id="panel-savage">
+  <div class="route-header">
+    <div class="route-rank" style="background:rgba(244,114,182,0.2);border:2px solid #f472b6;color:#f472b6;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;">⭐</div>
+    <div><div class="route-title">Savage River State Forest, MD</div><div class="route-sub">Western Maryland · ~2.5hr from DC, ~3.5hr from Philly · Most geographically centered</div></div>
+  </div>
+  <div class="best-time"><h4>🎯 Sophie's Pick for Logistics — Best Midpoint</h4><p>Savage River is literally centered between DC and Philly along the Appalachians. No one has a terrible drive. 55,000 acres, 78-mile trail system, and the <strong>Savage River tailwater is one of the best wild trout fisheries on the entire East Coast</strong> — brown, brook, rainbow, and occasional cutthroat. This is an underrated gem.</p></div>
+  <div class="stats-grid">
+    <div class="sg"><div class="sg-val">24mi</div><div class="sg-lbl">Backpacker Loop</div></div>
+    <div class="sg"><div class="sg-val">~2,800ft</div><div class="sg-lbl">Elevation Gain</div></div>
+    <div class="sg"><div class="sg-val">⭐⭐⭐⭐</div><div class="sg-lbl">Dark Sky</div></div>
+    <div class="sg"><div class="sg-val">Free permit</div><div class="sg-lbl">Required (easy)</div></div>
+    <div class="sg"><div class="sg-val">Moderate</div><div class="sg-lbl">Difficulty</div></div>
+    <div class="sg"><div class="sg-val">World-class</div><div class="sg-lbl">Trout Tailwater</div></div>
+  </div>
+  <div class="section">
+    <div class="section-title">3-Day Route</div>
+    <div class="day-block">
+      <div class="day-head"><span class="day-num">Day 1</span><span class="day-name">New Germany SP → Meadow Mountain Trail</span><span class="day-mi">~7mi</span></div>
+      <div class="day-body"><div class="day-route">New Germany State Park TH → Meadow Mountain Trail (ridgeline) → camp along Monroe Run</div><div class="day-notes"><span class="tag tag-views">Ridgeline views</span><span class="tag tag-camp">Primitive sites w/ fire rings</span></div></div>
+    </div>
+    <div class="day-block">
+      <div class="day-head"><span class="day-num">Day 2</span><span class="day-name">Monroe Run → Savage River → Poplar Lick</span><span class="day-mi">~10mi</span></div>
+      <div class="day-body"><div class="day-route">Drop to Savage River → fish the tailwater below the dam → up Poplar Lick Trail → camp on ridge</div><div class="day-notes"><span class="tag tag-fish">🎣 Savage River tailwater — wild brown/brook/cutthroat</span><span class="tag tag-sky">🌌 Dark ridge camp</span></div></div>
+    </div>
+    <div class="day-block">
+      <div class="day-head"><span class="day-num">Day 3</span><span class="day-name">Meadow Mountain loop → Out → Deep Creek Resort</span><span class="day-mi">~7mi</span></div>
+      <div class="day-body"><div class="day-route">Complete loop back to New Germany → 20min drive to Deep Creek Lake area for resort night</div><div class="day-notes"><span class="tag tag-camp">Out by noon</span><span class="tag tag-views">Great resort options nearby</span></div></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">Night 3 — Resort</div>
+    <div class="resort-card">
+      <div class="resort-name">Deep Creek Lake Area — Multiple Options</div>
+      <div class="resort-sub">McHenry, MD · 20min from Savage River · Maryland's mountain lake destination</div>
+      <div class="resort-details">
+        <div class="rd"><strong>Best bet</strong>VRBO/Airbnb lakefront cabin — great for dogs</div>
+        <div class="rd"><strong>Rate</strong>~$300–500/night for whole cabin (split 4 ways = cheap)</div>
+        <div class="rd"><strong>Amenities</strong>Lake, restaurants, bars, Garrett County charm</div>
+        <div class="rd"><strong>Dog-friendly</strong>✅ Most VRBO cabins allow dogs</div>
+      </div>
+    </div>
+  </div>
+  <div class="call-out">🎣 <strong>Fishing note:</strong> The Savage River tailwater below the dam is <strong>fly fishing only</strong> for a section — bring a 9ft 5wt. Wild brown trout to 20"+. This alone is worth the trip.</div>
+</div>
+
+<!-- LAUREL HIGHLANDS -->
+<div class="panel" id="panel-laurel">
+  <div class="route-header">
+    <div class="route-rank" style="background:rgba(52,211,153,0.2);border:2px solid #34d399;color:#34d399;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;">⭐</div>
+    <div><div class="route-title">Laurel Highlands / Ohiopyle, PA</div><div class="route-sub">Southwest Pennsylvania · ~3.5hr from DC, ~4hr from Philly · Legendary Yough fishing</div></div>
+  </div>
+  <div class="best-time"><h4>🍂 Best Window: Sep–Oct, any weekend</h4><p>Lower elevation (2,800ft summit) = milder temps. Youghiogheny Trophy Trout section is one of the best trophy brown trout fisheries in the East. Great gorge scenery. Nights 45–55°F in Sep, 35–45°F in Oct.</p></div>
+  <div class="stats-grid">
+    <div class="sg"><div class="sg-val">20–25mi</div><div class="sg-lbl">Section of LHHT</div></div>
+    <div class="sg"><div class="sg-val">~3,000ft</div><div class="sg-lbl">Elev Gain (section)</div></div>
+    <div class="sg"><div class="sg-val">⭐⭐⭐⭐</div><div class="sg-lbl">Dark Sky (Forbes SF)</div></div>
+    <div class="sg"><div class="sg-val">Required</div><div class="sg-lbl">Reservations (easy)</div></div>
+    <div class="sg"><div class="sg-val">Moderate+</div><div class="sg-lbl">Difficulty</div></div>
+    <div class="sg"><div class="sg-val">Trophy</div><div class="sg-lbl">Yough Brown Trout</div></div>
+  </div>
+  <div class="section">
+    <div class="section-title">3-Day Route</div>
+    <div class="day-block">
+      <div class="day-head"><span class="day-num">Day 1</span><span class="day-name">Ohiopyle → LHHT north → Shelter 2</span><span class="day-mi">~8mi</span></div>
+      <div class="day-body"><div class="day-route">Start at Ohiopyle, head north on Laurel Highlands Hiking Trail → overnight at Shelter 2 (Adirondack shelters + tent sites, reservations required)</div><div class="day-notes"><span class="tag tag-views">Gorge views on ascent</span><span class="tag tag-camp">Adirondack shelters</span></div></div>
+    </div>
+    <div class="day-block">
+      <div class="day-head"><span class="day-num">Day 2</span><span class="day-name">Shelter 2 → Forbes SF ridgeline → Shelter 3</span><span class="day-mi">~9mi</span></div>
+      <div class="day-body"><div class="day-route">Ridge walking through Forbes State Forest → camp at Shelter 3, Mount Davis area (highest point in PA)</div><div class="day-notes"><span class="tag tag-sky">🌌 Mount Davis dark sky</span><span class="tag tag-views">Laurel summit meadows</span></div></div>
+    </div>
+    <div class="day-block">
+      <div class="day-head"><span class="day-num">Day 3</span><span class="day-name">Return to Ohiopyle → Fish the Yough → Resort</span><span class="day-mi">~8mi out</span></div>
+      <div class="day-body"><div class="day-route">Hike back to Ohiopyle → afternoon fishing on the Youghiogheny Trophy Trout section → drive to resort</div><div class="day-notes"><span class="tag tag-fish">🎣 Yough Trophy Trout — 18"+ browns, 1/day limit</span><span class="tag tag-views">Ohiopyle gorge</span></div></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">Night 3 — Resort</div>
+    <div class="resort-card">
+      <div class="resort-name">Nemacolin Resort or Farmhouse Inn — Farmington, PA</div>
+      <div class="resort-sub">Farmington, PA · 15min from Ohiopyle · Upscale mountain resort</div>
+      <div class="resort-details">
+        <div class="rd"><strong>Nemacolin</strong>Full luxury resort — restaurant, spa, golf</div>
+        <div class="rd"><strong>Rate</strong>~$300–500+/night (splurge option)</div>
+        <div class="rd"><strong>Dog-friendly</strong>⚠️ Call ahead — some buildings allow pets</div>
+        <div class="rd"><strong>Alt</strong>VRBO cabin in Confluence, PA — dogs welcome, cheaper</div>
+      </div>
+    </div>
+  </div>
+  <div class="call-out">🎣 <strong>Youghiogheny note:</strong> Trophy section is 9 miles, all-tackle, minimum 18" trout. Need a PA fishing license + trout/salmon permit. The morning after you hike out is perfect for a fishing session before driving to the resort.</div>
+</div>
+
+<!-- ALLEGHENY NF -->
+<div class="panel" id="panel-allegheny">
+  <div class="route-header">
+    <div class="route-rank" style="background:rgba(96,165,250,0.2);border:2px solid #60a5fa;color:#60a5fa;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;">⭐</div>
+    <div><div class="route-title">Allegheny National Forest, PA</div><div class="route-sub">Northwest Pennsylvania · ~4hr from Philly, ~5hr from DC · Fills the northern gap</div></div>
+  </div>
+  <div class="best-time"><h4>🍂 Best Window: Oct 1–15</h4><p>Largest national forest in PA (513,000 acres). Sits geographically between Cherry Springs and Delaware Water Gap — the true northern anchor in this corridor. Tionesta Creek is excellent fishing. Less dramatic scenery than WV options but more remote and far less crowded.</p></div>
+  <div class="stats-grid">
+    <div class="sg"><div class="sg-val">600+ mi</div><div class="sg-lbl">Trail System</div></div>
+    <div class="sg"><div class="sg-val">Varies</div><div class="sg-lbl">Loop Options</div></div>
+    <div class="sg"><div class="sg-val">⭐⭐⭐⭐</div><div class="sg-lbl">Dark Sky</div></div>
+    <div class="sg"><div class="sg-val">None</div><div class="sg-lbl">Permits Required</div></div>
+    <div class="sg"><div class="sg-val">Moderate</div><div class="sg-lbl">Difficulty</div></div>
+    <div class="sg"><div class="sg-val">Excellent</div><div class="sg-lbl">Tionesta Creek Trout</div></div>
+  </div>
+  <div class="section">
+    <div class="section-title">Best Loop: Hickory Creek Wilderness</div>
+    <div class="day-block">
+      <div class="day-head"><span class="day-num">Day 1</span><span class="day-name">Hickory Creek TH → Tionesta Creek</span><span class="day-mi">~7mi</span></div>
+      <div class="day-body"><div class="day-route">Hickory Creek Trailhead → into the wilderness → camp along Tionesta Creek (one of only two official wildernesses in PA)</div><div class="day-notes"><span class="tag tag-fish">🎣 Tionesta Creek wild trout</span><span class="tag tag-camp">True wilderness designation</span></div></div>
+    </div>
+    <div class="day-block">
+      <div class="day-head"><span class="day-num">Day 2</span><span class="day-name">Wilderness loop day</span><span class="day-mi">~9mi</span></div>
+      <div class="day-body"><div class="day-route">Full Hickory Creek loop through old-growth hemlocks and hardwoods → return to creek camp</div><div class="day-notes"><span class="tag tag-views">Old-growth forest</span><span class="tag tag-sky">🌌 Very dark skies</span></div></div>
+    </div>
+    <div class="day-block">
+      <div class="day-head"><span class="day-num">Day 3</span><span class="day-name">Out → Warren or Bradford for resort night</span><span class="day-mi">~4mi</span></div>
+      <div class="day-body"><div class="day-route">Hike out → drive to Warren, PA or Kinzua Dam area for resort/inn night</div><div class="day-notes"><span class="tag tag-views">Kinzua Bridge State Park nearby</span></div></div>
+    </div>
+  </div>
+  <div class="call-out">💡 Best pick if someone in the group is driving from Buffalo or western NY — Allegheny NF is right on the way. Otherwise, Savage River or Dolly Sods are better overall.</div>
+</div>
+
 <div class="panel" id="panel-logistics">
   <div class="section"><div class="section-title">Best Date Window</div>
     <div class="call-out">🌑 2026 fall new moons: <strong>Sep 20 · Oct 20 · Nov 18</strong><br>Oct 20 window = peak foliage + darkest sky. Aim for Oct 15–22 trip dates.</div>
@@ -375,19 +507,31 @@ function showTab(id,el){
 <script>
 (function initMap(){
   if(typeof L === 'undefined'){ setTimeout(initMap,100); return; }
-  var map = L.map('trip-map',{zoomControl:true,scrollWheelZoom:false}).setView([39.8,-78.5],7);
+  var map = L.map('trip-map',{zoomControl:true,scrollWheelZoom:false});
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{attribution:'&copy; CARTO',maxZoom:18}).addTo(map);
   function pin(lat,lng,color,label,tab){
     var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 36" width="24" height="36"><path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 24 12 24s12-15 12-24C24 5.4 18.6 0 12 0z" fill="'+color+'" stroke="rgba(0,0,0,0.4)" stroke-width="1"/><circle cx="12" cy="12" r="5" fill="rgba(0,0,0,0.3)"/></svg>';
     var icon=L.divIcon({html:svg,iconSize:[24,36],iconAnchor:[12,36],popupAnchor:[0,-36],className:''});
     L.marker([lat,lng],{icon:icon}).addTo(map).bindPopup('<div style="font-family:system-ui;min-width:160px"><strong style="color:'+color+'">'+label+'</strong></div>');
   }
+  var markers = [];
+  function pin(lat,lng,color,label){
+    var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 36" width="24" height="36"><path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 24 12 24s12-15 12-24C24 5.4 18.6 0 12 0z" fill="'+color+'" stroke="rgba(0,0,0,0.4)" stroke-width="1"/><circle cx="12" cy="12" r="5" fill="rgba(0,0,0,0.3)"/></svg>';
+    var icon=L.divIcon({html:svg,iconSize:[24,36],iconAnchor:[12,36],className:''});
+    var mk=L.marker([lat,lng],{icon:icon}).addTo(map).bindPopup('<strong style="color:'+color+'">'+label+'</strong>');
+    markers.push(mk);
+    return mk;
+  }
   pin(39.0018,-79.3981,'#fbbf24','🥇 Dolly Sods, WV');
   pin(38.6995,-79.5338,'#94a3b8','🥈 Spruce Knob, WV');
-  pin(40.9787,-75.1160,'#d97706','🥉 Delaware Water Gap, NJ/PA');
+  pin(39.5500,-79.0800,'#f472b6','⭐ Savage River, MD — NEW');
+  pin(39.8700,-79.4900,'#34d399','⭐ Laurel Highlands / Ohiopyle, PA — NEW');
   pin(41.6629,-77.8258,'#a78bfa','🌌 Cherry Springs, PA');
+  pin(41.5000,-79.0000,'#60a5fa','⭐ Allegheny NF, PA — NEW');
+  pin(40.9787,-75.1160,'#d97706','⚠️ Delaware Water Gap, NJ/PA (Philly-skewed)');
   var homeSvg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="18" height="18"><circle cx="10" cy="10" r="9" fill="rgba(34,197,94,0.3)" stroke="#22c55e" stroke-width="1.5"/><circle cx="10" cy="10" r="4" fill="#22c55e"/></svg>';
   L.marker([35.2271,-80.8431],{icon:L.divIcon({html:homeSvg,iconSize:[18,18],iconAnchor:[9,9],className:''})}).addTo(map).bindPopup('<strong style="color:#22c55e">🏠 Charlotte, NC</strong>');
+  if(markers.length){var group=new L.featureGroup(markers);map.fitBounds(group.getBounds().pad(0.2));}
 })();
 </script>
 </body>
