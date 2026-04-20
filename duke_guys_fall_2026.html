@@ -171,9 +171,16 @@ window.addEventListener("load",function(){
     fillColor:'#fb923c',fillOpacity:0.07
   }).addTo(map).bindPopup('<strong style="color:#fb923c">🟠 Downingtown PA — covers DWG, Cherry Springs, Allegheny NF, Laurel Highlands</strong>');
 
-  // City labels
-  L.marker([38.9210,-77.2310],{icon:L.divIcon({html:'<div style="background:rgba(56,189,248,0.9);color:#000;font-size:0.65rem;font-weight:800;padding:2px 7px;border-radius:10px;white-space:nowrap;">Tysons VA</div>',className:'',iconAnchor:[30,10]})}).addTo(map);
-  L.marker([40.0015,-75.7035],{icon:L.divIcon({html:'<div style="background:rgba(251,146,60,0.9);color:#000;font-size:0.65rem;font-weight:800;padding:2px 7px;border-radius:10px;white-space:nowrap;">Downingtown PA</div>',className:'',iconAnchor:[55,10]})}).addTo(map);
+  // Center dot + label — anchored precisely at the city coordinates
+  function cityMarker(lat,lng,color,label){
+    var dot='<div style="position:relative;width:0;height:0;">'
+      +'<div style="position:absolute;width:10px;height:10px;border-radius:50%;background:'+color+';border:2px solid #fff;top:-5px;left:-5px;"></div>'
+      +'<div style="position:absolute;background:'+color+';color:#000;font-size:0.62rem;font-weight:800;padding:1px 6px;border-radius:8px;white-space:nowrap;top:-22px;left:8px;">'+label+'</div>'
+      +'</div>';
+    L.marker([lat,lng],{icon:L.divIcon({html:dot,iconSize:[0,0],iconAnchor:[0,0],className:''})}).addTo(map);
+  }
+  cityMarker(38.9210,-77.2310,'#38bdf8','Tysons VA');
+  cityMarker(40.0015,-75.7035,'#fb923c','Downingtown PA');
 });
 </script>
 
@@ -604,9 +611,16 @@ function showTab(id,el){
     fillColor:'#fb923c',fillOpacity:0.07
   }).addTo(map).bindPopup('<strong style="color:#fb923c">🟠 Downingtown PA — covers DWG, Cherry Springs, Allegheny NF, Laurel Highlands</strong>');
 
-  // City labels
-  L.marker([38.9210,-77.2310],{icon:L.divIcon({html:'<div style="background:rgba(56,189,248,0.9);color:#000;font-size:0.65rem;font-weight:800;padding:2px 7px;border-radius:10px;white-space:nowrap;">Tysons VA</div>',className:'',iconAnchor:[30,10]})}).addTo(map);
-  L.marker([40.0015,-75.7035],{icon:L.divIcon({html:'<div style="background:rgba(251,146,60,0.9);color:#000;font-size:0.65rem;font-weight:800;padding:2px 7px;border-radius:10px;white-space:nowrap;">Downingtown PA</div>',className:'',iconAnchor:[55,10]})}).addTo(map);
+  // Center dot + label — anchored precisely at the city coordinates
+  function cityMarker(lat,lng,color,label){
+    var dot='<div style="position:relative;width:0;height:0;">'
+      +'<div style="position:absolute;width:10px;height:10px;border-radius:50%;background:'+color+';border:2px solid #fff;top:-5px;left:-5px;"></div>'
+      +'<div style="position:absolute;background:'+color+';color:#000;font-size:0.62rem;font-weight:800;padding:1px 6px;border-radius:8px;white-space:nowrap;top:-22px;left:8px;">'+label+'</div>'
+      +'</div>';
+    L.marker([lat,lng],{icon:L.divIcon({html:dot,iconSize:[0,0],iconAnchor:[0,0],className:''})}).addTo(map);
+  }
+  cityMarker(38.9210,-77.2310,'#38bdf8','Tysons VA');
+  cityMarker(40.0015,-75.7035,'#fb923c','Downingtown PA');
   if(markers.length){var group=new L.featureGroup(markers);map.fitBounds(group.getBounds().pad(0.2));}
 })();
 </script>
