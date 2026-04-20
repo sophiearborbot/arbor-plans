@@ -157,23 +157,23 @@ window.addEventListener("load",function(){
   L.marker([35.2271,-80.8431],{icon:L.divIcon({html:homeSvg,iconSize:[18,18],iconAnchor:[9,9],className:''})}).addTo(map).bindPopup('<strong style="color:#22c55e">🏠 Charlotte, NC</strong>');
 
   // Drive-radius circles — 80% transparent
-  // Tysons, VA (DC-area guy)
+  // Tysons, VA — radius to reach Laurel Highlands (~230km) and Dolly Sods (~200km)
   L.circle([38.9210,-77.2310],{
-    radius:370000,
-    color:'#38bdf8',weight:1.5,opacity:0.6,
-    fillColor:'#38bdf8',fillOpacity:0.08
-  }).addTo(map).bindPopup('<strong style="color:#38bdf8">🔵 ~4hr drive from Tysons, VA</strong>');
+    radius:260000,
+    color:'#38bdf8',weight:1.5,opacity:0.7,
+    fillColor:'#38bdf8',fillOpacity:0.07
+  }).addTo(map).bindPopup('<strong style="color:#38bdf8">🔵 Tysons VA — covers Dolly Sods, Spruce Knob, Savage River, Laurel Highlands</strong>');
 
-  // Downingtown, PA (Philly-area guy)
+  // Downingtown, PA — radius to reach Cherry Springs (~240km) and DWG (~115km)
   L.circle([40.0015,-75.7035],{
-    radius:320000,
-    color:'#fb923c',weight:1.5,opacity:0.6,
-    fillColor:'#fb923c',fillOpacity:0.08
-  }).addTo(map).bindPopup('<strong style="color:#fb923c">🟠 ~4hr drive from Downingtown, PA</strong>');
+    radius:260000,
+    color:'#fb923c',weight:1.5,opacity:0.7,
+    fillColor:'#fb923c',fillOpacity:0.07
+  }).addTo(map).bindPopup('<strong style="color:#fb923c">🟠 Downingtown PA — covers DWG, Cherry Springs, Allegheny NF, Laurel Highlands</strong>');
 
-  // Labels for the home cities
-  L.marker([38.9210,-77.2310],{icon:L.divIcon({html:'<div style="background:rgba(56,189,248,0.85);color:#000;font-size:0.65rem;font-weight:800;padding:2px 7px;border-radius:10px;white-space:nowrap;">Tysons VA</div>',className:'',iconAnchor:[30,10]})}).addTo(map);
-  L.marker([40.0015,-75.7035],{icon:L.divIcon({html:'<div style="background:rgba(251,146,60,0.85);color:#000;font-size:0.65rem;font-weight:800;padding:2px 7px;border-radius:10px;white-space:nowrap;">Downingtown PA</div>',className:'',iconAnchor:[50,10]})}).addTo(map);
+  // City labels
+  L.marker([38.9210,-77.2310],{icon:L.divIcon({html:'<div style="background:rgba(56,189,248,0.9);color:#000;font-size:0.65rem;font-weight:800;padding:2px 7px;border-radius:10px;white-space:nowrap;">Tysons VA</div>',className:'',iconAnchor:[30,10]})}).addTo(map);
+  L.marker([40.0015,-75.7035],{icon:L.divIcon({html:'<div style="background:rgba(251,146,60,0.9);color:#000;font-size:0.65rem;font-weight:800;padding:2px 7px;border-radius:10px;white-space:nowrap;">Downingtown PA</div>',className:'',iconAnchor:[55,10]})}).addTo(map);
 });
 </script>
 
@@ -558,41 +558,55 @@ function showTab(id,el){
     L.marker([lat,lng],{icon:icon}).addTo(map).bindPopup('<div style="font-family:system-ui;min-width:160px"><strong style="color:'+color+'">'+label+'</strong></div>');
   }
   var markers = [];
-  function pin(lat,lng,color,label){
+  function pin(lat,lng,color,label,tabId){
     var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 36" width="24" height="36"><path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 24 12 24s12-15 12-24C24 5.4 18.6 0 12 0z" fill="'+color+'" stroke="rgba(0,0,0,0.4)" stroke-width="1"/><circle cx="12" cy="12" r="5" fill="rgba(0,0,0,0.3)"/></svg>';
     var icon=L.divIcon({html:svg,iconSize:[24,36],iconAnchor:[12,36],className:''});
-    var mk=L.marker([lat,lng],{icon:icon}).addTo(map).bindPopup('<strong style="color:'+color+'">'+label+'</strong>');
+    var mk=L.marker([lat,lng],{icon:icon}).addTo(map);
+    mk.bindPopup('<div style="font-family:system-ui;"><strong style="color:'+color+'">'+label+'</strong><br><small style="color:#666;">Tap again to view details</small></div>');
+    if(tabId){
+      mk.on('click',function(){
+        // Switch tab
+        document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
+        document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+        var panel=document.getElementById('panel-'+tabId);
+        if(panel){panel.classList.add('active');}
+        var tabs=document.querySelectorAll('.tab');
+        tabs.forEach(function(t){if(t.getAttribute('onclick')&&t.getAttribute('onclick').includes("'"+tabId+"'")){t.classList.add('active');}});
+        // Scroll to tabs
+        setTimeout(function(){document.querySelector('.tab-bar').scrollIntoView({behavior:'smooth',block:'start'});},200);
+      });
+    }
     markers.push(mk);
     return mk;
   }
-  pin(39.0018,-79.3981,'#fbbf24','🥇 Dolly Sods, WV');
-  pin(38.6995,-79.5338,'#94a3b8','🥈 Spruce Knob, WV');
-  pin(39.5500,-79.0800,'#f472b6','⭐ Savage River, MD — NEW');
-  pin(39.8700,-79.4900,'#34d399','⭐ Laurel Highlands / Ohiopyle, PA — NEW');
-  pin(41.6629,-77.8258,'#a78bfa','🌌 Cherry Springs, PA');
-  pin(41.5000,-79.0000,'#60a5fa','⭐ Allegheny NF, PA — NEW');
-  pin(40.9787,-75.1160,'#d97706','⚠️ Delaware Water Gap, NJ/PA (Philly-skewed)');
+  pin(39.0018,-79.3981,'#fbbf24','🥇 Dolly Sods, WV','dolly');
+  pin(38.6995,-79.5338,'#94a3b8','🥈 Spruce Knob, WV','spruce');
+  pin(39.5500,-79.0800,'#f472b6','⭐ Savage River, MD','savage');
+  pin(39.8700,-79.4900,'#34d399','⭐ Laurel Highlands, PA','laurel');
+  pin(41.6629,-77.8258,'#a78bfa','🌌 Cherry Springs, PA','cherry');
+  pin(41.5000,-79.0000,'#60a5fa','⭐ Allegheny NF, PA','allegheny');
+  pin(40.9787,-75.1160,'#d97706','⚠️ Delaware Water Gap, NJ/PA','dwg');
   var homeSvg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="18" height="18"><circle cx="10" cy="10" r="9" fill="rgba(34,197,94,0.3)" stroke="#22c55e" stroke-width="1.5"/><circle cx="10" cy="10" r="4" fill="#22c55e"/></svg>';
   L.marker([35.2271,-80.8431],{icon:L.divIcon({html:homeSvg,iconSize:[18,18],iconAnchor:[9,9],className:''})}).addTo(map).bindPopup('<strong style="color:#22c55e">🏠 Charlotte, NC</strong>');
 
   // Drive-radius circles — 80% transparent
-  // Tysons, VA (DC-area guy)
+  // Tysons, VA — radius to reach Laurel Highlands (~230km) and Dolly Sods (~200km)
   L.circle([38.9210,-77.2310],{
-    radius:370000,
-    color:'#38bdf8',weight:1.5,opacity:0.6,
-    fillColor:'#38bdf8',fillOpacity:0.08
-  }).addTo(map).bindPopup('<strong style="color:#38bdf8">🔵 ~4hr drive from Tysons, VA</strong>');
+    radius:260000,
+    color:'#38bdf8',weight:1.5,opacity:0.7,
+    fillColor:'#38bdf8',fillOpacity:0.07
+  }).addTo(map).bindPopup('<strong style="color:#38bdf8">🔵 Tysons VA — covers Dolly Sods, Spruce Knob, Savage River, Laurel Highlands</strong>');
 
-  // Downingtown, PA (Philly-area guy)
+  // Downingtown, PA — radius to reach Cherry Springs (~240km) and DWG (~115km)
   L.circle([40.0015,-75.7035],{
-    radius:320000,
-    color:'#fb923c',weight:1.5,opacity:0.6,
-    fillColor:'#fb923c',fillOpacity:0.08
-  }).addTo(map).bindPopup('<strong style="color:#fb923c">🟠 ~4hr drive from Downingtown, PA</strong>');
+    radius:260000,
+    color:'#fb923c',weight:1.5,opacity:0.7,
+    fillColor:'#fb923c',fillOpacity:0.07
+  }).addTo(map).bindPopup('<strong style="color:#fb923c">🟠 Downingtown PA — covers DWG, Cherry Springs, Allegheny NF, Laurel Highlands</strong>');
 
-  // Labels for the home cities
-  L.marker([38.9210,-77.2310],{icon:L.divIcon({html:'<div style="background:rgba(56,189,248,0.85);color:#000;font-size:0.65rem;font-weight:800;padding:2px 7px;border-radius:10px;white-space:nowrap;">Tysons VA</div>',className:'',iconAnchor:[30,10]})}).addTo(map);
-  L.marker([40.0015,-75.7035],{icon:L.divIcon({html:'<div style="background:rgba(251,146,60,0.85);color:#000;font-size:0.65rem;font-weight:800;padding:2px 7px;border-radius:10px;white-space:nowrap;">Downingtown PA</div>',className:'',iconAnchor:[50,10]})}).addTo(map);
+  // City labels
+  L.marker([38.9210,-77.2310],{icon:L.divIcon({html:'<div style="background:rgba(56,189,248,0.9);color:#000;font-size:0.65rem;font-weight:800;padding:2px 7px;border-radius:10px;white-space:nowrap;">Tysons VA</div>',className:'',iconAnchor:[30,10]})}).addTo(map);
+  L.marker([40.0015,-75.7035],{icon:L.divIcon({html:'<div style="background:rgba(251,146,60,0.9);color:#000;font-size:0.65rem;font-weight:800;padding:2px 7px;border-radius:10px;white-space:nowrap;">Downingtown PA</div>',className:'',iconAnchor:[55,10]})}).addTo(map);
   if(markers.length){var group=new L.featureGroup(markers);map.fitBounds(group.getBounds().pad(0.2));}
 })();
 </script>
