@@ -6,6 +6,7 @@ const chillSpots = [
   {ll:[16.4200,-87.8200],label:'Silk Cayes 🤿',color:'#4caf50'},
   {ll:[17.2100,-88.6830],label:'ATM Cave 🏛️',color:'#8d6e63'},
   {ll:[16.4903,-87.9050],label:'Gladden Spit 🐋',color:'#ffd54f'},
+  {ll:[17.2500,-88.9500],label:'Caves Branch 🤿 ATV cave',color:'#8d6e63'},
   {ll:[17.2000,-87.5333],label:'Half Moon Caye 🌊',color:'#1565c0'},
 ];
 
@@ -18,6 +19,7 @@ const diveSpots = [
   {ll:[16.4903,-87.9050],label:'Gladden Spit 🐋 — whale sharks (low odds)',color:'#ffd54f'},
   {ll:[17.2000,-87.5333],label:'Half Moon Caye Wall 🌊',color:'#1565c0'},
   {ll:[17.3000,-87.8000],label:'Turneffe Atoll',color:'#7e57c2'},
+  {ll:[17.2500,-88.9500],label:'Caves Branch 🤿',color:'#8d6e63'},
 ];
 
 function renderMapSpots(spots) {
@@ -74,6 +76,7 @@ function setTripMode(mode) {
       {ll:[16.4200,-87.8200],label:'Silk Cayes 🤿 (May 4)',color:'#4caf50'},
       {ll:[16.5042,-88.9853],label:'Cockscomb Jaguar Reserve 🐆',color:'#388e3c'},
       {ll:[17.2100,-88.6830],label:'ATM Cave 🏛️',color:'#795548'},
+      {ll:[17.2500,-88.9500],label:'Caves Branch 🤿 ATV (May 5)',color:'#8d6e63'},
     ];
     renderMapSpots(tafSpots);
     if (window._belizeMap) window._belizeMap.setView([17.0, -88.2], 7);
