@@ -232,6 +232,42 @@ body.light-mode .think-box { background: rgba(0,150,136,0.06); }
   .info-card { background: var(--bg3); border-left: 3px solid var(--accent);
     border-radius: 0 8px 8px 0; padding: 10px 14px; margin: 10px 0; font-size: 0.82rem; line-height: 1.6; }
 </style>
+
+<script>
+function initBelizeMap() {
+  if (!document.getElementById('map')) return;
+  
+  const spots = [
+    {lat:17.9240, lng:-87.9713, label:'🏨 Sunset Caribe (Apr 29–May 2)', color:'#ff6b6b', size:12},
+    {lat:16.5136, lng:-88.3680, label:'🏨 Naia Resort (May 2–6)', color:'#ff6b6b', size:12},
+    {lat:17.1500, lng:-87.7500, label:'🦈 Hol Chan Day 1-2', color:'#29b6f6', size:8},
+    {lat:17.2000, lng:-87.5333, label:'🌊 Half Moon Day 2', color:'#4caf50', size:8},
+    {lat:17.7800, lng:-88.6600, label:'🏛️ Lamanai Day 3', color:'#8d6e63', size:8},
+    {lat:16.4903, lng:-87.9050, label:'🐋 Gladden Spit Day 5', color:'#ffd54f', size:8},
+    {lat:16.4200, lng:-88.3200, label:'🤿 Silk Cayes Day 6', color:'#4caf50', size:8},
+    {lat:17.2500, lng:-88.9500, label:'🤿 Caves Branch Day 7', color:'#8d6e63', size:8},
+  ];
+  
+  const m = L.map('map').setView([17.0, -87.8], 8);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution:'© OpenStreetMap', maxZoom:18
+  }).addTo(m);
+  
+  spots.forEach(s => {
+    L.circleMarker([s.lat, s.lng], {
+      radius: s.size, fillColor: s.color, color: '#fff', weight: 2, fillOpacity: 0.9
+    }).addTo(m).bindPopup(s.label);
+    
+    L.marker([s.lat, s.lng], {
+      icon: L.divIcon({
+        html: '<div style="color:'+s.color+';font-weight:700;font-size:11px;text-shadow:0 0 3px #000">'+s.label+'</div>',
+        iconSize: [200, 20]
+      })
+    }).addTo(m);
+  });
+}
+document.addEventListener('DOMContentLoaded', () => setTimeout(initBelizeMap, 200));
+</script>
 </head>
 <body>
 
@@ -1956,5 +1992,5 @@ function toggleMode() {
   if(btn) btn.textContent = isLight ? '🌙 Dark Mode' : '☀️ Light Mode';
 })();
 </script>
-<script src="./belize_mode.js?v=1"></script>
+
 
