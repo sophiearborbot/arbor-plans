@@ -1,36 +1,32 @@
-// Chill mode map spots
+// Map spots — hotels emphasized, excursions labeled
 const chillSpots = [
-  {ll:[17.9240,-87.9713],label:'Sunset Caribe — Ambergris (Apr 29–May 2) 🏨',color:'#00bcd4'},
-  {ll:[17.1500,-87.7500],label:'Hol Chan + Shark Ray Alley 🦈',color:'#29b6f6'},
-  {ll:[16.5136,-88.3680],label:'Naia Resort — Placencia (May 2–6) 🌴',color:'#26a69a'},
-  {ll:[16.4200,-87.8200],label:'Silk Cayes 🤿',color:'#4caf50'},
-  {ll:[17.2100,-88.6830],label:'ATM Cave 🏛️',color:'#8d6e63'},
-  {ll:[16.4903,-87.9050],label:'Gladden Spit 🐋',color:'#ffd54f'},
-  {ll:[17.2500,-88.9500],label:'Caves Branch 🤿 ATV cave',color:'#8d6e63'},
-  {ll:[17.2000,-87.5333],label:'Half Moon Caye 🌊',color:'#1565c0'},
+  // HOTELS — larger, starred
+  {ll:[17.9240,-87.9713], label:'🏨 Sunset Caribe — Ambergris (Apr 29–May 2)', color:'#ff6b6b', size:14, isHotel:true},
+  {ll:[16.5136,-88.3680], label:'🏨 Naia Resort — Placencia (May 2–6)', color:'#ff6b6b', size:14, isHotel:true},
+  // DAY TRIPS — excursions
+  {ll:[17.1500,-87.7500], label:'🦈 Hol Chan + Shark Ray Alley (Day 1-2)', color:'#29b6f6', size:10},
+  {ll:[17.2000,-87.5333], label:'🌊 Half Moon Caye (Day 2)', color:'#4caf50', size:10},
+  {ll:[17.7800,-88.6600], label:'🏛️ Lamanai Ruins (Day 3)', color:'#8d6e63', size:10},
+  {ll:[16.4903,-87.9050], label:'🐋 Gladden Spit — Whale Sharks (Day 5)', color:'#ffd54f', size:10},
+  {ll:[16.4200,-87.8200], label:'🤿 Silk Cayes (Day 6)', color:'#4caf50', size:10},
+  {ll:[17.2500,-88.9500], label:'🤿 Caves Branch ATV (Day 7 option)', color:'#8d6e63', size:10},
 ];
 
-const diveSpots = [
-  {ll:[17.9240,-87.9713],label:'Sunset Caribe / San Pedro — Ambergris',color:'#00bcd4'},
-  {ll:[17.1500,-87.7500],label:'Hol Chan Marine Reserve 🐠',color:'#29b6f6'},
-  {ll:[17.0800,-87.7200],label:'Shark Ray Alley 🦈',color:'#00e5ff'},
-  {ll:[16.5136,-88.3680],label:'Naia Resort / Placencia',color:'#26a69a'},
-  {ll:[16.4200,-87.8200],label:'Silk Cayes 🤿 — Day 4 dive',color:'#4caf50'},
-  {ll:[16.4903,-87.9050],label:'Gladden Spit 🐋 — whale sharks (low odds)',color:'#ffd54f'},
-  {ll:[17.2000,-87.5333],label:'Half Moon Caye Wall 🌊',color:'#1565c0'},
-  {ll:[17.3000,-87.8000],label:'Turneffe Atoll',color:'#7e57c2'},
-  {ll:[17.2500,-88.9500],label:'Caves Branch 🤿',color:'#8d6e63'},
-];
+const diveSpots = chillSpots;
 
 function renderMapSpots(spots) {
   if (window._belizeMarkers) window._belizeMarkers.forEach(m => window._belizeMap && window._belizeMap.removeLayer(m));
   window._belizeMarkers = [];
+  
   spots.forEach(s => {
-    const m = L.circleMarker(s.ll, {radius:9, fillColor:s.color, color:'#fff', weight:2, fillOpacity:0.9}).addTo(window._belizeMap)
+    const r = s.size || 10;
+    const o = s.isHotel ? 1 : 0.85;
+    const m = L.circleMarker(s.ll, {radius:r, fillColor:s.color, color:'#fff', weight:s.isHotel?3:2, fillOpacity:o})
+      .addTo(window._belizeMap)
       .bindTooltip('<b>' + s.label + '</b>', {direction:'top'});
     const lbl = L.marker(s.ll, {icon:L.divIcon({className:'',
-      html:'<div style="color:'+s.color+';font-size:10px;font-weight:700;white-space:nowrap;text-shadow:0 0 4px #000,0 0 4px #000;margin-top:-22px;margin-left:13px">'+s.label+'</div>',
-      iconSize:[200,20],iconAnchor:[0,10]})}).addTo(window._belizeMap);
+      html:'<div style="color:'+s.color+';font-size:'+(s.isHotel?'11px':'9px')+';font-weight:700;white-space:nowrap;text-shadow:0 0 4px #000;margin-top:-22px;margin-left:13px">'+s.label+'</div>',
+      iconSize:[220,20],iconAnchor:[0,10]})}).addTo(window._belizeMap);
     window._belizeMarkers.push(m, lbl);
   });
 }
@@ -67,16 +63,14 @@ function setTripMode(mode) {
     document.getElementById('navTaf').style.background = 'rgba(76,175,80,0.2)';
     document.getElementById('navTaf').style.color = '#e0f7fa';
     const tafSpots = [
-      {ll:[17.9240,-87.9713],label:'Sunset Caribe — Ambergris (Apr 29–May 2) 🏨',color:'#00bcd4'},
-      {ll:[17.1500,-87.7500],label:'Hol Chan + Shark Ray Alley 🦈',color:'#29b6f6'},
-      {ll:[17.2000,-87.5333],label:'Half Moon Caye Wall 🌊',color:'#1565c0'},
-      {ll:[17.7800,-88.6600],label:'Lamanai Ruins 🏛️ (day trip)',color:'#8d6e63'},
-      {ll:[16.5136,-88.3680],label:'Naia Resort — Placencia (May 2–6) 🌴',color:'#a5d6a7'},
-      {ll:[16.4903,-87.9050],label:'Gladden Spit 🐋 whale sharks (May 3)',color:'#ffd54f'},
-      {ll:[16.4200,-87.8200],label:'Silk Cayes 🤿 (May 4)',color:'#4caf50'},
-      {ll:[16.5042,-88.9853],label:'Cockscomb Jaguar Reserve 🐆',color:'#388e3c'},
-      {ll:[17.2100,-88.6830],label:'ATM Cave 🏛️',color:'#795548'},
-      {ll:[17.2500,-88.9500],label:'Caves Branch 🤿 ATV (May 5)',color:'#8d6e63'},
+      {ll:[17.9240,-87.9713], label:'🏨 Sunset Caribe — Ambergris (Apr 29–May 2)', color:'#ff6b6b', size:14, isHotel:true},
+      {ll:[16.5136,-88.3680], label:'🏨 Naia Resort — Placencia (May 2–6)', color:'#ff6b6b', size:14, isHotel:true},
+      {ll:[17.1500,-87.7500], label:'🦈 Hol Chan + Shark Ray Alley', color:'#29b6f6', size:10},
+      {ll:[17.2000,-87.5333], label:'🌊 Half Moon Caye Wall', color:'#4caf50', size:10},
+      {ll:[17.7800,-88.6600], label:'🏛️ Lamanai Ruins', color:'#8d6e63', size:10},
+      {ll:[16.4903,-87.9050], label:'🐋 Gladden Spit Whale Sharks', color:'#ffd54f', size:10},
+      {ll:[16.4200,-87.8200], label:'🤿 Silk Cayes', color:'#4caf50', size:10},
+      {ll:[17.2500,-88.9500], label:'🤿 Caves Branch ATV', color:'#8d6e63', size:10},
     ];
     renderMapSpots(tafSpots);
     if (window._belizeMap) window._belizeMap.setView([17.0, -88.2], 7);
@@ -86,8 +80,7 @@ function setTripMode(mode) {
   if (window._belizeMap) setTimeout(() => window._belizeMap.invalidateSize(), 100);
 }
 
-// Restore saved mode on load
 window.addEventListener('load', () => {
-  const saved = localStorage.getItem('belizeTripMode') || 'dive';
-  setTimeout(() => setTripMode(saved), 300);
+  const saved = localStorage.getItem('belizeTripMode') || 'chill';
+  setTimeout(() => setTripMode(saved), 500);
 });
